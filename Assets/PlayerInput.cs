@@ -127,6 +127,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""changeTargetL"",
+                    ""type"": ""Button"",
+                    ""id"": ""6457eaf9-2f81-4b3e-beca-446c406b04f0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""changeTargetR"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d3bf414-d11c-4d9c-a4e6-9e128ffc52db"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -261,6 +279,50 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""focus"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2fbf1074-274c-4a8e-9b7b-11624598010f"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""changeTargetL"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a0856e9-f2e2-4586-96f4-8c1fd31ca5c0"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""changeTargetL"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce8072d9-dc9d-40a5-9c3b-118f54dffa9d"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""changeTargetR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e5d45f63-cc16-40ae-9e10-0f6a891ae2c4"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""changeTargetR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -273,6 +335,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterController_jump = m_CharacterController.FindAction("jump", throwIfNotFound: true);
         m_CharacterController_cam = m_CharacterController.FindAction("cam", throwIfNotFound: true);
         m_CharacterController_focus = m_CharacterController.FindAction("focus", throwIfNotFound: true);
+        m_CharacterController_changeTargetL = m_CharacterController.FindAction("changeTargetL", throwIfNotFound: true);
+        m_CharacterController_changeTargetR = m_CharacterController.FindAction("changeTargetR", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -357,6 +421,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterController_jump;
     private readonly InputAction m_CharacterController_cam;
     private readonly InputAction m_CharacterController_focus;
+    private readonly InputAction m_CharacterController_changeTargetL;
+    private readonly InputAction m_CharacterController_changeTargetR;
     /// <summary>
     /// Provides access to input actions defined in input action map "CharacterController".
     /// </summary>
@@ -384,6 +450,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "CharacterController/focus".
         /// </summary>
         public InputAction @focus => m_Wrapper.m_CharacterController_focus;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/changeTargetL".
+        /// </summary>
+        public InputAction @changeTargetL => m_Wrapper.m_CharacterController_changeTargetL;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/changeTargetR".
+        /// </summary>
+        public InputAction @changeTargetR => m_Wrapper.m_CharacterController_changeTargetR;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -422,6 +496,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @focus.started += instance.OnFocus;
             @focus.performed += instance.OnFocus;
             @focus.canceled += instance.OnFocus;
+            @changeTargetL.started += instance.OnChangeTargetL;
+            @changeTargetL.performed += instance.OnChangeTargetL;
+            @changeTargetL.canceled += instance.OnChangeTargetL;
+            @changeTargetR.started += instance.OnChangeTargetR;
+            @changeTargetR.performed += instance.OnChangeTargetR;
+            @changeTargetR.canceled += instance.OnChangeTargetR;
         }
 
         /// <summary>
@@ -445,6 +525,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @focus.started -= instance.OnFocus;
             @focus.performed -= instance.OnFocus;
             @focus.canceled -= instance.OnFocus;
+            @changeTargetL.started -= instance.OnChangeTargetL;
+            @changeTargetL.performed -= instance.OnChangeTargetL;
+            @changeTargetL.canceled -= instance.OnChangeTargetL;
+            @changeTargetR.started -= instance.OnChangeTargetR;
+            @changeTargetR.performed -= instance.OnChangeTargetR;
+            @changeTargetR.canceled -= instance.OnChangeTargetR;
         }
 
         /// <summary>
@@ -513,5 +599,19 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFocus(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "changeTargetL" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnChangeTargetL(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "changeTargetR" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnChangeTargetR(InputAction.CallbackContext context);
     }
 }

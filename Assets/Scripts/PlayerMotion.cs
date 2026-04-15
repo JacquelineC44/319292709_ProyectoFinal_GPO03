@@ -10,7 +10,13 @@ public class PlayerMotion : MonoBehaviour
     public Transform cam;
     public CinemachineCamera cinemachineFreeLook;
     private CinemachineOrbitalFollow orbitalFollow;
+    //focus
+    public CinemachineCamera virtualCam;
+    private CinemachineThirdPersonFollow thirdPersonFollow;
     public GameObject targetCam;
+    //focus
+    public Transform targetPlayer;
+    public Transform follow;
     public float speed;
     public float speedRotation = 10;
     public float groundDistanceUp, groundDistance;
@@ -19,23 +25,30 @@ public class PlayerMotion : MonoBehaviour
     public float gravityMultiplayer = 1;
     public float jumpPower = 35;
     public float rotationSpeedCamX, rotationSpeedCamY;
+    //slope
+    public float maxSlopeAngle = 40f;
     public bool onGround, isJump;
     public bool stop;
+    public bool focus;
     private bool jumpWithDirection;
     public LayerMask groundLayer;
+    float slopeAngle;
     Rigidbody rb;
     Animator anim;
     Vector2 _move, _mlook;
     Vector2 lastMoveInput;
     Vector3 move;
     Vector3 jumpDirection;
-   
+    RaycastHit slopeHit;
+    //focus
+    ZTarget zTarget;
 
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        anim = GetComponentInChildren<Animator>();        
+        anim = GetComponentInChildren<Animator>(); 
+        zTarget = GetComponent<ZTarget>();
     }
     private void OnDrawGizmosSelected()
     {
@@ -45,8 +58,13 @@ public class PlayerMotion : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //slope
+        bool onSlope = OnSlope();
+        rb.useGravity = !onSlope;
+        groundDistanceUp = (onSlope) ? -.2f : .2f;
+        //
         onGround = Physics.CheckSphere(transform.position + (Vector3.up * groundDistanceUp), groundDistance, groundLayer);
-        if (!onGround)
+        if (!onGround && !onSlope)
             rb.AddForce(-gravity * gravityMultiplayer * Vector3.up, ForceMode.Acceleration);
         if (isJump && onGround)
         {
@@ -71,23 +89,39 @@ public class PlayerMotion : MonoBehaviour
                 jumpDirection.z * speed
             );
         }
+        if (focus)
+        {
+            UpdateFocus();
+        }
         if (stop)
             return;
-        if(_move.x != 0 || _move.y != 0)
+        if (!focus)
+        {
+            if (_move.x != 0 || _move.y != 0)
+            {
+                move = cam.forward * _move.y;
+                move += cam.right * _move.x;
+                move.Normalize();
+                move.y = 0;
+                rb.linearVelocity = (onSlope) ? GetSlopeMoveDirection() * speed : new Vector3(move.x * speed, rb.linearVelocity.y, move.z * speed);
+                Vector3 dir = cam.forward * _move.y;
+                dir += cam.right * _move.x;
+                dir.y = 0;
+                dir.Normalize();
+                Quaternion targetR = Quaternion.LookRotation(dir);
+                Quaternion playerR = Quaternion.Slerp(transform.rotation, targetR, speedRotation * Time.fixedDeltaTime);
+                transform.rotation = playerR;
+            }
+        }
+        else
         {
             move = cam.forward * _move.y;
             move += cam.right * _move.x;
             move.Normalize();
             move.y = 0;
-            rb.linearVelocity = new Vector3(move.x * speed, rb.linearVelocity.y, move.z * speed);
-            Vector3 dir = cam.forward * _move.y;
-            dir += cam.right * _move.x;
-            dir.y = 0;
-            dir.Normalize();            
-            Quaternion targetR = Quaternion.LookRotation(dir);
-            Quaternion playerR = Quaternion.Slerp(transform.rotation, targetR, speedRotation * Time.fixedDeltaTime);
-            transform.rotation = playerR;
+            rb.linearVelocity = (onSlope) ? GetSlopeMoveDirection() * speed : move * speed;
         }
+        
     }
     /*
     public void OnMove(InputValue value)
@@ -242,6 +276,7 @@ public class PlayerMotion : MonoBehaviour
         anim.SetFloat("MoveY", _move.y);
         rb.linearVelocity = Vector3.zero;
         stop = false;
+        isFocus();
     }
     public void Oncam(InputValue value)
     {
@@ -250,5 +285,91 @@ public class PlayerMotion : MonoBehaviour
         orbitalFollow.VerticalAxis.Value += _mlook.y * rotationSpeedCamY * Time.fixedDeltaTime;
     }
 
+    public bool OnSlope()
+    {
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit) && onGround)
+        {
+            slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return slopeAngle <= maxSlopeAngle && slopeAngle != 0;
+        }
+        return false;
+    }
+    Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjectOnPlane(move, slopeHit.normal).normalized;
+    }
+    public void OnFocus(InputValue value)
+    {
+        focus = value.isPressed;
+        if (stop || isJump)
+            return;
+        isFocus();
+    }
+    //Se crea un metodo a parte para poder hacer focus en distintos eventos, como cuando se encuentra en el aire.
+    public void isFocus()
+    {
+        if (focus)
+        {
+            if(targetPlayer == null)
+            {
+                targetPlayer = zTarget.FirstTarget();
+            }
+            if(targetPlayer == null)
+            {
+                focus = false;
+                return;
+            }
+            TargetActive(true);
+            virtualCam.Priority = 10;
+            cinemachineFreeLook.Priority = 8;
+            anim.SetBool("isFocus", true);
+            anim.SetTrigger("Focus");
+
+        }
+        else
+        {
+            if (targetPlayer != null)
+                TargetActive(false);
+            zTarget.t = null;
+            targetPlayer = null;
+            virtualCam.Priority = 8;
+            cinemachineFreeLook.Priority = 10;
+            anim.SetBool("isFocus", false);
+            anim.SetTrigger("SwitchWeapon");
+        }
+
+    }
+    public void OnChangeTargetL()
+    {
+        if (targetPlayer == null)
+            return;
+        TargetActive(false);
+        targetPlayer = zTarget.NextToLeft();
+        TargetActive(true);
+        UpdateFocus();
+    }
+    public void OnChangeTargetR()
+    {
+        if (targetPlayer == null)
+            return;
+        TargetActive(false);
+        targetPlayer = zTarget.NextToRight();
+        TargetActive(true);
+        UpdateFocus();
+    }
+    public void UpdateFocus()
+    {
+        targetCam.transform.LookAt(targetPlayer);
+        follow.position = targetCam.transform.position;
+        follow.rotation = targetCam.transform.rotation;
+        //transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
+        transform.rotation = Quaternion.Euler(0, follow.eulerAngles.y, 0);
+
+    }
+    void TargetActive(bool b)
+    {
+        if (targetPlayer.GetComponent<targetDamage>())
+            targetPlayer.GetComponent<targetDamage>().targetPoint.SetActive(b);
+    }
 }
 
