@@ -12,6 +12,7 @@ public class items : ScriptableObject
 {
     public string itemName;
     public WeaponType typeItem;
+    //puntos de daño
     public int pto;
     [TextArea]
     public string msg;

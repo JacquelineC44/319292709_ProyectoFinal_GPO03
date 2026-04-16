@@ -5597,13 +5597,14 @@ MonoBehaviour:
   rotationSpeedCamX: 10
   rotationSpeedCamY: 10
   maxSlopeAngle: 40
-  rollPower: 50
-  dodgePower: 30
-  rollMultiplayer: 2
+  rollPower: 0
+  dodgePower: 0
+  rollMultiplayer: 0
   onGround: 0
   isJump: 0
   stop: 0
   focus: 0
+  isRoll: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 64

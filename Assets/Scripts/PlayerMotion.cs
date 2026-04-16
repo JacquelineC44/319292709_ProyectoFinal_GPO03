@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using Unity.VisualScripting;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class PlayerMotion : MonoBehaviour
 {
@@ -27,10 +28,14 @@ public class PlayerMotion : MonoBehaviour
     public float rotationSpeedCamX, rotationSpeedCamY;
     //slope
     public float maxSlopeAngle = 40f;
+    //ROLL
+    public float rollPower, dodgePower, rollMultiplayer;
     public bool onGround, isJump;
     public bool stop;
     public bool focus;
     private bool jumpWithDirection;
+    //roll
+    public bool isRoll;
     public LayerMask groundLayer;
     float slopeAngle;
     Rigidbody rb;
@@ -42,6 +47,8 @@ public class PlayerMotion : MonoBehaviour
     RaycastHit slopeHit;
     //focus
     ZTarget zTarget;
+    //roll
+    DG.Tweening.Sequence s;
 
 
     private void Awake()
@@ -156,6 +163,83 @@ public class PlayerMotion : MonoBehaviour
         anim.SetFloat("MoveX", _move.x);
         anim.SetFloat("MoveY", _move.y);
     }
+    public void OnJump()
+    {
+        Stopping();
+        //roll
+        if (focus)
+        {
+            if (_move.x != 0 || _move.y != 0)
+            {
+                if(Mathf.Abs(_move.x) > Mathf.Abs(_move.y))
+                {
+                    _move.y = 0;
+                }
+                else if (Mathf.Abs(_move.y) > Mathf.Abs(_move.x))
+                {
+                    _move.x = 0;
+                }
+                else if(Mathf.Abs(_move.x) == Mathf.Abs(_move.y))
+                {
+                    _move.y = 0;
+                }
+                if (_move.x != 0)
+                    _move.x = (_move.x < 0) ? -1f : 1f;
+                if (_move.y != 0)
+                    _move.y = (_move.y < 0) ? -1f : 1f;
+                anim.SetFloat("MoveX", _move.x);
+                anim.SetFloat("MoveY", _move.y);
+                Vector3 move = cam.forward * _move.y;
+                move.Normalize();
+                move.y = 0;
+                if(_move.x != 0)
+                {
+                    rb.AddForce(move * dodgePower * rollMultiplayer, ForceMode.Impulse);
+                }
+                else
+                {
+                    rb.AddForce(move * rollPower * rollMultiplayer, ForceMode.Impulse);
+                }
+            }
+            else
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.AddForce(cam.forward*rollPower, ForceMode.Impulse);
+            }
+            anim.SetTrigger("Jumping");
+            isRoll = true;
+            s = DOTween.Sequence();
+            s.AppendInterval(.5f).OnComplete(() =>
+            {
+                if (isRoll)
+                    StopEnd();
+            });
+        }
+        else
+        {
+            isJump = true;
+            Vector2 moveDir = _move;
+            anim.SetTrigger("Jumping");
+            if (moveDir != Vector2.zero)
+            {
+                Vector3 dir = cam.forward * moveDir;
+                dir += cam.right * moveDir.x;
+                dir.Normalize();
+                dir.y = 0;
+                Quaternion targetR = Quaternion.LookRotation(dir);
+                transform.rotation = targetR;
+                rb.AddForce((transform.forward + Vector3.up) * jumpPower, ForceMode.Impulse);
+            }
+            else
+            {
+                rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            }
+            anim.SetBool("OnAir", true);
+
+        }
+            //
+        
+    }
     /*
     public void OnJump()
     {
@@ -260,6 +344,7 @@ public class PlayerMotion : MonoBehaviour
     }
     void Stopping()
     {
+        isRoll = false;
         if (onGround)
             rb.linearVelocity = Vector3.zero;
         stop = true;
@@ -274,6 +359,7 @@ public class PlayerMotion : MonoBehaviour
         anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
         anim.SetFloat("MoveX", _move.x);
         anim.SetFloat("MoveY", _move.y);
+        isRoll = false;
         rb.linearVelocity = Vector3.zero;
         stop = false;
         isFocus();
@@ -370,6 +456,12 @@ public class PlayerMotion : MonoBehaviour
     {
         if (targetPlayer.GetComponent<targetDamage>())
             targetPlayer.GetComponent<targetDamage>().targetPoint.SetActive(b);
+    }
+
+    //roll
+    public void rollStop()
+    {
+        rb.linearVelocity = Vector3.zero;
     }
 }
 
