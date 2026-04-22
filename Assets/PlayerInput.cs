@@ -145,6 +145,33 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""use"",
+                    ""type"": ""Button"",
+                    ""id"": ""1bed5696-5340-4efc-bfec-ed0f3523eb75"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackL"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf53bffb-9d8a-40a8-8f73-aa128af07401"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackP"",
+                    ""type"": ""Button"",
+                    ""id"": ""82f3fa85-89c6-4fdb-8ab1-786adebf7fdc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -323,6 +350,72 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""changeTargetR"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a09fa7d2-e8e4-4b07-91fa-685374f850df"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea8f2c52-372b-48be-bf19-90af5e1615cd"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2b48b0a-3955-44ad-b2b5-fc2496d19550"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackL"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c651e1d-7c84-47d4-8064-d72db1439132"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackL"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ed3ffda-9a5f-4964-b2cf-0a8fc2443b39"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackP"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d710dd40-f589-4fbf-a1c9-c7933db0be96"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackP"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -337,6 +430,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterController_focus = m_CharacterController.FindAction("focus", throwIfNotFound: true);
         m_CharacterController_changeTargetL = m_CharacterController.FindAction("changeTargetL", throwIfNotFound: true);
         m_CharacterController_changeTargetR = m_CharacterController.FindAction("changeTargetR", throwIfNotFound: true);
+        m_CharacterController_use = m_CharacterController.FindAction("use", throwIfNotFound: true);
+        m_CharacterController_AttackL = m_CharacterController.FindAction("AttackL", throwIfNotFound: true);
+        m_CharacterController_AttackP = m_CharacterController.FindAction("AttackP", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -423,6 +519,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterController_focus;
     private readonly InputAction m_CharacterController_changeTargetL;
     private readonly InputAction m_CharacterController_changeTargetR;
+    private readonly InputAction m_CharacterController_use;
+    private readonly InputAction m_CharacterController_AttackL;
+    private readonly InputAction m_CharacterController_AttackP;
     /// <summary>
     /// Provides access to input actions defined in input action map "CharacterController".
     /// </summary>
@@ -458,6 +557,18 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "CharacterController/changeTargetR".
         /// </summary>
         public InputAction @changeTargetR => m_Wrapper.m_CharacterController_changeTargetR;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/use".
+        /// </summary>
+        public InputAction @use => m_Wrapper.m_CharacterController_use;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/AttackL".
+        /// </summary>
+        public InputAction @AttackL => m_Wrapper.m_CharacterController_AttackL;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/AttackP".
+        /// </summary>
+        public InputAction @AttackP => m_Wrapper.m_CharacterController_AttackP;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -502,6 +613,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @changeTargetR.started += instance.OnChangeTargetR;
             @changeTargetR.performed += instance.OnChangeTargetR;
             @changeTargetR.canceled += instance.OnChangeTargetR;
+            @use.started += instance.OnUse;
+            @use.performed += instance.OnUse;
+            @use.canceled += instance.OnUse;
+            @AttackL.started += instance.OnAttackL;
+            @AttackL.performed += instance.OnAttackL;
+            @AttackL.canceled += instance.OnAttackL;
+            @AttackP.started += instance.OnAttackP;
+            @AttackP.performed += instance.OnAttackP;
+            @AttackP.canceled += instance.OnAttackP;
         }
 
         /// <summary>
@@ -531,6 +651,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @changeTargetR.started -= instance.OnChangeTargetR;
             @changeTargetR.performed -= instance.OnChangeTargetR;
             @changeTargetR.canceled -= instance.OnChangeTargetR;
+            @use.started -= instance.OnUse;
+            @use.performed -= instance.OnUse;
+            @use.canceled -= instance.OnUse;
+            @AttackL.started -= instance.OnAttackL;
+            @AttackL.performed -= instance.OnAttackL;
+            @AttackL.canceled -= instance.OnAttackL;
+            @AttackP.started -= instance.OnAttackP;
+            @AttackP.performed -= instance.OnAttackP;
+            @AttackP.canceled -= instance.OnAttackP;
         }
 
         /// <summary>
@@ -613,5 +742,26 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnChangeTargetR(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "use" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnUse(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "AttackL" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAttackL(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "AttackP" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAttackP(InputAction.CallbackContext context);
     }
 }

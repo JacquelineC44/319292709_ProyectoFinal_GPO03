@@ -3,6 +3,7 @@ public enum WeaponType
 {
     none,
     sword,
+    crossbow,
     heal,
     bomb
 }

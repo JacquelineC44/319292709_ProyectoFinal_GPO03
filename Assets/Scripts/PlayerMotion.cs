@@ -36,8 +36,13 @@ public class PlayerMotion : MonoBehaviour
     private bool jumpWithDirection;
     //roll
     public bool isRoll;
+    //cofre
+    public bool interacting;
     public LayerMask groundLayer;
+    public ItemsCollision chest;
     float slopeAngle;
+    //comabte 
+    PlayerCombat playerCombat;
     Rigidbody rb;
     Animator anim;
     Vector2 _move, _mlook;
@@ -56,6 +61,7 @@ public class PlayerMotion : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>(); 
         zTarget = GetComponent<ZTarget>();
+        playerCombat = GetComponent<PlayerCombat>();
     }
     private void OnDrawGizmosSelected()
     {
@@ -75,10 +81,10 @@ public class PlayerMotion : MonoBehaviour
             rb.AddForce(-gravity * gravityMultiplayer * Vector3.up, ForceMode.Acceleration);
         if (isJump && onGround)
         {
-            Debug.Log("CORTA SALTO | onGround=" + onGround + " | vel=" + rb.linearVelocity);
             isJump = false;
             anim.SetBool("OnAir", false);
             rb.linearVelocity = Vector3.zero;
+            playerCombat.isAttacking = false;
         }
         else if(!isJump && !onGround)
         {
@@ -96,10 +102,12 @@ public class PlayerMotion : MonoBehaviour
                 jumpDirection.z * speed
             );
         }
-        if (focus)
+        if (focus && !interacting)
         {
             UpdateFocus();
         }
+        if (playerCombat.isAttacking || isJump)
+            return;
         if (stop)
             return;
         if (!focus)
@@ -151,7 +159,7 @@ public class PlayerMotion : MonoBehaviour
         else
             lastMoveInput = Vector2.zero;
 
-        if (stop)
+        if (stop || playerCombat.isAttacking || interacting)
             return;
 
         anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
@@ -165,6 +173,9 @@ public class PlayerMotion : MonoBehaviour
     }
     public void OnJump()
     {
+        if (!Attack())
+            return;
+        playerCombat.Reset();
         Stopping();
         //roll
         if (focus)
@@ -342,7 +353,7 @@ public class PlayerMotion : MonoBehaviour
     {
         StopEnd();
     }
-    void Stopping()
+    public void Stopping()
     {
         isRoll = false;
         if (onGround)
@@ -366,6 +377,8 @@ public class PlayerMotion : MonoBehaviour
     }
     public void Oncam(InputValue value)
     {
+        if (interacting)
+            return;
         _mlook = value.Get<Vector2>();
         orbitalFollow.HorizontalAxis.Value += _mlook.x * rotationSpeedCamX;
         orbitalFollow.VerticalAxis.Value += _mlook.y * rotationSpeedCamY * Time.fixedDeltaTime;
@@ -462,6 +475,42 @@ public class PlayerMotion : MonoBehaviour
     public void rollStop()
     {
         rb.linearVelocity = Vector3.zero;
+    }
+    //cofre
+    public void OnUse()
+    {
+        if (!Attack())
+            return;
+        if (chest)
+        {
+            chest.Open();
+            return;
+        }
+    }
+    public void selectTarget(Transform objetive)
+    {
+        if(targetPlayer != null)
+            TargetActive(false);
+        targetPlayer = null;
+        virtualCam.Priority = 10;
+        cinemachineFreeLook.Priority = 8;
+        targetCam.transform.LookAt(objetive);
+        follow.position = targetCam.transform.position;
+        follow.rotation = targetCam.transform.rotation;
+        transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
+    }
+    public void noTarget()
+    {
+        targetPlayer = null;
+        UpdateFocus();
+        virtualCam.Priority = 8;
+        cinemachineFreeLook.Priority = 10;
+        isFocus();
+    }
+    //combate
+    public bool Attack()
+    {
+        return !isJump && !stop && onGround;
     }
 }
 

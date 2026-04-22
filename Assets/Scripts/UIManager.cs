@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using JetBrains.Annotations;
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
@@ -20,9 +22,16 @@ public class UIManager : MonoBehaviour
     {
         interactuar.SetActive(false);
     }
-    public void showNotification()
+    public void showNotification(string msg)
     {
         if(!notification.activeSelf)
             notification.SetActive(false);
+        notification.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "";
+        notification.GetComponent<RectTransform>().DOSizeDelta(new Vector2(720,200), .2f).OnComplete(() => notification.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = msg);
     }
+    public void hideNotification()
+    {
+        notification.GetComponent<RectTransform>().DOSizeDelta(new Vector2(720, 0), .2f).OnComplete(() => notification.SetActive(false));
+    }
+    
 }

@@ -1,0 +1,82 @@
+using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class ItemsCollision : MonoBehaviour
+{
+    public GameObject item;
+    public items drop;
+    public WeaponType wType;
+    public bool open;
+    public string notificationText;
+    public Transform upPoint;
+    GameObject player;
+    Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+        if(drop != null)
+        {
+            wType = drop.typeItem;
+            notificationText = drop.msg;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player" && !open)
+        {
+            Debug.Log("Entro al trigger");
+            player = other.gameObject;
+            player.GetComponent<PlayerMotion>().chest = this;
+            UIManager.Instance.showInteractuar();
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Player" && !open)
+        {
+            player.GetComponent <PlayerMotion>().chest = null;
+            player = null;
+            UIManager.Instance.hideInteractuar(); ;
+        }
+    }
+    public void Open()
+    {
+        if (open)
+            return;
+        open = true;
+        player.GetComponent<PlayerMotion>().interacting = true;
+        player.GetComponent<PlayerMotion>().Stopping();
+        UIManager.Instance.hideInteractuar();
+        anim.enabled = true;
+        StartCoroutine("Finish");
+    }
+
+    IEnumerator Finish()
+    {
+        yield return new WaitForSeconds(2f);
+        player.GetComponent<PlayerMotion>().selectTarget(upPoint);
+        UIManager.Instance.showNotification(notificationText);
+        yield return new WaitForSeconds(.2f);
+        item.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        UIManager.Instance.hideNotification();
+        item.SetActive(false);
+        player.GetComponent<PlayerMotion>().chest = null;
+        player.GetComponent<PlayerMotion>().interacting = false;
+        player.GetComponent<PlayerMotion>().StopEnd();
+
+        switch (wType)
+        {
+            case WeaponType.sword:
+                player.GetComponent<Inventario>().swordActive(drop);
+                player.GetComponent<Inventario>().weapons.Add(drop);
+                break;
+            default:
+                break;
+        }
+        player.GetComponent<PlayerMotion>().noTarget();
+        player = null;
+    }
+}
