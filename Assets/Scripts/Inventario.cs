@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class Inventario : MonoBehaviour
 {
-    public GameObject sword; 
+    public GameObject sword;
+    public GameObject crossbow;
     public List<items> weapons;
     public List<items> items;
     public bool swordUse;
+    public int arrows, potions;
     Animator anim;
     PlayerCombat playerCombat;
 
@@ -21,7 +23,8 @@ public class Inventario : MonoBehaviour
 
     public void swordActive(items item)
     {
-        sword.SetActive(true);
+        crossbow.SetActive(false);
+        sword.SetActive(true);        
         anim.SetFloat("WeaponN", 0);
         if (!swordUse)
         {
@@ -32,6 +35,16 @@ public class Inventario : MonoBehaviour
         anim.SetTrigger("SwitchWeapon");
         playerCombat.weaponActual = item;
         sword.GetComponent<swordCollision>().attack = playerCombat.weaponActual.pto;
+    }
+    public void crossbowActive(items item)
+    {
+        sword.SetActive(false);
+        crossbow.SetActive(true);
+        //cambiar a 1 (solo es prueba con el otro anim)
+        anim.SetFloat("WeaponN", 2);
+        anim.SetTrigger("SwitchWeapon");
+        playerCombat.weaponActual = item;
+
     }
 
 

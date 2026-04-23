@@ -1,12 +1,14 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Linq;
 
 public class ItemsCollision : MonoBehaviour
 {
     public GameObject item;
     public items drop;
     public WeaponType wType;
+    public int arrows, potions;
     public bool open;
     public string notificationText;
     public Transform upPoint;
@@ -66,12 +68,35 @@ public class ItemsCollision : MonoBehaviour
         player.GetComponent<PlayerMotion>().chest = null;
         player.GetComponent<PlayerMotion>().interacting = false;
         player.GetComponent<PlayerMotion>().StopEnd();
+        if (arrows != 0)
+        {
+            player.GetComponent<Inventario>().arrows += arrows;
+            UIManager.Instance.showIcon();
+            UIManager.Instance.UpdateArrows(player.GetComponent<Inventario>().arrows);
 
+        }            
         switch (wType)
         {
             case WeaponType.sword:
                 player.GetComponent<Inventario>().swordActive(drop);
                 player.GetComponent<Inventario>().weapons.Add(drop);
+                break;
+            case WeaponType.crossbow:
+                player.GetComponent<Inventario>().crossbowActive(drop);
+                player.GetComponent<Inventario>().weapons.Add(drop);
+                break;
+            case WeaponType.heal:
+                if(player.GetComponent<Inventario>().items.Where(i => i == drop).Count() == 0)
+                {
+                    player.GetComponent<Inventario>().items.Add(drop);
+                    if(player.GetComponent<PlayerCombat>().itemActual == null)
+                    {
+                        player.GetComponent<PlayerCombat>().itemActual = player.GetComponent<Inventario>().items[0];
+                    }
+                }
+                player.GetComponent<Inventario>().potions += potions;
+                UIManager.Instance.showIcon();
+                UIManager.Instance.UpdatePotions(player.GetComponent<Inventario>().potions);
                 break;
             default:
                 break;

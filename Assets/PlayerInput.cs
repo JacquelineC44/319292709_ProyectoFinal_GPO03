@@ -172,6 +172,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ArrowL"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d80cc43-452f-4fdf-ac15-f60d9fb008b6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ArrowR"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1aed94b-65f7-49f8-8d4a-510312234ff0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -416,6 +434,50 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""AttackP"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a6fd752-71c3-4a37-b83b-0d75b4c54699"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ArrowL"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79638caf-7e6f-43fe-b623-0ff2b39e32a3"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ArrowL"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6245c4b5-6c9e-4d61-9d4c-7f7865c87fc4"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ArrowR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc07891e-20a2-4e55-8398-af678c81eab0"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ArrowR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -433,6 +495,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterController_use = m_CharacterController.FindAction("use", throwIfNotFound: true);
         m_CharacterController_AttackL = m_CharacterController.FindAction("AttackL", throwIfNotFound: true);
         m_CharacterController_AttackP = m_CharacterController.FindAction("AttackP", throwIfNotFound: true);
+        m_CharacterController_ArrowL = m_CharacterController.FindAction("ArrowL", throwIfNotFound: true);
+        m_CharacterController_ArrowR = m_CharacterController.FindAction("ArrowR", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -522,6 +586,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterController_use;
     private readonly InputAction m_CharacterController_AttackL;
     private readonly InputAction m_CharacterController_AttackP;
+    private readonly InputAction m_CharacterController_ArrowL;
+    private readonly InputAction m_CharacterController_ArrowR;
     /// <summary>
     /// Provides access to input actions defined in input action map "CharacterController".
     /// </summary>
@@ -569,6 +635,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "CharacterController/AttackP".
         /// </summary>
         public InputAction @AttackP => m_Wrapper.m_CharacterController_AttackP;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/ArrowL".
+        /// </summary>
+        public InputAction @ArrowL => m_Wrapper.m_CharacterController_ArrowL;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/ArrowR".
+        /// </summary>
+        public InputAction @ArrowR => m_Wrapper.m_CharacterController_ArrowR;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -622,6 +696,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @AttackP.started += instance.OnAttackP;
             @AttackP.performed += instance.OnAttackP;
             @AttackP.canceled += instance.OnAttackP;
+            @ArrowL.started += instance.OnArrowL;
+            @ArrowL.performed += instance.OnArrowL;
+            @ArrowL.canceled += instance.OnArrowL;
+            @ArrowR.started += instance.OnArrowR;
+            @ArrowR.performed += instance.OnArrowR;
+            @ArrowR.canceled += instance.OnArrowR;
         }
 
         /// <summary>
@@ -660,6 +740,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @AttackP.started -= instance.OnAttackP;
             @AttackP.performed -= instance.OnAttackP;
             @AttackP.canceled -= instance.OnAttackP;
+            @ArrowL.started -= instance.OnArrowL;
+            @ArrowL.performed -= instance.OnArrowL;
+            @ArrowL.canceled -= instance.OnArrowL;
+            @ArrowR.started -= instance.OnArrowR;
+            @ArrowR.performed -= instance.OnArrowR;
+            @ArrowR.canceled -= instance.OnArrowR;
         }
 
         /// <summary>
@@ -763,5 +849,19 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAttackP(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ArrowL" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnArrowL(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ArrowR" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnArrowR(InputAction.CallbackContext context);
     }
 }

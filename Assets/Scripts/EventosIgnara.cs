@@ -20,5 +20,9 @@ public class EventosIgnara : MonoBehaviour
     public void Hit()
     {
         playerCombat.Hit();
+    } 
+    public void Shoot()
+    {
+        playerCombat.Shoot();
     }
 }
