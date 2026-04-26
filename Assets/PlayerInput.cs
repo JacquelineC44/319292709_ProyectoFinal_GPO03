@@ -190,6 +190,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""8227f688-de37-410f-8ea6-ff549b266f67"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -478,6 +487,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""ArrowR"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7857423-3461-4fb4-9ca0-7bc8b8d81ad6"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70b295d7-07af-4730-b91c-127eeb613e29"",
+                    ""path"": ""<DualSenseGamepadHID>/dpad/down"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -497,6 +528,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterController_AttackP = m_CharacterController.FindAction("AttackP", throwIfNotFound: true);
         m_CharacterController_ArrowL = m_CharacterController.FindAction("ArrowL", throwIfNotFound: true);
         m_CharacterController_ArrowR = m_CharacterController.FindAction("ArrowR", throwIfNotFound: true);
+        m_CharacterController_UseItem = m_CharacterController.FindAction("UseItem", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -588,6 +620,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterController_AttackP;
     private readonly InputAction m_CharacterController_ArrowL;
     private readonly InputAction m_CharacterController_ArrowR;
+    private readonly InputAction m_CharacterController_UseItem;
     /// <summary>
     /// Provides access to input actions defined in input action map "CharacterController".
     /// </summary>
@@ -643,6 +676,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "CharacterController/ArrowR".
         /// </summary>
         public InputAction @ArrowR => m_Wrapper.m_CharacterController_ArrowR;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/UseItem".
+        /// </summary>
+        public InputAction @UseItem => m_Wrapper.m_CharacterController_UseItem;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -702,6 +739,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ArrowR.started += instance.OnArrowR;
             @ArrowR.performed += instance.OnArrowR;
             @ArrowR.canceled += instance.OnArrowR;
+            @UseItem.started += instance.OnUseItem;
+            @UseItem.performed += instance.OnUseItem;
+            @UseItem.canceled += instance.OnUseItem;
         }
 
         /// <summary>
@@ -746,6 +786,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ArrowR.started -= instance.OnArrowR;
             @ArrowR.performed -= instance.OnArrowR;
             @ArrowR.canceled -= instance.OnArrowR;
+            @UseItem.started -= instance.OnUseItem;
+            @UseItem.performed -= instance.OnUseItem;
+            @UseItem.canceled -= instance.OnUseItem;
         }
 
         /// <summary>
@@ -863,5 +906,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnArrowR(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "UseItem" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnUseItem(InputAction.CallbackContext context);
     }
 }

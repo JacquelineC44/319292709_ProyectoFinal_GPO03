@@ -7,15 +7,24 @@ using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
+    public GameObject lifeBar;
     public GameObject notification;
     public GameObject interactuar;
     public GameObject icons;
     public TMPro.TextMeshProUGUI potionText;
     public TMPro.TextMeshProUGUI arrowText;
+    public Image potionIcon;
+    public TMPro.TextMeshProUGUI lifeText;
+    public Life playerLife;
+
     public static UIManager Instance;
     private void Awake()
     {
         Instance = this;
+    }
+    private void Start()
+    {
+        UpdateLifeText();
     }
     public void showInteractuar()
     {
@@ -53,6 +62,16 @@ public class UIManager : MonoBehaviour
     {
         arrowText.text = n.ToString();
     }
-
+    public void UpdateLife(int currentLife)
+    {
+        //lifeBar.fillAmount = (float)currentLife / playerLife.maxlife;
+        Vector2 v = new Vector2(currentLife, lifeBar.GetComponent<RectTransform>().sizeDelta.y);
+        lifeBar.GetComponent<RectTransform>().DOSizeDelta(v, .2f);
+        UpdateLifeText();
+    }
+    public void UpdateLifeText()
+    {
+        lifeText.text = playerLife.currentLife + "/" + playerLife.maxlife;
+    }
 
 }

@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
+using DG.Tweening;
 
 public class PlayerCombat : MonoBehaviour
 {
     public items weaponActual;
     public items itemActual;
     public CapsuleCollider swordCollision;
+    public GameObject healParticle;
     public GameObject arrowPrefab;//flechas
     public LayerMask enemyMask;
     public Transform attachPoint;//flechas
@@ -16,6 +18,7 @@ public class PlayerCombat : MonoBehaviour
     public float arrowSpeed; //flecha
     public bool isAttacking;
     PlayerMotion playerMotion;
+    PlayerLife playerLife;
     Inventario inventory;
     ZTarget ztar;
     Animator anim;
@@ -26,6 +29,7 @@ public class PlayerCombat : MonoBehaviour
     private void Awake()
     {
         playerMotion = GetComponent<PlayerMotion>();
+        playerLife = GetComponent<PlayerLife>();
         inventory = GetComponent<Inventario>();
         ztar = GetComponent<ZTarget>();
         anim = GetComponentInChildren<Animator>();
@@ -214,5 +218,38 @@ public class PlayerCombat : MonoBehaviour
     {
         StopCoroutine("moveAgain");
         StopCoroutine("comboEnd");
+    }
+    //curar 
+    public void OnUseItem()
+    {
+        if (weaponActual == null)
+            return;
+        if (itemActual == null)
+            return;
+        if(inventory.potions != 0 && playerMotion.Attack())
+        {
+            isAttacking = true;
+            Reset();
+            playerMotion.Stopping();
+            healParticle.SetActive(true);
+            anim.SetTrigger("Heal");
+            playerLife.currentLife += itemActual.pto;
+            UIManager.Instance.UpdateLife(playerLife.currentLife);
+            inventory.potions--;
+            UIManager.Instance.UpdatePotions(inventory.potions);
+            Sequence s = DOTween.Sequence();
+            s.AppendInterval(1f).OnComplete(() =>
+            {
+                healParticle.SetActive(false);
+                isAttacking = false;
+                playerMotion.StopEnd();
+            });
+        }
+    }
+    public void healEnd()
+    {
+        healParticle.SetActive(false);
+        isAttacking = false;
+        playerMotion.StopEnd();
     }
 }

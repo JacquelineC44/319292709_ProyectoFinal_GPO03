@@ -4,7 +4,7 @@ using DG.Tweening;
 using UnityEditor.Experimental.GraphView;
 using Unity.VisualScripting;
 
-public class targetDamage : MonoBehaviour
+public class targetDamage : Life
 {
     public GameObject targetPoint;
     public Material blue;
@@ -12,7 +12,6 @@ public class targetDamage : MonoBehaviour
     public MeshRenderer mesh;
     public GameObject text;
     public Transform model;
-    public int life;
     public bool inDamage;
     public GameObject player;
 
@@ -21,13 +20,13 @@ public class targetDamage : MonoBehaviour
         mesh = GetComponentInChildren<MeshRenderer>();
         model = mesh.transform;
     }
-    public void Damage(int d)
+    public override void GetHit(int d)
     {
         Debug.Log("Entró a Damage");
         if (inDamage)
             return;
+        base.GetHit(d);
         inDamage = true;
-        life -= d;
         mesh.material = red;
         model.DOShakePosition(1f, 1,10,90,false,true,ShakeRandomnessMode.Full).OnComplete(() => model.localPosition = Vector3.zero);
         GameObject t = Instantiate(text, UIManager.Instance.transform);
@@ -43,7 +42,7 @@ public class targetDamage : MonoBehaviour
         s.AppendInterval(1f).OnComplete(() =>
         {
             inDamage = false;
-            if(life > 0)
+            if (currentLife > 0)
             {
                 mesh.material = blue;
             }
@@ -54,6 +53,11 @@ public class targetDamage : MonoBehaviour
             }
         });
 
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+            other.GetComponent<Life>().GetHit(25);
     }
     private void OnDestroy()
     {
