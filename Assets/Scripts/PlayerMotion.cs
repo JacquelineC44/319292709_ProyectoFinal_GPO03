@@ -39,10 +39,10 @@ public class PlayerMotion : MonoBehaviour
     //cofre
     public bool interacting;
     public LayerMask groundLayer;
-    public ItemsCollision chest;
+    //public ItemsCollision chest;
     float slopeAngle;
     //comabte 
-    PlayerCombat playerCombat;
+    //PlayerCombat playerCombat;
     Rigidbody rb;
     Animator anim;
     Vector2 _move, _mlook;
@@ -51,7 +51,7 @@ public class PlayerMotion : MonoBehaviour
     Vector3 jumpDirection;
     RaycastHit slopeHit;
     //focus
-    ZTarget zTarget;
+    //ZTarget zTarget;
     //roll
     DG.Tweening.Sequence s;
 
@@ -59,110 +59,123 @@ public class PlayerMotion : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        anim = GetComponentInChildren<Animator>(); 
-        zTarget = GetComponent<ZTarget>();
-        playerCombat = GetComponent<PlayerCombat>();
+        anim = GetComponentInChildren<Animator>();
+        //zTarget = GetComponent<ZTarget>();
+        //playerCombat = GetComponent<PlayerCombat>();
     }
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position + (Vector3.up * groundDistanceUp), groundDistance);
-    }
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawSphere(transform.position + (Vector3.up * groundDistanceUp), groundDistance);
+    //}
 
     private void FixedUpdate()
     {
-        //slope
-        //bool onSlope = OnSlope();
-        //rb.useGravity = !onSlope;
-        //groundDistanceUp = (onSlope) ? -.2f : .2f;
-        //
+    //    //slope
+    //    //bool onSlope = OnSlope();
+    //    //rb.useGravity = !onSlope;
+    //    //groundDistanceUp = (onSlope) ? -.2f : .2f;
+    //    //
         onGround = Physics.CheckSphere(transform.position + (Vector3.up * groundDistanceUp), groundDistance, groundLayer);
         bool onSlope = OnSlope();
-        rb.useGravity = !onSlope;
-        if (!onGround && !onSlope)
-            rb.AddForce(-gravity * gravityMultiplayer * Vector3.up, ForceMode.Acceleration);
-        if (isJump && onGround)
-        {
-            isJump = false;
-            anim.SetBool("OnAir", false);
-            rb.linearVelocity = Vector3.zero;
-            playerCombat.isAttacking = false;
-        }
-        else if (!isJump && !onGround)
-        {
-            anim.SetBool("OnAir", true);
-            isJump = true;
-            //Stopping();
-            anim.SetTrigger("Fall");
-        }
-        if (isJump && !onGround && jumpWithDirection)
-        {
-            Debug.Log("MANTIENE DIRECCION | vel antes=" + rb.linearVelocity + " | dir=" + jumpDirection);
-            rb.linearVelocity = new Vector3(
-                jumpDirection.x * speed,
-                rb.linearVelocity.y,
-                jumpDirection.z * speed
-            );
-        }
-        if (focus && !interacting)
-        {
-            UpdateFocus();
-        }
-        if (playerCombat.isAttacking /*|| isJump*/)
-            return;
-        if (stop)
-            return;
-        if (!focus)
-        {
+    //    rb.useGravity = !onSlope;
+    //    if (!onGround && !onSlope)
+    //        rb.AddForce(-gravity * gravityMultiplayer * Vector3.up, ForceMode.Acceleration);
+    //    if (isJump && onGround)
+    //    {
+    //        isJump = false;
+    //        anim.SetBool("OnAir", false);
+    //        rb.linearVelocity = Vector3.zero;
+    //        playerCombat.isAttacking = false;
+    //    }
+    //    else if (!isJump && !onGround)
+    //    {
+    //        anim.SetBool("OnAir", true);
+    //        isJump = true;
+    //        //Stopping();
+    //        anim.SetTrigger("Fall");
+    //    }
+    //    if (isJump && !onGround && jumpWithDirection)
+    //    {
+    //        Debug.Log("MANTIENE DIRECCION | vel antes=" + rb.linearVelocity + " | dir=" + jumpDirection);
+    //        rb.linearVelocity = new Vector3(
+    //            jumpDirection.x * speed,
+    //            rb.linearVelocity.y,
+    //            jumpDirection.z * speed
+    //        );
+    //    }
+    //    if (focus && !interacting)
+    //    {
+    //        UpdateFocus();
+    //    }
+    //    if (playerCombat.isAttacking /*|| isJump*/)
+    //        return;
+    //    if (stop)
+    //        return;
+    //    if (!focus)
+    //    {
             if (_move.x != 0 || _move.y != 0)
             {
                 move = cam.forward * _move.y;
                 move += cam.right * _move.x;
-                move.Normalize();
                 move.y = 0;
-                rb.linearVelocity = (onSlope) ? GetSlopeMoveDirection() * speed : new Vector3(move.x * speed, rb.linearVelocity.y, move.z * speed);
-                Vector3 dir = cam.forward * _move.y;
-                dir += cam.right * _move.x;
-                dir.y = 0;
-                dir.Normalize();
-                Quaternion targetR = Quaternion.LookRotation(dir);
-                Quaternion playerR = Quaternion.Slerp(transform.rotation, targetR, speedRotation * Time.fixedDeltaTime);
-                transform.rotation = playerR;
-            }
+                move.Normalize();
+                Vector3 finalMove = onSlope ? GetSlopeMoveDirection() : move;
+
+                //rb.linearVelocity = move * speed;//(onSlope) ? GetSlopeMoveDirection() * speed : new Vector3(move.x * speed, rb.linearVelocity.y, move.z * speed);
+                rb.linearVelocity = new Vector3(finalMove.x * speed, rb.linearVelocity.y, finalMove.z * speed);
+                //Vector3 dir = cam.forward * _move.y;
+                //dir += cam.right * _move.x;
+                //dir.y = 0;
+                //dir.Normalize();
+                Quaternion targetR = Quaternion.LookRotation(move/*dir*/);
+            //Quaternion playerR = Quaternion.Slerp(transform.rotation, targetR, speedRotation * Time.fixedDeltaTime);
+            //transform.rotation = playerR;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetR, speedRotation * Time.fixedDeltaTime);
         }
         else
         {
-            move = cam.forward * _move.y;
-            move += cam.right * _move.x;
-            move.Normalize();
-            move.y = 0;
-            rb.linearVelocity = (onSlope) ? GetSlopeMoveDirection() * speed : move * speed;
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
         }
-        
-    }
-    /*
-    public void OnMove(InputValue value)
-    {
-        _move = value.Get<Vector2>();
-        if (stop)
-            return;
-        anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
-        anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
-        if (_move.x == 0 && _move.y == 0)
-            rb.linearVelocity = Vector3.zero;
-        anim.SetFloat("MoveX", _move.x);
-        anim.SetFloat("MoveY", _move.y);
-    }*/
-    public void OnMove(InputValue value)
-    {
-        _move = value.Get<Vector2>();
-        if (_move != Vector2.zero)
-            lastMoveInput = _move;
-        else
-            lastMoveInput = Vector2.zero;
 
-        if (stop || playerCombat.isAttacking || interacting)
-            return;
+        if (!onGround)
+        {
+            rb.AddForce(Vector3.down * gravity * gravityMultiplayer, ForceMode.Acceleration);
+        }
+        //    }
+        //    else
+        //    {
+        //        move = cam.forward * _move.y;
+        //        move += cam.right * _move.x;
+        //        move.Normalize();
+        //        move.y = 0;
+        //        rb.linearVelocity = (onSlope) ? GetSlopeMoveDirection() * speed : move * speed;
+    }
+
+    //}
+    ///*
+    //public void OnMove(InputValue value)
+    //{
+    //    _move = value.Get<Vector2>();
+    //    if (stop)
+    //        return;
+    //    anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
+    //    anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
+    //    if (_move.x == 0 && _move.y == 0)
+    //        rb.linearVelocity = Vector3.zero;
+    //    anim.SetFloat("MoveX", _move.x);
+    //    anim.SetFloat("MoveY", _move.y);
+    //}*/
+    public void OnMove(InputValue value)
+    {
+        _move = value.Get<Vector2>();
+        //if (_move != Vector2.zero)
+        //    lastMoveInput = _move;
+        //else
+        //    lastMoveInput = Vector2.zero;
+
+        //if (stop || playerCombat.isAttacking || interacting)
+        //    return;
 
         anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
         anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
@@ -173,229 +186,229 @@ public class PlayerMotion : MonoBehaviour
         anim.SetFloat("MoveX", _move.x);
         anim.SetFloat("MoveY", _move.y);
     }
-    public void OnJump()
-    {
-        if (!Attack())
-            return;
-        playerCombat.Reset();
-        Stopping();
-        //roll
-        if (focus)
-        {
-            if (_move.x != 0 || _move.y != 0)
-            {
-                if(Mathf.Abs(_move.x) > Mathf.Abs(_move.y))
-                {
-                    _move.y = 0;
-                }
-                else if (Mathf.Abs(_move.y) > Mathf.Abs(_move.x))
-                {
-                    _move.x = 0;
-                }
-                else if(Mathf.Abs(_move.x) == Mathf.Abs(_move.y))
-                {
-                    _move.y = 0;
-                }
-                if (_move.x != 0)
-                    _move.x = (_move.x < 0) ? -1f : 1f;
-                if (_move.y != 0)
-                    _move.y = (_move.y < 0) ? -1f : 1f;
-                anim.SetFloat("MoveX", _move.x);
-                anim.SetFloat("MoveY", _move.y);
-                Vector3 move = cam.forward * _move.y;
-                move.Normalize();
-                move.y = 0;
-                if(_move.x != 0)
-                {
-                    rb.AddForce(move * dodgePower * rollMultiplayer, ForceMode.Impulse);
-                }
-                else
-                {
-                    rb.AddForce(move * rollPower * rollMultiplayer, ForceMode.Impulse);
-                }
-            }
-            else
-            {
-                rb.linearVelocity = Vector2.zero;
-                rb.AddForce(cam.forward*rollPower, ForceMode.Impulse);
-            }
-            anim.SetTrigger("Jumping");
-            isRoll = true;
-            s = DOTween.Sequence();
-            s.AppendInterval(.5f).OnComplete(() =>
-            {
-                if (isRoll)
-                    StopEnd();
-            });
-        }
-        //borrar salto
-        //else
-        //{
-        //    isJump = true;
-        //    Vector2 moveDir = _move;
-        //    anim.SetTrigger("Jumping");
-        //    if (moveDir != Vector2.zero)
-        //    {
-        //        Vector3 dir = cam.forward * moveDir;
-        //        dir += cam.right * moveDir.x;
-        //        dir.Normalize();
-        //        dir.y = 0;
-        //        Quaternion targetR = Quaternion.LookRotation(dir);
-        //        transform.rotation = targetR;
-        //        rb.AddForce((transform.forward + Vector3.up) * jumpPower, ForceMode.Impulse);
-        //    }
-        //    else
-        //    {
-        //        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-        //    }
-        //    anim.SetBool("OnAir", true);
+    //public void OnJump()
+    //{
+    //    if (!Attack())
+    //        return;
+    //    playerCombat.Reset();
+    //    Stopping();
+    //    //roll
+    //    if (focus)
+    //    {
+    //        if (_move.x != 0 || _move.y != 0)
+    //        {
+    //            if(Mathf.Abs(_move.x) > Mathf.Abs(_move.y))
+    //            {
+    //                _move.y = 0;
+    //            }
+    //            else if (Mathf.Abs(_move.y) > Mathf.Abs(_move.x))
+    //            {
+    //                _move.x = 0;
+    //            }
+    //            else if(Mathf.Abs(_move.x) == Mathf.Abs(_move.y))
+    //            {
+    //                _move.y = 0;
+    //            }
+    //            if (_move.x != 0)
+    //                _move.x = (_move.x < 0) ? -1f : 1f;
+    //            if (_move.y != 0)
+    //                _move.y = (_move.y < 0) ? -1f : 1f;
+    //            anim.SetFloat("MoveX", _move.x);
+    //            anim.SetFloat("MoveY", _move.y);
+    //            Vector3 move = cam.forward * _move.y;
+    //            move.Normalize();
+    //            move.y = 0;
+    //            if(_move.x != 0)
+    //            {
+    //                rb.AddForce(move * dodgePower * rollMultiplayer, ForceMode.Impulse);
+    //            }
+    //            else
+    //            {
+    //                rb.AddForce(move * rollPower * rollMultiplayer, ForceMode.Impulse);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            rb.linearVelocity = Vector2.zero;
+    //            rb.AddForce(cam.forward*rollPower, ForceMode.Impulse);
+    //        }
+    //        anim.SetTrigger("Jumping");
+    //        isRoll = true;
+    //        s = DOTween.Sequence();
+    //        s.AppendInterval(.5f).OnComplete(() =>
+    //        {
+    //            if (isRoll)
+    //                StopEnd();
+    //        });
+    //    }
+    //    //borrar salto
+    //    //else
+    //    //{
+    //    //    isJump = true;
+    //    //    Vector2 moveDir = _move;
+    //    //    anim.SetTrigger("Jumping");
+    //    //    if (moveDir != Vector2.zero)
+    //    //    {
+    //    //        Vector3 dir = cam.forward * moveDir;
+    //    //        dir += cam.right * moveDir.x;
+    //    //        dir.Normalize();
+    //    //        dir.y = 0;
+    //    //        Quaternion targetR = Quaternion.LookRotation(dir);
+    //    //        transform.rotation = targetR;
+    //    //        rb.AddForce((transform.forward + Vector3.up) * jumpPower, ForceMode.Impulse);
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+    //    //    }
+    //    //    anim.SetBool("OnAir", true);
 
-        //}
-            //
-        
-    }
-    /*
-    public void OnJump()
-    {
-        if (!onGround)
-            return;
+    //    //}
+    //        //
 
-        Vector2 moveDir = _move;
-
-        jumpWithDirection = false;
-        jumpDirection = Vector3.zero;
-
-        if (moveDir != Vector2.zero)
-        {
-            Vector3 dir = cam.forward * moveDir.y;
-            dir += cam.right * moveDir.x;
-            dir.y = 0;
-            dir.Normalize();
-
-            if (dir != Vector3.zero)
-            {
-                jumpWithDirection = true;
-                jumpDirection = dir;
-                transform.rotation = Quaternion.LookRotation(dir);
-            }
-        }
-
-        Stopping();
-        isJump = true;
-        anim.SetTrigger("Jumping");
-        anim.SetBool("OnAir", true);
-
-        if (jumpWithDirection)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-        }
-        else
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-        }
-    }*/
+    //}
+    ///*
     //public void OnJump()
     //{
     //    if (!onGround)
-    //    {
     //        return;
-    //    }
 
     //    Vector2 moveDir = _move;
 
     //    jumpWithDirection = false;
     //    jumpDirection = Vector3.zero;
 
-    //    Stopping();
-    //    isJump = true;
-    //    anim.SetTrigger("Jumping");
-    //    anim.SetBool("OnAir", true);
-
-    //    rb.linearVelocity = Vector3.zero;
-
     //    if (moveDir != Vector2.zero)
     //    {
-    //        Debug.Log("DECISION: intento de salto con direccion");
-
     //        Vector3 dir = cam.forward * moveDir.y;
     //        dir += cam.right * moveDir.x;
     //        dir.y = 0;
     //        dir.Normalize();
 
-    //        Debug.Log("dir calculada: " + dir);
-
     //        if (dir != Vector3.zero)
     //        {
-    //            Debug.Log("RESULTADO: SALTO CON DIRECCION");
-
     //            jumpWithDirection = true;
     //            jumpDirection = dir;
-
-    //            Quaternion targetR = Quaternion.LookRotation(dir);
-    //            transform.rotation = targetR;
-
-    //            rb.AddForce((dir + Vector3.up) * jumpPower, ForceMode.Impulse);
-    //            return;
+    //            transform.rotation = Quaternion.LookRotation(dir);
     //        }
-    //        else
-    //        {
-    //            Debug.Log("RESULTADO: moveDir tenia valor, pero dir quedo en cero");
-    //        }
+    //    }
+
+    //    Stopping();
+    //    isJump = true;
+    //    anim.SetTrigger("Jumping");
+    //    anim.SetBool("OnAir", true);
+
+    //    if (jumpWithDirection)
+    //    {
+    //        rb.linearVelocity = Vector3.zero;
+    //        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
     //    }
     //    else
     //    {
-    //        Debug.Log("DECISION: moveDir es cero");
+    //        rb.linearVelocity = Vector3.zero;
+    //        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
     //    }
+    //}*/
+    ////public void OnJump()
+    ////{
+    ////    if (!onGround)
+    ////    {
+    ////        return;
+    ////    }
 
-    //    Debug.Log("RESULTADO: SALTO VERTICAL");
-    //    rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-    //}
-    public void FallEnd()
-    {
-        StopEnd();
-    }
-    public void Stopping()
-    {
-        isRoll = false;
-        if (onGround)
-            rb.linearVelocity = Vector3.zero;
-        stop = true;
-        anim.SetFloat("MoveX", 0);
-        anim.SetFloat("MoveY", 0);
-        anim.SetFloat("Moving", 0);
-        anim.SetBool("Move", false);
-    }
-    public void StopEnd()
-    {
-        anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
-        anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
-        anim.SetFloat("MoveX", _move.x);
-        anim.SetFloat("MoveY", _move.y);
-        isRoll = false;
-        rb.linearVelocity = Vector3.zero;
-        stop = false;
-        isFocus();
-    }
-    public void Oncam(InputValue value)
-    {
-        if (interacting)
-            return;
-        _mlook = value.Get<Vector2>();
-        orbitalFollow.HorizontalAxis.Value += _mlook.x * rotationSpeedCamX;
-        orbitalFollow.VerticalAxis.Value += _mlook.y * rotationSpeedCamY * Time.fixedDeltaTime;
-    }
+    ////    Vector2 moveDir = _move;
 
-    //public bool OnSlope()
+    ////    jumpWithDirection = false;
+    ////    jumpDirection = Vector3.zero;
+
+    ////    Stopping();
+    ////    isJump = true;
+    ////    anim.SetTrigger("Jumping");
+    ////    anim.SetBool("OnAir", true);
+
+    ////    rb.linearVelocity = Vector3.zero;
+
+    ////    if (moveDir != Vector2.zero)
+    ////    {
+    ////        Debug.Log("DECISION: intento de salto con direccion");
+
+    ////        Vector3 dir = cam.forward * moveDir.y;
+    ////        dir += cam.right * moveDir.x;
+    ////        dir.y = 0;
+    ////        dir.Normalize();
+
+    ////        Debug.Log("dir calculada: " + dir);
+
+    ////        if (dir != Vector3.zero)
+    ////        {
+    ////            Debug.Log("RESULTADO: SALTO CON DIRECCION");
+
+    ////            jumpWithDirection = true;
+    ////            jumpDirection = dir;
+
+    ////            Quaternion targetR = Quaternion.LookRotation(dir);
+    ////            transform.rotation = targetR;
+
+    ////            rb.AddForce((dir + Vector3.up) * jumpPower, ForceMode.Impulse);
+    ////            return;
+    ////        }
+    ////        else
+    ////        {
+    ////            Debug.Log("RESULTADO: moveDir tenia valor, pero dir quedo en cero");
+    ////        }
+    ////    }
+    ////    else
+    ////    {
+    ////        Debug.Log("DECISION: moveDir es cero");
+    ////    }
+
+    ////    Debug.Log("RESULTADO: SALTO VERTICAL");
+    ////    rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+    ////}
+    //public void FallEnd()
     //{
-    //    if(Physics.Raycast(transform.position, Vector3.down, out slopeHit) && onGround)
-    //    {
-    //        slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
-    //        return slopeAngle <= maxSlopeAngle && slopeAngle != 0;
-    //    }
-    //    return false;
+    //    StopEnd();
     //}
+    //public void Stopping()
+    //{
+    //    isRoll = false;
+    //    if (onGround)
+    //        rb.linearVelocity = Vector3.zero;
+    //    stop = true;
+    //    anim.SetFloat("MoveX", 0);
+    //    anim.SetFloat("MoveY", 0);
+    //    anim.SetFloat("Moving", 0);
+    //    anim.SetBool("Move", false);
+    //}
+    //public void StopEnd()
+    //{
+    //    anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
+    //    anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
+    //    anim.SetFloat("MoveX", _move.x);
+    //    anim.SetFloat("MoveY", _move.y);
+    //    isRoll = false;
+    //    rb.linearVelocity = Vector3.zero;
+    //    stop = false;
+    //    isFocus();
+    //}
+    //public void Oncam(InputValue value)
+    //{
+    //    if (interacting)
+    //        return;
+    //    _mlook = value.Get<Vector2>();
+    //    orbitalFollow.HorizontalAxis.Value += _mlook.x * rotationSpeedCamX;
+    //    orbitalFollow.VerticalAxis.Value += _mlook.y * rotationSpeedCamY * Time.fixedDeltaTime;
+    //}
+
+    ////public bool OnSlope()
+    ////{
+    ////    if(Physics.Raycast(transform.position, Vector3.down, out slopeHit) && onGround)
+    ////    {
+    ////        slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
+    ////        return slopeAngle <= maxSlopeAngle && slopeAngle != 0;
+    ////    }
+    ////    return false;
+    ////}
     public bool OnSlope()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, 2f, groundLayer))
@@ -410,134 +423,134 @@ public class PlayerMotion : MonoBehaviour
     {
         return Vector3.ProjectOnPlane(move, slopeHit.normal).normalized;
     }
-    public void OnFocus(InputValue value)
-    {
-        focus = value.isPressed;
-        if (stop || isJump)
-            return;
-        isFocus();
-    }
-    //Se crea un metodo a parte para poder hacer focus en distintos eventos, como cuando se encuentra en el aire.
-    public void isFocus()
-    {
-        if (focus)
-        {
-            if(targetPlayer == null)
-            {
-                targetPlayer = zTarget.FirstTarget();
-            }
-            if(targetPlayer == null)
-            {
-                focus = false;
-                return;
-            }
-            TargetActive(true);
-            virtualCam.Priority = 10;
-            cinemachineFreeLook.Priority = 8;
-            anim.SetBool("isFocus", true);
-            anim.SetTrigger("Focus");
-
-        }
-        else
-        {
-            if (targetPlayer != null)
-                TargetActive(false);
-            zTarget.t = null;
-            targetPlayer = null;
-            virtualCam.Priority = 8;
-            cinemachineFreeLook.Priority = 10;
-            anim.SetBool("isFocus", false);
-            anim.SetTrigger("SwitchWeapon");
-        }
-
-    }
-    public void OnChangeTargetL()
-    {
-        if (targetPlayer == null)
-            return;
-        TargetActive(false);
-        targetPlayer = zTarget.NextToLeft();
-        TargetActive(true);
-        UpdateFocus();
-    }
-    public void OnChangeTargetR()
-    {
-        if (targetPlayer == null)
-            return;
-        TargetActive(false);
-        targetPlayer = zTarget.NextToRight();
-        TargetActive(true);
-        UpdateFocus();
-    }
-    public void UpdateFocus()
-    {
-        targetCam.transform.LookAt(targetPlayer);
-        follow.position = targetCam.transform.position;
-        follow.rotation = targetCam.transform.rotation;
-        //transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
-        transform.rotation = Quaternion.Euler(0, follow.eulerAngles.y, 0);
-
-    }
-    void TargetActive(bool b)
-    {
-        if (targetPlayer.GetComponent<targetDamage>())
-            targetPlayer.GetComponent<targetDamage>().targetPoint.SetActive(b);
-    }
-
-    //roll
-    public void rollStop()
-    {
-        rb.linearVelocity = Vector3.zero;
-    }
-    //cofre
-    public void OnUse()
-    {
-        if (!Attack())
-            return;
-        if (chest)
-        {
-            chest.Open();
-            return;
-        }
-    }
-    public void selectTarget(Transform objetive)
-    {
-        if(targetPlayer != null)
-            TargetActive(false);
-        targetPlayer = null;
-        virtualCam.Priority = 10;
-        cinemachineFreeLook.Priority = 8;
-        targetCam.transform.LookAt(objetive);
-        follow.position = targetCam.transform.position;
-        follow.rotation = targetCam.transform.rotation;
-        transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
-    }
-    //public void noTarget()
+    //public void OnFocus(InputValue value)
     //{
-    //    targetPlayer = null;
-    //    //UpdateFocus();
-    //    virtualCam.Priority = 8;
-    //    cinemachineFreeLook.Priority = 10;
+    //    focus = value.isPressed;
+    //    if (stop || isJump)
+    //        return;
     //    isFocus();
     //}
-    public void noTarget()
-    {
-        if (targetPlayer != null)
-            TargetActive(false);
+    ////Se crea un metodo a parte para poder hacer focus en distintos eventos, como cuando se encuentra en el aire.
+    //public void isFocus()
+    //{
+    //    if (focus)
+    //    {
+    //        if(targetPlayer == null)
+    //        {
+    //            targetPlayer = zTarget.FirstTarget();
+    //        }
+    //        if(targetPlayer == null)
+    //        {
+    //            focus = false;
+    //            return;
+    //        }
+    //        TargetActive(true);
+    //        virtualCam.Priority = 10;
+    //        cinemachineFreeLook.Priority = 8;
+    //        anim.SetBool("isFocus", true);
+    //        anim.SetTrigger("Focus");
 
-        targetPlayer = null;
-        zTarget.t = null;
+    //    }
+    //    else
+    //    {
+    //        if (targetPlayer != null)
+    //            TargetActive(false);
+    //        zTarget.t = null;
+    //        targetPlayer = null;
+    //        virtualCam.Priority = 8;
+    //        cinemachineFreeLook.Priority = 10;
+    //        anim.SetBool("isFocus", false);
+    //        anim.SetTrigger("SwitchWeapon");
+    //    }
 
-        virtualCam.Priority = 8;
-        cinemachineFreeLook.Priority = 10;
+    //}
+    //public void OnChangeTargetL()
+    //{
+    //    if (targetPlayer == null)
+    //        return;
+    //    TargetActive(false);
+    //    targetPlayer = zTarget.NextToLeft();
+    //    TargetActive(true);
+    //    UpdateFocus();
+    //}
+    //public void OnChangeTargetR()
+    //{
+    //    if (targetPlayer == null)
+    //        return;
+    //    TargetActive(false);
+    //    targetPlayer = zTarget.NextToRight();
+    //    TargetActive(true);
+    //    UpdateFocus();
+    //}
+    //public void UpdateFocus()
+    //{
+    //    targetCam.transform.LookAt(targetPlayer);
+    //    follow.position = targetCam.transform.position;
+    //    follow.rotation = targetCam.transform.rotation;
+    //    //transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
+    //    transform.rotation = Quaternion.Euler(0, follow.eulerAngles.y, 0);
 
-        focus = false;
-        anim.SetBool("isFocus", false);
-    }
-    //combate
-    public bool Attack()
-    {
-        return !isJump && !stop && onGround;
-    }
+    //}
+    //void TargetActive(bool b)
+    //{
+    //    if (targetPlayer.GetComponent<targetDamage>())
+    //        targetPlayer.GetComponent<targetDamage>().targetPoint.SetActive(b);
+    //}
+
+    ////roll
+    //public void rollStop()
+    //{
+    //    rb.linearVelocity = Vector3.zero;
+    //}
+    ////cofre
+    //public void OnUse()
+    //{
+    //    if (!Attack())
+    //        return;
+    //    if (chest)
+    //    {
+    //        chest.Open();
+    //        return;
+    //    }
+    //}
+    //public void selectTarget(Transform objetive)
+    //{
+    //    if(targetPlayer != null)
+    //        TargetActive(false);
+    //    targetPlayer = null;
+    //    virtualCam.Priority = 10;
+    //    cinemachineFreeLook.Priority = 8;
+    //    targetCam.transform.LookAt(objetive);
+    //    follow.position = targetCam.transform.position;
+    //    follow.rotation = targetCam.transform.rotation;
+    //    transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
+    //}
+    ////public void noTarget()
+    ////{
+    ////    targetPlayer = null;
+    ////    //UpdateFocus();
+    ////    virtualCam.Priority = 8;
+    ////    cinemachineFreeLook.Priority = 10;
+    ////    isFocus();
+    ////}
+    //public void noTarget()
+    //{
+    //    if (targetPlayer != null)
+    //        TargetActive(false);
+
+    //    targetPlayer = null;
+    //    zTarget.t = null;
+
+    //    virtualCam.Priority = 8;
+    //    cinemachineFreeLook.Priority = 10;
+
+    //    focus = false;
+    //    anim.SetBool("isFocus", false);
+    //}
+    ////combate
+    //public bool Attack()
+    //{
+    //    return !isJump && !stop && onGround;
+    //}
 }
 

@@ -1,39 +1,39 @@
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+//using UnityEngine;
+//using System.Collections;
+//using System.Collections.Generic;
 
-public class Life : MonoBehaviour
-{
-    public int maxlife;
-    public int currentLife
-    {
-        get { return m_life; }
-        set
-        {
-            if(value > maxlife)
-            {
-                m_life = maxlife;
-            }
-            else
-            {
-                m_life = value;
-            }
-        }
-    }
-    int m_life;
-    public Animator anim;
-    public Rigidbody rb;
+//public class Life : MonoBehaviour
+//{
+//    public int maxlife;
+//    public int currentLife
+//    {
+//        get { return m_life; }
+//        set
+//        {
+//            if(value > maxlife)
+//            {
+//                m_life = maxlife;
+//            }
+//            else
+//            {
+//                m_life = value;
+//            }
+//        }
+//    }
+//    int m_life;
+//    public Animator anim;
+//    public Rigidbody rb;
 
-    private void Start()
-    {
-        m_life = maxlife;
-        if(GetComponentInChildren<Animator>())
-            anim = GetComponentInChildren<Animator>();
-        if(GetComponent<Rigidbody>())
-            rb = GetComponent<Rigidbody>();
-    }
-    public virtual void GetHit(int damage)
-    {
-        currentLife -= damage;
-    }
-}
+//    private void Start()
+//    {
+//        m_life = maxlife;
+//        if(GetComponentInChildren<Animator>())
+//            anim = GetComponentInChildren<Animator>();
+//        if(GetComponent<Rigidbody>())
+//            rb = GetComponent<Rigidbody>();
+//    }
+//    public virtual void GetHit(int damage)
+//    {
+//        currentLife -= damage;
+//    }
+//}
