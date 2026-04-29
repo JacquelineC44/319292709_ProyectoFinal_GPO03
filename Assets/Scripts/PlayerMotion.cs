@@ -92,7 +92,7 @@ public class PlayerMotion : MonoBehaviour
         {
             anim.SetBool("OnAir", true);
             isJump = true;
-            Stopping();
+            //Stopping();
             anim.SetTrigger("Fall");
         }
         if (isJump && !onGround && jumpWithDirection)
@@ -108,7 +108,7 @@ public class PlayerMotion : MonoBehaviour
         {
             UpdateFocus();
         }
-        if (playerCombat.isAttacking || isJump)
+        if (playerCombat.isAttacking /*|| isJump*/)
             return;
         if (stop)
             return;
@@ -228,28 +228,29 @@ public class PlayerMotion : MonoBehaviour
                     StopEnd();
             });
         }
-        else
-        {
-            isJump = true;
-            Vector2 moveDir = _move;
-            anim.SetTrigger("Jumping");
-            if (moveDir != Vector2.zero)
-            {
-                Vector3 dir = cam.forward * moveDir;
-                dir += cam.right * moveDir.x;
-                dir.Normalize();
-                dir.y = 0;
-                Quaternion targetR = Quaternion.LookRotation(dir);
-                transform.rotation = targetR;
-                rb.AddForce((transform.forward + Vector3.up) * jumpPower, ForceMode.Impulse);
-            }
-            else
-            {
-                rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-            }
-            anim.SetBool("OnAir", true);
+        //borrar salto
+        //else
+        //{
+        //    isJump = true;
+        //    Vector2 moveDir = _move;
+        //    anim.SetTrigger("Jumping");
+        //    if (moveDir != Vector2.zero)
+        //    {
+        //        Vector3 dir = cam.forward * moveDir;
+        //        dir += cam.right * moveDir.x;
+        //        dir.Normalize();
+        //        dir.y = 0;
+        //        Quaternion targetR = Quaternion.LookRotation(dir);
+        //        transform.rotation = targetR;
+        //        rb.AddForce((transform.forward + Vector3.up) * jumpPower, ForceMode.Impulse);
+        //    }
+        //    else
+        //    {
+        //        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+        //    }
+        //    anim.SetBool("OnAir", true);
 
-        }
+        //}
             //
         
     }
@@ -511,13 +512,27 @@ public class PlayerMotion : MonoBehaviour
         follow.rotation = targetCam.transform.rotation;
         transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
     }
+    //public void noTarget()
+    //{
+    //    targetPlayer = null;
+    //    //UpdateFocus();
+    //    virtualCam.Priority = 8;
+    //    cinemachineFreeLook.Priority = 10;
+    //    isFocus();
+    //}
     public void noTarget()
     {
+        if (targetPlayer != null)
+            TargetActive(false);
+
         targetPlayer = null;
-        //UpdateFocus();
+        zTarget.t = null;
+
         virtualCam.Priority = 8;
         cinemachineFreeLook.Priority = 10;
-        isFocus();
+
+        focus = false;
+        anim.SetBool("isFocus", false);
     }
     //combate
     public bool Attack()
