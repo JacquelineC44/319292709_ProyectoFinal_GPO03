@@ -72,11 +72,13 @@ public class PlayerMotion : MonoBehaviour
     private void FixedUpdate()
     {
         //slope
-        bool onSlope = OnSlope();
-        rb.useGravity = !onSlope;
-        groundDistanceUp = (onSlope) ? -.2f : .2f;
+        //bool onSlope = OnSlope();
+        //rb.useGravity = !onSlope;
+        //groundDistanceUp = (onSlope) ? -.2f : .2f;
         //
         onGround = Physics.CheckSphere(transform.position + (Vector3.up * groundDistanceUp), groundDistance, groundLayer);
+        bool onSlope = OnSlope();
+        rb.useGravity = !onSlope;
         if (!onGround && !onSlope)
             rb.AddForce(-gravity * gravityMultiplayer * Vector3.up, ForceMode.Acceleration);
         if (isJump && onGround)
@@ -86,7 +88,7 @@ public class PlayerMotion : MonoBehaviour
             rb.linearVelocity = Vector3.zero;
             playerCombat.isAttacking = false;
         }
-        else if(!isJump && !onGround)
+        else if (!isJump && !onGround)
         {
             anim.SetBool("OnAir", true);
             isJump = true;
@@ -384,13 +386,23 @@ public class PlayerMotion : MonoBehaviour
         orbitalFollow.VerticalAxis.Value += _mlook.y * rotationSpeedCamY * Time.fixedDeltaTime;
     }
 
+    //public bool OnSlope()
+    //{
+    //    if(Physics.Raycast(transform.position, Vector3.down, out slopeHit) && onGround)
+    //    {
+    //        slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
+    //        return slopeAngle <= maxSlopeAngle && slopeAngle != 0;
+    //    }
+    //    return false;
+    //}
     public bool OnSlope()
     {
-        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit) && onGround)
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, 2f, groundLayer))
         {
             slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return slopeAngle <= maxSlopeAngle && slopeAngle != 0;
+            return slopeAngle > 0 && slopeAngle <= maxSlopeAngle;
         }
+
         return false;
     }
     Vector3 GetSlopeMoveDirection()
@@ -502,7 +514,7 @@ public class PlayerMotion : MonoBehaviour
     public void noTarget()
     {
         targetPlayer = null;
-        UpdateFocus();
+        //UpdateFocus();
         virtualCam.Priority = 8;
         cinemachineFreeLook.Priority = 10;
         isFocus();

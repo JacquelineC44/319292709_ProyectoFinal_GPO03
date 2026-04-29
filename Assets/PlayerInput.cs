@@ -199,6 +199,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Magic"",
+                    ""type"": ""Button"",
+                    ""id"": ""0cd90d30-cced-43e8-830d-12f7dcb1deed"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -509,6 +518,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""UseItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e5b32fa-8547-452e-9b72-6ee69734a6b0"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Magic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7dbb2d97-665e-44a1-a2cf-3b0c139d076c"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Magic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -529,6 +560,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterController_ArrowL = m_CharacterController.FindAction("ArrowL", throwIfNotFound: true);
         m_CharacterController_ArrowR = m_CharacterController.FindAction("ArrowR", throwIfNotFound: true);
         m_CharacterController_UseItem = m_CharacterController.FindAction("UseItem", throwIfNotFound: true);
+        m_CharacterController_Magic = m_CharacterController.FindAction("Magic", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -621,6 +653,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterController_ArrowL;
     private readonly InputAction m_CharacterController_ArrowR;
     private readonly InputAction m_CharacterController_UseItem;
+    private readonly InputAction m_CharacterController_Magic;
     /// <summary>
     /// Provides access to input actions defined in input action map "CharacterController".
     /// </summary>
@@ -680,6 +713,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "CharacterController/UseItem".
         /// </summary>
         public InputAction @UseItem => m_Wrapper.m_CharacterController_UseItem;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/Magic".
+        /// </summary>
+        public InputAction @Magic => m_Wrapper.m_CharacterController_Magic;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -742,6 +779,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @UseItem.started += instance.OnUseItem;
             @UseItem.performed += instance.OnUseItem;
             @UseItem.canceled += instance.OnUseItem;
+            @Magic.started += instance.OnMagic;
+            @Magic.performed += instance.OnMagic;
+            @Magic.canceled += instance.OnMagic;
         }
 
         /// <summary>
@@ -789,6 +829,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @UseItem.started -= instance.OnUseItem;
             @UseItem.performed -= instance.OnUseItem;
             @UseItem.canceled -= instance.OnUseItem;
+            @Magic.started -= instance.OnMagic;
+            @Magic.performed -= instance.OnMagic;
+            @Magic.canceled -= instance.OnMagic;
         }
 
         /// <summary>
@@ -913,5 +956,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnUseItem(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Magic" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMagic(InputAction.CallbackContext context);
     }
 }

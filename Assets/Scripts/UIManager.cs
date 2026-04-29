@@ -16,6 +16,9 @@ public class UIManager : MonoBehaviour
     public Image potionIcon;
     public TMPro.TextMeshProUGUI lifeText;
     public Life playerLife;
+    //fuego
+    public Image fireIcon;
+    public Text fireText;
 
     public static UIManager Instance;
     private void Awake()
@@ -72,6 +75,21 @@ public class UIManager : MonoBehaviour
     public void UpdateLifeText()
     {
         lifeText.text = playerLife.currentLife + "/" + playerLife.maxlife;
+    }
+    public void ShowFire()
+    {
+        fireIcon.gameObject.SetActive(true);
+    }
+    public void FireUse()
+    {
+        fireIcon.DOFade(0, 0);
+    }
+    public void ShowFireCooldown(float cooldown)
+    {
+        Sequence s = DOTween.Sequence();
+        fireIcon.DOFade(1f, cooldown);
+        s.Append(DOVirtual.Float(cooldown, 0f, cooldown, v => fireText.text = Mathf.RoundToInt(v).ToString())).OnComplete(()=> fireText.text = "");
+
     }
 
 }
