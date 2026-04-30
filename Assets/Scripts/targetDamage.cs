@@ -1,12 +1,12 @@
-//using UnityEngine;
-//using UnityEngine.UI;
-//using DG.Tweening;
-//using UnityEditor.Experimental.GraphView;
-//using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
+using UnityEditor.Experimental.GraphView;
+using Unity.VisualScripting;
 
-//public class targetDamage : Life
-//{
-//    public GameObject targetPoint;
+public class targetDamage : MonoBehaviour//Life
+{
+    public GameObject targetPoint;
 //    public Material blue;
 //    public Material red;
 //    public MeshRenderer mesh;
@@ -65,7 +65,7 @@
 //            player.GetComponent<PlayerMotion>().noTarget();
 //            player = null;
 //        }
-        
+
 
 //    }
-//}
+}

@@ -51,7 +51,7 @@ public class PlayerMotion : MonoBehaviour
     Vector3 jumpDirection;
     RaycastHit slopeHit;
     //focus
-    //ZTarget zTarget;
+    ZTarget zTarget;
     //roll
     DG.Tweening.Sequence s;
 
@@ -60,7 +60,7 @@ public class PlayerMotion : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
-        //zTarget = GetComponent<ZTarget>();
+        zTarget = GetComponent<ZTarget>();
         //playerCombat = GetComponent<PlayerCombat>();
     }
     //private void OnDrawGizmosSelected()
@@ -78,42 +78,42 @@ public class PlayerMotion : MonoBehaviour
     //    //
         onGround = Physics.CheckSphere(transform.position + (Vector3.up * groundDistanceUp), groundDistance, groundLayer);
         bool onSlope = OnSlope();
-    //    rb.useGravity = !onSlope;
-    //    if (!onGround && !onSlope)
-    //        rb.AddForce(-gravity * gravityMultiplayer * Vector3.up, ForceMode.Acceleration);
-    //    if (isJump && onGround)
-    //    {
-    //        isJump = false;
-    //        anim.SetBool("OnAir", false);
-    //        rb.linearVelocity = Vector3.zero;
-    //        playerCombat.isAttacking = false;
-    //    }
-    //    else if (!isJump && !onGround)
-    //    {
-    //        anim.SetBool("OnAir", true);
-    //        isJump = true;
-    //        //Stopping();
-    //        anim.SetTrigger("Fall");
-    //    }
-    //    if (isJump && !onGround && jumpWithDirection)
-    //    {
-    //        Debug.Log("MANTIENE DIRECCION | vel antes=" + rb.linearVelocity + " | dir=" + jumpDirection);
-    //        rb.linearVelocity = new Vector3(
-    //            jumpDirection.x * speed,
-    //            rb.linearVelocity.y,
-    //            jumpDirection.z * speed
-    //        );
-    //    }
-    //    if (focus && !interacting)
-    //    {
-    //        UpdateFocus();
-    //    }
-    //    if (playerCombat.isAttacking /*|| isJump*/)
-    //        return;
-    //    if (stop)
-    //        return;
-    //    if (!focus)
-    //    {
+        //    rb.useGravity = !onSlope;
+        //    if (!onGround && !onSlope)
+        //        rb.AddForce(-gravity * gravityMultiplayer * Vector3.up, ForceMode.Acceleration);
+        //    if (isJump && onGround)
+        //    {
+        //        isJump = false;
+        //        anim.SetBool("OnAir", false);
+        //        rb.linearVelocity = Vector3.zero;
+        //        playerCombat.isAttacking = false;
+        //    }
+        //    else if (!isJump && !onGround)
+        //    {
+        //        anim.SetBool("OnAir", true);
+        //        isJump = true;
+        //        //Stopping();
+        //        anim.SetTrigger("Fall");
+        //    }
+        //    if (isJump && !onGround && jumpWithDirection)
+        //    {
+        //        Debug.Log("MANTIENE DIRECCION | vel antes=" + rb.linearVelocity + " | dir=" + jumpDirection);
+        //        rb.linearVelocity = new Vector3(
+        //            jumpDirection.x * speed,
+        //            rb.linearVelocity.y,
+        //            jumpDirection.z * speed
+        //        );
+        //    }
+        if (focus && !interacting)
+        {
+            UpdateFocus();
+        }
+        //    if (playerCombat.isAttacking /*|| isJump*/)
+        //        return;
+        //    if (stop)
+        //        return;
+        if (!focus)
+        {
             if (_move.x != 0 || _move.y != 0)
             {
                 move = cam.forward * _move.y;
@@ -124,35 +124,34 @@ public class PlayerMotion : MonoBehaviour
 
                 //rb.linearVelocity = move * speed;//(onSlope) ? GetSlopeMoveDirection() * speed : new Vector3(move.x * speed, rb.linearVelocity.y, move.z * speed);
                 rb.linearVelocity = new Vector3(finalMove.x * speed, rb.linearVelocity.y, finalMove.z * speed);
-                //Vector3 dir = cam.forward * _move.y;
-                //dir += cam.right * _move.x;
-                //dir.y = 0;
-                //dir.Normalize();
+                Vector3 dir = cam.forward * _move.y;
+                dir += cam.right * _move.x;
+                dir.y = 0;
+                dir.Normalize();
                 Quaternion targetR = Quaternion.LookRotation(move/*dir*/);
-            //Quaternion playerR = Quaternion.Slerp(transform.rotation, targetR, speedRotation * Time.fixedDeltaTime);
-            //transform.rotation = playerR;
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetR, speedRotation * Time.fixedDeltaTime);
+                Quaternion playerR = Quaternion.Slerp(transform.rotation, targetR, speedRotation * Time.fixedDeltaTime);
+                transform.rotation = playerR;
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetR, speedRotation * Time.fixedDeltaTime);
+            }
+            else
+            {
+                rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            }
+            if (!onGround)
+            {
+                rb.AddForce(Vector3.down * gravity * gravityMultiplayer, ForceMode.Acceleration);
+            }
         }
         else
         {
-            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            move = cam.forward * _move.y;
+            move += cam.right * _move.x;
+            move.Normalize();
+            move.y = 0;
+            rb.linearVelocity = (onSlope) ? GetSlopeMoveDirection() * speed : move * speed;
         }
 
-        if (!onGround)
-        {
-            rb.AddForce(Vector3.down * gravity * gravityMultiplayer, ForceMode.Acceleration);
-        }
-        //    }
-        //    else
-        //    {
-        //        move = cam.forward * _move.y;
-        //        move += cam.right * _move.x;
-        //        move.Normalize();
-        //        move.y = 0;
-        //        rb.linearVelocity = (onSlope) ? GetSlopeMoveDirection() * speed : move * speed;
     }
-
-    //}
     ///*
     //public void OnMove(InputValue value)
     //{
@@ -380,25 +379,25 @@ public class PlayerMotion : MonoBehaviour
     //    anim.SetFloat("Moving", 0);
     //    anim.SetBool("Move", false);
     //}
-    //public void StopEnd()
-    //{
-    //    anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
-    //    anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
-    //    anim.SetFloat("MoveX", _move.x);
-    //    anim.SetFloat("MoveY", _move.y);
+    public void StopEnd()
+    {
+        anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
+        anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
+        anim.SetFloat("MoveX", _move.x);
+        anim.SetFloat("MoveY", _move.y);
     //    isRoll = false;
-    //    rb.linearVelocity = Vector3.zero;
-    //    stop = false;
-    //    isFocus();
-    //}
-    //public void Oncam(InputValue value)
-    //{
-    //    if (interacting)
-    //        return;
-    //    _mlook = value.Get<Vector2>();
-    //    orbitalFollow.HorizontalAxis.Value += _mlook.x * rotationSpeedCamX;
-    //    orbitalFollow.VerticalAxis.Value += _mlook.y * rotationSpeedCamY * Time.fixedDeltaTime;
-    //}
+        rb.linearVelocity = Vector3.zero;
+        stop = false;
+        isFocus();
+    }
+    public void Oncam(InputValue value)
+    {
+        if (interacting)
+            return;
+        _mlook = value.Get<Vector2>();
+        orbitalFollow.HorizontalAxis.Value += _mlook.x * rotationSpeedCamX;
+        orbitalFollow.VerticalAxis.Value += _mlook.y * rotationSpeedCamY * Time.fixedDeltaTime;
+    }
 
     ////public bool OnSlope()
     ////{
@@ -423,79 +422,79 @@ public class PlayerMotion : MonoBehaviour
     {
         return Vector3.ProjectOnPlane(move, slopeHit.normal).normalized;
     }
-    //public void OnFocus(InputValue value)
-    //{
-    //    focus = value.isPressed;
-    //    if (stop || isJump)
-    //        return;
-    //    isFocus();
-    //}
-    ////Se crea un metodo a parte para poder hacer focus en distintos eventos, como cuando se encuentra en el aire.
-    //public void isFocus()
-    //{
-    //    if (focus)
-    //    {
-    //        if(targetPlayer == null)
-    //        {
-    //            targetPlayer = zTarget.FirstTarget();
-    //        }
-    //        if(targetPlayer == null)
-    //        {
-    //            focus = false;
-    //            return;
-    //        }
-    //        TargetActive(true);
-    //        virtualCam.Priority = 10;
-    //        cinemachineFreeLook.Priority = 8;
-    //        anim.SetBool("isFocus", true);
-    //        anim.SetTrigger("Focus");
+    public void OnFocus(InputValue value)
+    {
+        focus = value.isPressed;
+        if (stop || isJump)
+            return;
+        isFocus();
+    }
+    //Se crea un metodo a parte para poder hacer focus en distintos eventos, como cuando se encuentra en el aire.
+    public void isFocus()
+    {
+        if (focus)
+        {
+            if (targetPlayer == null)
+            {
+                targetPlayer = zTarget.FirstTarget();
+            }
+            if (targetPlayer == null)
+            {
+                focus = false;
+                return;
+            }
+            TargetActive(true);
+            virtualCam.Priority = 10;
+            cinemachineFreeLook.Priority = 8;
+            anim.SetBool("isFocus", true);
+            anim.SetTrigger("Focus");
 
-    //    }
-    //    else
-    //    {
-    //        if (targetPlayer != null)
-    //            TargetActive(false);
-    //        zTarget.t = null;
-    //        targetPlayer = null;
-    //        virtualCam.Priority = 8;
-    //        cinemachineFreeLook.Priority = 10;
-    //        anim.SetBool("isFocus", false);
-    //        anim.SetTrigger("SwitchWeapon");
-    //    }
+        }
+        else
+        {
+            if (targetPlayer != null)
+                TargetActive(false);
+            zTarget.t = null;
+            targetPlayer = null;
+            virtualCam.Priority = 8;
+            cinemachineFreeLook.Priority = 10;
+            anim.SetBool("isFocus", false);
+            anim.SetTrigger("SwitchWeapon");
+        }
 
-    //}
-    //public void OnChangeTargetL()
-    //{
-    //    if (targetPlayer == null)
-    //        return;
-    //    TargetActive(false);
-    //    targetPlayer = zTarget.NextToLeft();
-    //    TargetActive(true);
-    //    UpdateFocus();
-    //}
-    //public void OnChangeTargetR()
-    //{
-    //    if (targetPlayer == null)
-    //        return;
-    //    TargetActive(false);
-    //    targetPlayer = zTarget.NextToRight();
-    //    TargetActive(true);
-    //    UpdateFocus();
-    //}
-    //public void UpdateFocus()
-    //{
-    //    targetCam.transform.LookAt(targetPlayer);
-    //    follow.position = targetCam.transform.position;
-    //    follow.rotation = targetCam.transform.rotation;
-    //    //transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
-    //    transform.rotation = Quaternion.Euler(0, follow.eulerAngles.y, 0);
+    }
+    public void OnChangeTargetL()
+    {
+        if (targetPlayer == null)
+            return;
+        TargetActive(false);
+        targetPlayer = zTarget.NextToLeft();
+        TargetActive(true);
+        UpdateFocus();
+    }
+    public void OnChangeTargetR()
+    {
+        if (targetPlayer == null)
+            return;
+        TargetActive(false);
+        targetPlayer = zTarget.NextToRight();
+        TargetActive(true);
+        UpdateFocus();
+    }
+    public void UpdateFocus()
+    {
+        targetCam.transform.LookAt(targetPlayer);
+        follow.position = targetCam.transform.position;
+        follow.rotation = targetCam.transform.rotation;
+        //transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
+        transform.rotation = Quaternion.Euler(0, follow.eulerAngles.y, 0);
 
-    //}
-    //void TargetActive(bool b)
-    //{
-    //    if (targetPlayer.GetComponent<targetDamage>())
-    //        targetPlayer.GetComponent<targetDamage>().targetPoint.SetActive(b);
-    //}
+    }
+    void TargetActive(bool b)
+    {
+        if (targetPlayer.GetComponent<targetDamage>())
+            targetPlayer.GetComponent<targetDamage>().targetPoint.SetActive(b);
+    }
 
     ////roll
     //public void rollStop()
