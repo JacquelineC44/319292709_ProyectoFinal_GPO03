@@ -78,6 +78,15 @@ public class PlayerMotion : MonoBehaviour
     //    //
         onGround = Physics.CheckSphere(transform.position + (Vector3.up * groundDistanceUp), groundDistance, groundLayer);
         bool onSlope = OnSlope();
+        if (isRoll)
+        {
+            if (!onGround)
+            {
+                rb.AddForce(Vector3.down * gravity * gravityMultiplayer, ForceMode.Acceleration);
+            }
+
+            return;
+        }
         //    rb.useGravity = !onSlope;
         //    if (!onGround && !onSlope)
         //        rb.AddForce(-gravity * gravityMultiplayer * Vector3.up, ForceMode.Acceleration);
@@ -364,28 +373,150 @@ public class PlayerMotion : MonoBehaviour
     ////    Debug.Log("RESULTADO: SALTO VERTICAL");
     ////    rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
     ////}
+    ///
+    /*public void OnRoll()
+    {
+        Debug.Log("Roll");
+        if(_move.x != 0 || _move.y != 0)
+        {
+            if(Mathf.Abs(_move.x)  < Mathf.Abs(_move.y))
+            {
+                _move.y = 0;
+            }
+            else if(Mathf.Abs(_move.y) > Mathf.Abs(_move.x))
+            {
+                _move.x = 0;
+            }
+            else if (Mathf.Abs(_move.y) == Mathf.Abs(_move.x))
+            {
+                _move.y = 0;
+            }
+            if (_move.x != 0)
+                _move.x = (_move.x < 0) ? -1f : 1f;
+            if (_move.y != 0)
+                _move.y = (_move.y < 0) ? -1f : 1f;
+            anim.SetFloat("MoveX", _move.x);
+            anim.SetFloat("MoveY", _move.y);
+            Vector3 move = cam.forward * _move.y;
+            move += cam.right * _move.x;
+            move.Normalize();
+            move.y = 0;
+            if(_move.x != 0)
+            {
+                rb.AddForce(move * dodgePower * rollMultiplayer, ForceMode.Impulse);
+            }
+            else
+            {
+                rb.AddForce(move * rollPower * rollMultiplayer, ForceMode.Impulse);
+            }
+        }
+        else
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.AddForce(cam.forward * rollPower, ForceMode.Impulse);
+        }
+        anim.SetTrigger("Jumping");
+        isRoll = true;
+        s = DOTween.Sequence();
+        s.AppendInterval(.5f).OnComplete(() =>
+        {
+            if (isRoll)
+                StopEnd();
+        });
+    }*/
+    public void OnRoll()
+    {
+        if (isRoll)
+            return;
+
+        Debug.Log("Roll");
+
+        isRoll = true;
+
+        Vector2 rollInput = _move;
+        Vector3 rollDir;
+
+        if (rollInput.x != 0 || rollInput.y != 0)
+        {
+            if (Mathf.Abs(rollInput.x) > Mathf.Abs(rollInput.y))
+            {
+                rollInput.y = 0;
+            }
+            else if (Mathf.Abs(rollInput.y) > Mathf.Abs(rollInput.x))
+            {
+                rollInput.x = 0;
+            }
+            else
+            {
+                rollInput.y = 0;
+            }
+
+            if (rollInput.x != 0)
+                rollInput.x = rollInput.x < 0 ? -1f : 1f;
+
+            if (rollInput.y != 0)
+                rollInput.y = rollInput.y < 0 ? -1f : 1f;
+
+            anim.SetFloat("MoveX", rollInput.x);
+            anim.SetFloat("MoveY", rollInput.y);
+
+            rollDir = cam.forward * rollInput.y;
+            rollDir += cam.right * rollInput.x;
+        }
+        else
+        {
+            rollDir = cam.forward;
+            anim.SetFloat("MoveX", 0);
+            anim.SetFloat("MoveY", 1);
+        }
+
+        rollDir.y = 0;
+        rollDir.Normalize();
+
+        rb.linearVelocity = Vector3.zero;
+
+        float power = rollInput.x != 0 ? dodgePower : rollPower;
+
+        rb.AddForce(rollDir * power * rollMultiplayer, ForceMode.Impulse);
+
+        if (focus)
+        {
+            anim.SetTrigger("Jumping");
+        }
+        else
+        {
+            anim.SetTrigger("Roll");
+        }
+
+        s = DOTween.Sequence();
+        s.AppendInterval(.5f).OnComplete(() =>
+        {
+            if (isRoll)
+                StopEnd();
+        });
+    }
     //public void FallEnd()
     //{
     //    StopEnd();
     //}
-    //public void Stopping()
-    //{
-    //    isRoll = false;
-    //    if (onGround)
-    //        rb.linearVelocity = Vector3.zero;
-    //    stop = true;
-    //    anim.SetFloat("MoveX", 0);
-    //    anim.SetFloat("MoveY", 0);
-    //    anim.SetFloat("Moving", 0);
-    //    anim.SetBool("Move", false);
-    //}
+    public void rollStop()
+    {
+        isRoll = false;
+        if (onGround)
+            rb.linearVelocity = Vector3.zero;
+        stop = true;
+        anim.SetFloat("MoveX", 0);
+        anim.SetFloat("MoveY", 0);
+        anim.SetFloat("Moving", 0);
+        anim.SetBool("Move", false);
+    }
     public void StopEnd()
     {
         anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
         anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
         anim.SetFloat("MoveX", _move.x);
         anim.SetFloat("MoveY", _move.y);
-    //    isRoll = false;
+        isRoll = false;
         rb.linearVelocity = Vector3.zero;
         stop = false;
         isFocus();

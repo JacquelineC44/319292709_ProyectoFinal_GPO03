@@ -102,15 +102,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""b5d39684-9fae-464f-9053-58e304a9e4c2"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""cam"",
                     ""type"": ""PassThrough"",
                     ""id"": ""bd0c2a1d-0165-4141-9ece-0c65b21569c2"",
@@ -208,6 +199,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""roll"",
+                    ""type"": ""Button"",
+                    ""id"": ""c07512a5-517c-412a-95b3-69d2b6a416e4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ActiveInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce60f7ed-4e82-4a8f-b5d4-804d6434ad3e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -274,28 +283,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""71758569-984c-4226-83ad-3366294842e3"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f4ac9963-41b4-48cf-bc76-efa5aa0fcb47"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": ""Press"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -540,6 +527,138 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Magic"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8ad79ec4-3f4c-45c5-82a5-672f27f50c21"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""roll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b8d3851-9392-4acb-832a-7a94a852b98b"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""roll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82e5099e-0f70-4167-8286-115f74429ae8"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActiveInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d04a3606-10a4-49cd-984c-c212198d4a88"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActiveInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UIInventory"",
+            ""id"": ""748cf5b8-178b-473b-8c81-8a24b46df487"",
+            ""actions"": [
+                {
+                    ""name"": ""Navigate"",
+                    ""type"": ""Value"",
+                    ""id"": ""b8e8f079-1543-417e-9398-59cb328f67db"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac5edc76-6f9d-403d-9ddf-58cb1c58b355"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1ee59a1-5443-458d-ab01-c603180df06e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""5c12f554-fac1-46f8-893c-13bb5fb6778a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a5b4a72e-fe5b-415f-becb-f8214ca37476"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f1b3e961-6fce-4e0f-ad6a-aa8c42b15eb1"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65bc9d3e-0072-47ac-9cdb-eb24086a577b"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d3e74e9-0176-47ef-950e-45d483a740d6"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -549,7 +668,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // CharacterController
         m_CharacterController = asset.FindActionMap("CharacterController", throwIfNotFound: true);
         m_CharacterController_Move = m_CharacterController.FindAction("Move", throwIfNotFound: true);
-        m_CharacterController_jump = m_CharacterController.FindAction("jump", throwIfNotFound: true);
         m_CharacterController_cam = m_CharacterController.FindAction("cam", throwIfNotFound: true);
         m_CharacterController_focus = m_CharacterController.FindAction("focus", throwIfNotFound: true);
         m_CharacterController_changeTargetL = m_CharacterController.FindAction("changeTargetL", throwIfNotFound: true);
@@ -561,11 +679,20 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterController_ArrowR = m_CharacterController.FindAction("ArrowR", throwIfNotFound: true);
         m_CharacterController_UseItem = m_CharacterController.FindAction("UseItem", throwIfNotFound: true);
         m_CharacterController_Magic = m_CharacterController.FindAction("Magic", throwIfNotFound: true);
+        m_CharacterController_roll = m_CharacterController.FindAction("roll", throwIfNotFound: true);
+        m_CharacterController_ActiveInventory = m_CharacterController.FindAction("ActiveInventory", throwIfNotFound: true);
+        // UIInventory
+        m_UIInventory = asset.FindActionMap("UIInventory", throwIfNotFound: true);
+        m_UIInventory_Navigate = m_UIInventory.FindAction("Navigate", throwIfNotFound: true);
+        m_UIInventory_Submit = m_UIInventory.FindAction("Submit", throwIfNotFound: true);
+        m_UIInventory_Cancel = m_UIInventory.FindAction("Cancel", throwIfNotFound: true);
+        m_UIInventory_ItemAction = m_UIInventory.FindAction("ItemAction", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
     {
         UnityEngine.Debug.Assert(!m_CharacterController.enabled, "This will cause a leak and performance issues, PlayerInput.CharacterController.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UIInventory.enabled, "This will cause a leak and performance issues, PlayerInput.UIInventory.Disable() has not been called.");
     }
 
     /// <summary>
@@ -642,7 +769,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_CharacterController;
     private List<ICharacterControllerActions> m_CharacterControllerActionsCallbackInterfaces = new List<ICharacterControllerActions>();
     private readonly InputAction m_CharacterController_Move;
-    private readonly InputAction m_CharacterController_jump;
     private readonly InputAction m_CharacterController_cam;
     private readonly InputAction m_CharacterController_focus;
     private readonly InputAction m_CharacterController_changeTargetL;
@@ -654,6 +780,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterController_ArrowR;
     private readonly InputAction m_CharacterController_UseItem;
     private readonly InputAction m_CharacterController_Magic;
+    private readonly InputAction m_CharacterController_roll;
+    private readonly InputAction m_CharacterController_ActiveInventory;
     /// <summary>
     /// Provides access to input actions defined in input action map "CharacterController".
     /// </summary>
@@ -669,10 +797,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "CharacterController/Move".
         /// </summary>
         public InputAction @Move => m_Wrapper.m_CharacterController_Move;
-        /// <summary>
-        /// Provides access to the underlying input action "CharacterController/jump".
-        /// </summary>
-        public InputAction @jump => m_Wrapper.m_CharacterController_jump;
         /// <summary>
         /// Provides access to the underlying input action "CharacterController/cam".
         /// </summary>
@@ -718,6 +842,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Magic => m_Wrapper.m_CharacterController_Magic;
         /// <summary>
+        /// Provides access to the underlying input action "CharacterController/roll".
+        /// </summary>
+        public InputAction @roll => m_Wrapper.m_CharacterController_roll;
+        /// <summary>
+        /// Provides access to the underlying input action "CharacterController/ActiveInventory".
+        /// </summary>
+        public InputAction @ActiveInventory => m_Wrapper.m_CharacterController_ActiveInventory;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_CharacterController; }
@@ -746,9 +878,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @jump.started += instance.OnJump;
-            @jump.performed += instance.OnJump;
-            @jump.canceled += instance.OnJump;
             @cam.started += instance.OnCam;
             @cam.performed += instance.OnCam;
             @cam.canceled += instance.OnCam;
@@ -782,6 +911,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Magic.started += instance.OnMagic;
             @Magic.performed += instance.OnMagic;
             @Magic.canceled += instance.OnMagic;
+            @roll.started += instance.OnRoll;
+            @roll.performed += instance.OnRoll;
+            @roll.canceled += instance.OnRoll;
+            @ActiveInventory.started += instance.OnActiveInventory;
+            @ActiveInventory.performed += instance.OnActiveInventory;
+            @ActiveInventory.canceled += instance.OnActiveInventory;
         }
 
         /// <summary>
@@ -796,9 +931,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @jump.started -= instance.OnJump;
-            @jump.performed -= instance.OnJump;
-            @jump.canceled -= instance.OnJump;
             @cam.started -= instance.OnCam;
             @cam.performed -= instance.OnCam;
             @cam.canceled -= instance.OnCam;
@@ -832,6 +964,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Magic.started -= instance.OnMagic;
             @Magic.performed -= instance.OnMagic;
             @Magic.canceled -= instance.OnMagic;
+            @roll.started -= instance.OnRoll;
+            @roll.performed -= instance.OnRoll;
+            @roll.canceled -= instance.OnRoll;
+            @ActiveInventory.started -= instance.OnActiveInventory;
+            @ActiveInventory.performed -= instance.OnActiveInventory;
+            @ActiveInventory.canceled -= instance.OnActiveInventory;
         }
 
         /// <summary>
@@ -865,6 +1003,135 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="CharacterControllerActions" /> instance referencing this action map.
     /// </summary>
     public CharacterControllerActions @CharacterController => new CharacterControllerActions(this);
+
+    // UIInventory
+    private readonly InputActionMap m_UIInventory;
+    private List<IUIInventoryActions> m_UIInventoryActionsCallbackInterfaces = new List<IUIInventoryActions>();
+    private readonly InputAction m_UIInventory_Navigate;
+    private readonly InputAction m_UIInventory_Submit;
+    private readonly InputAction m_UIInventory_Cancel;
+    private readonly InputAction m_UIInventory_ItemAction;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "UIInventory".
+    /// </summary>
+    public struct UIInventoryActions
+    {
+        private @PlayerInput m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public UIInventoryActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "UIInventory/Navigate".
+        /// </summary>
+        public InputAction @Navigate => m_Wrapper.m_UIInventory_Navigate;
+        /// <summary>
+        /// Provides access to the underlying input action "UIInventory/Submit".
+        /// </summary>
+        public InputAction @Submit => m_Wrapper.m_UIInventory_Submit;
+        /// <summary>
+        /// Provides access to the underlying input action "UIInventory/Cancel".
+        /// </summary>
+        public InputAction @Cancel => m_Wrapper.m_UIInventory_Cancel;
+        /// <summary>
+        /// Provides access to the underlying input action "UIInventory/ItemAction".
+        /// </summary>
+        public InputAction @ItemAction => m_Wrapper.m_UIInventory_ItemAction;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_UIInventory; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="UIInventoryActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(UIInventoryActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="UIInventoryActions" />
+        public void AddCallbacks(IUIInventoryActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIInventoryActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIInventoryActionsCallbackInterfaces.Add(instance);
+            @Navigate.started += instance.OnNavigate;
+            @Navigate.performed += instance.OnNavigate;
+            @Navigate.canceled += instance.OnNavigate;
+            @Submit.started += instance.OnSubmit;
+            @Submit.performed += instance.OnSubmit;
+            @Submit.canceled += instance.OnSubmit;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
+            @ItemAction.started += instance.OnItemAction;
+            @ItemAction.performed += instance.OnItemAction;
+            @ItemAction.canceled += instance.OnItemAction;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="UIInventoryActions" />
+        private void UnregisterCallbacks(IUIInventoryActions instance)
+        {
+            @Navigate.started -= instance.OnNavigate;
+            @Navigate.performed -= instance.OnNavigate;
+            @Navigate.canceled -= instance.OnNavigate;
+            @Submit.started -= instance.OnSubmit;
+            @Submit.performed -= instance.OnSubmit;
+            @Submit.canceled -= instance.OnSubmit;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
+            @ItemAction.started -= instance.OnItemAction;
+            @ItemAction.performed -= instance.OnItemAction;
+            @ItemAction.canceled -= instance.OnItemAction;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UIInventoryActions.UnregisterCallbacks(IUIInventoryActions)" />.
+        /// </summary>
+        /// <seealso cref="UIInventoryActions.UnregisterCallbacks(IUIInventoryActions)" />
+        public void RemoveCallbacks(IUIInventoryActions instance)
+        {
+            if (m_Wrapper.m_UIInventoryActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="UIInventoryActions.AddCallbacks(IUIInventoryActions)" />
+        /// <seealso cref="UIInventoryActions.RemoveCallbacks(IUIInventoryActions)" />
+        /// <seealso cref="UIInventoryActions.UnregisterCallbacks(IUIInventoryActions)" />
+        public void SetCallbacks(IUIInventoryActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIInventoryActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIInventoryActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="UIInventoryActions" /> instance referencing this action map.
+    /// </summary>
+    public UIInventoryActions @UIInventory => new UIInventoryActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "CharacterController" which allows adding and removing callbacks.
     /// </summary>
@@ -879,13 +1146,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "jump" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnJump(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "cam" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -963,5 +1223,55 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMagic(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "roll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRoll(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ActiveInventory" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnActiveInventory(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UIInventory" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="UIInventoryActions.AddCallbacks(IUIInventoryActions)" />
+    /// <seealso cref="UIInventoryActions.RemoveCallbacks(IUIInventoryActions)" />
+    public interface IUIInventoryActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Navigate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNavigate(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Submit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSubmit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCancel(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ItemAction" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnItemAction(InputAction.CallbackContext context);
     }
 }
