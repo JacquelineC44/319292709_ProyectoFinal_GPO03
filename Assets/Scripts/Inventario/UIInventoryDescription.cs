@@ -1,35 +1,38 @@
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class UIInventoryDescription : MonoBehaviour
 {
-    [SerializeField]
-    private Image itemImage;
-    [SerializeField]
-    private TMP_Text tittle;
-    [SerializeField]
-    private TMP_Text description;
+    [SerializeField] private Image itemImage;
+    [SerializeField] private TMP_Text titleTxt;
+    [SerializeField] private TMP_Text descriptionTxt;
 
     public void Awake()
+    {
+    }
+    private void Start()
     {
         ResetDescription();
     }
 
-    public void ResetDescription()
+    public void SetDescription(Sprite image, string itemTitle, string itemDescription)
     {
-        this.itemImage.gameObject.SetActive(false);
-        this.tittle.text = "";
-        this.description.text = "";
+        Debug.Log("Imagen recibida en descripcion: " + image);
+
+        itemImage.sprite = image;
+        itemImage.enabled = image != null;
+
+        titleTxt.text = itemTitle;
+        descriptionTxt.text = itemDescription;
     }
 
-    public void SetDescription(Sprite sprite, string itemName, string itemDescription)
+    public void ResetDescription()
     {
-        this.itemImage.gameObject.SetActive(true);
-        this.itemImage.sprite = sprite;
-        this.tittle.text = itemName;
-        this.description.text = itemDescription;
+        itemImage.sprite = null;
+        itemImage.enabled = false;
+
+        titleTxt.text = "";
+        descriptionTxt.text = "";
     }
 }

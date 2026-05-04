@@ -13,9 +13,12 @@ public class items : ScriptableObject
 {
     public string itemName;
     public WeaponType typeItem;
+    public Sprite itemImage;
     //puntos de daño
     public int pto;
     [TextArea]
     public string msg;
+    [TextArea]
+    public string description;
 
 }

@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df68436a7a7fdfb4193f82230b69e5df, type: 3}
   m_Name: sword
   m_EditorClassIdentifier: Assembly-CSharp::items
-  itemName: Sword
+  itemName: Espada Normal
   typeItem: 1
   pto: 20
-  msg: 'Has encontado una espada. '
+  msg: ' '
+  description: 'Esta espada es un regalo que le dieron a Ignara al completar su entrenamiento
+    de caza recompensas.
+
+    Ataque: 20 puntos'

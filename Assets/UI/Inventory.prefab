@@ -589,8 +589,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7878661105100722402}
   m_HandleRect: {fileID: 5225665292069624394}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1297,8 +1297,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIInventoryDescription
   itemImage: {fileID: 8690794064412013407}
-  tittle: {fileID: 8894404964687963172}
-  description: {fileID: 6147878463576048503}
+  titleTxt: {fileID: 8894404964687963172}
+  descriptionTxt: {fileID: 6147878463576048503}
 --- !u!1 &6567940361746741476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1419,10 +1419,6 @@ MonoBehaviour:
   itemPrefab: {fileID: 3245108936023745674, guid: 9034448b34d47a74a8f9a165b882a225, type: 3}
   contentPanel: {fileID: 6258466768574834241}
   itemDescription: {fileID: 850132159135798417}
-  image: {fileID: 21300000, guid: 4347e250fb35b28449b91d72634beb39, type: 3}
-  quantity: 1
-  title: Espada simple
-  description: 'Atk: 20'
 --- !u!1 &8034329979515469171
 GameObject:
   m_ObjectHideFlags: 0

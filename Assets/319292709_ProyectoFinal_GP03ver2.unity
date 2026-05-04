@@ -12208,6 +12208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryCOntroller
   inventoryUI: {fileID: 532053195950380084}
+  playerinput: {fileID: 0}
   inventorySize: 5
 --- !u!4 &1037010460 stripped
 Transform:

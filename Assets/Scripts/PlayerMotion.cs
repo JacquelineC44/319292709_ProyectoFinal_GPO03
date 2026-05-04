@@ -39,7 +39,7 @@ public class PlayerMotion : MonoBehaviour
     //cofre
     public bool interacting;
     public LayerMask groundLayer;
-    //public ItemsCollision chest;
+    public ItemsCollision chest;
     float slopeAngle;
     //comabte 
     //PlayerCombat playerCombat;
@@ -182,8 +182,8 @@ public class PlayerMotion : MonoBehaviour
         //else
         //    lastMoveInput = Vector2.zero;
 
-        //if (stop || playerCombat.isAttacking || interacting)
-        //    return;
+        if (stop || interacting)
+            return;
 
         anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
         anim.SetFloat("Moving", (_move.x == 0 && _move.y == 0) ? 0 : 1);
@@ -633,28 +633,28 @@ public class PlayerMotion : MonoBehaviour
     //    rb.linearVelocity = Vector3.zero;
     //}
     ////cofre
-    //public void OnUse()
-    //{
-    //    if (!Attack())
-    //        return;
-    //    if (chest)
-    //    {
-    //        chest.Open();
-    //        return;
-    //    }
-    //}
-    //public void selectTarget(Transform objetive)
-    //{
-    //    if(targetPlayer != null)
-    //        TargetActive(false);
-    //    targetPlayer = null;
-    //    virtualCam.Priority = 10;
-    //    cinemachineFreeLook.Priority = 8;
-    //    targetCam.transform.LookAt(objetive);
-    //    follow.position = targetCam.transform.position;
-    //    follow.rotation = targetCam.transform.rotation;
-    //    transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
-    //}
+    public void OnUse()
+    {
+        //if (!Attack())
+        //    return;
+        if (chest)
+        {
+            chest.Open();
+            return;
+        }
+    }
+    public void selectTarget(Transform objetive)
+    {
+        if (targetPlayer != null)
+            TargetActive(false);
+        targetPlayer = null;
+        virtualCam.Priority = 10;
+        cinemachineFreeLook.Priority = 8;
+        targetCam.transform.LookAt(objetive);
+        follow.position = targetCam.transform.position;
+        follow.rotation = targetCam.transform.rotation;
+        transform.localEulerAngles = new Vector3(0, follow.localEulerAngles.y, 0);
+    }
     ////public void noTarget()
     ////{
     ////    targetPlayer = null;
@@ -663,20 +663,20 @@ public class PlayerMotion : MonoBehaviour
     ////    cinemachineFreeLook.Priority = 10;
     ////    isFocus();
     ////}
-    //public void noTarget()
-    //{
-    //    if (targetPlayer != null)
-    //        TargetActive(false);
+    public void noTarget()
+    {
+        if (targetPlayer != null)
+            TargetActive(false);
 
-    //    targetPlayer = null;
-    //    zTarget.t = null;
+        targetPlayer = null;
+        zTarget.t = null;
 
-    //    virtualCam.Priority = 8;
-    //    cinemachineFreeLook.Priority = 10;
+        virtualCam.Priority = 8;
+        cinemachineFreeLook.Priority = 10;
 
-    //    focus = false;
-    //    anim.SetBool("isFocus", false);
-    //}
+        focus = false;
+        anim.SetBool("isFocus", false);
+    }
     ////combate
     //public bool Attack()
     //{

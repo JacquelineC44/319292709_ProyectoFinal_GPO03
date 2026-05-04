@@ -613,6 +613,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CloseInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6bb4c49-c570-45ee-b176-6bc64c970a43"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -659,6 +668,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""ItemAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09e3c1d5-876b-4090-8486-b8319ee97246"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CloseInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30bb9d30-e68a-4c80-b71e-dcd5a85d8221"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CloseInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -687,6 +718,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_UIInventory_Submit = m_UIInventory.FindAction("Submit", throwIfNotFound: true);
         m_UIInventory_Cancel = m_UIInventory.FindAction("Cancel", throwIfNotFound: true);
         m_UIInventory_ItemAction = m_UIInventory.FindAction("ItemAction", throwIfNotFound: true);
+        m_UIInventory_CloseInventory = m_UIInventory.FindAction("CloseInventory", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -1011,6 +1043,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_UIInventory_Submit;
     private readonly InputAction m_UIInventory_Cancel;
     private readonly InputAction m_UIInventory_ItemAction;
+    private readonly InputAction m_UIInventory_CloseInventory;
     /// <summary>
     /// Provides access to input actions defined in input action map "UIInventory".
     /// </summary>
@@ -1038,6 +1071,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UIInventory/ItemAction".
         /// </summary>
         public InputAction @ItemAction => m_Wrapper.m_UIInventory_ItemAction;
+        /// <summary>
+        /// Provides access to the underlying input action "UIInventory/CloseInventory".
+        /// </summary>
+        public InputAction @CloseInventory => m_Wrapper.m_UIInventory_CloseInventory;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1076,6 +1113,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ItemAction.started += instance.OnItemAction;
             @ItemAction.performed += instance.OnItemAction;
             @ItemAction.canceled += instance.OnItemAction;
+            @CloseInventory.started += instance.OnCloseInventory;
+            @CloseInventory.performed += instance.OnCloseInventory;
+            @CloseInventory.canceled += instance.OnCloseInventory;
         }
 
         /// <summary>
@@ -1099,6 +1139,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ItemAction.started -= instance.OnItemAction;
             @ItemAction.performed -= instance.OnItemAction;
             @ItemAction.canceled -= instance.OnItemAction;
+            @CloseInventory.started -= instance.OnCloseInventory;
+            @CloseInventory.performed -= instance.OnCloseInventory;
+            @CloseInventory.canceled -= instance.OnCloseInventory;
         }
 
         /// <summary>
@@ -1273,5 +1316,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnItemAction(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CloseInventory" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCloseInventory(InputAction.CallbackContext context);
     }
 }

@@ -78,6 +78,7 @@ using UnityEngine.EventSystems;
 
 public class UIInventoryItem : MonoBehaviour,
     IPointerClickHandler,
+    IPointerEnterHandler,
     IBeginDragHandler,
     IEndDragHandler,
     IDropHandler
@@ -96,23 +97,29 @@ public class UIInventoryItem : MonoBehaviour,
 
     private void Awake()
     {
-        ResetData();
         Deselect();
     }
 
     public void ResetData()
     {
         itemImage.gameObject.SetActive(false);
+
         quantityTxt.text = "";
+        quantityTxt.gameObject.SetActive(false);
+
         empty = true;
     }
 
     public void SetData(Sprite sprite, int quantity)
     {
-        itemImage.gameObject.SetActive(true);
-        itemImage.sprite = sprite;
-        quantityTxt.text = quantity.ToString();
         empty = false;
+
+        itemImage.sprite = sprite;
+        itemImage.enabled = true;
+        itemImage.gameObject.SetActive(true);
+
+        quantityTxt.text = quantity.ToString();
+        quantityTxt.gameObject.SetActive(true);
     }
 
     public void Select()
@@ -154,5 +161,20 @@ public class UIInventoryItem : MonoBehaviour,
         {
             OnItemClicked?.Invoke(this);
         }
+    }
+    public void OnSelect(BaseEventData eventData)
+    {
+        OnItemClicked?.Invoke(this);
+    }
+
+    public void OnSubmit(BaseEventData eventData)
+    {
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (empty)
+            return;
+
+        OnItemClicked?.Invoke(this);
     }
 }
