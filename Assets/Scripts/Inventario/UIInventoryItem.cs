@@ -92,6 +92,8 @@ public class UIInventoryItem : MonoBehaviour,
     public event Action<UIInventoryItem> OnItemBeginDrag;
     public event Action<UIInventoryItem> OnItemEndDrag;
     public event Action<UIInventoryItem> OnItemActionRequested;
+    public event Action<UIInventoryItem> OnItemSelected;
+    public event Action<UIInventoryItem> OnItemUsed;
 
     private bool empty = true;
 
@@ -152,29 +154,28 @@ public class UIInventoryItem : MonoBehaviour,
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (empty) return;
 
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            OnItemActionRequested?.Invoke(this);
-        }
-        else
-        {
-            OnItemClicked?.Invoke(this);
-        }
+        OnItemUsed?.Invoke(this);
     }
+
     public void OnSelect(BaseEventData eventData)
     {
-        OnItemClicked?.Invoke(this);
+        if (empty) return;
+
+        OnItemSelected?.Invoke(this);
     }
 
     public void OnSubmit(BaseEventData eventData)
     {
+        if (empty) return;
+
+        OnItemUsed?.Invoke(this);
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (empty)
-            return;
+        if (empty) return;
 
-        OnItemClicked?.Invoke(this);
+        OnItemSelected?.Invoke(this);
     }
 }

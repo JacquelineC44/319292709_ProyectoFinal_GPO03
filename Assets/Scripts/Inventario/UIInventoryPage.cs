@@ -17,6 +17,7 @@ public class UIInventoryPage : MonoBehaviour
 
     List<UIInventoryItem> listItems = new List<UIInventoryItem>();
     private List<items> inventoryItems = new List<items>();
+    [SerializeField] private Inventario playerInventory;
 
 
     private void Awake()
@@ -30,10 +31,12 @@ public class UIInventoryPage : MonoBehaviour
         for (int i = 0; i < inventorySize; i++)
         {
             UIInventoryItem item = Instantiate(itemPrefab, contentPanel);
+
             listItems.Add(item);
             inventoryItems.Add(null);
 
-            item.OnItemClicked += HandleItemSelection;
+            item.OnItemSelected += HandleItemSelection;
+            item.OnItemUsed += HandleItemUse;
         }
     }
 
@@ -92,6 +95,21 @@ public class UIInventoryPage : MonoBehaviour
         {
             item.Deselect();
         }
+    }
+
+    private void HandleItemUse(UIInventoryItem obj)
+    {
+        int index = listItems.IndexOf(obj);
+
+        if (index == -1)
+            return;
+
+        if (inventoryItems[index] == null)
+            return;
+
+        items itemData = inventoryItems[index];
+
+        playerInventory.EquipItem(itemData);
     }
 
     /*public void InitializeInventoryUI(int inventoryszie)

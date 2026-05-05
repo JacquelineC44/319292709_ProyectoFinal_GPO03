@@ -3,11 +3,11 @@ using UnityEngine;
 public class EventosIgnara : MonoBehaviour
 {
     PlayerMotion playerMotion;
-//    PlayerCombat playerCombat;
+    PlayerCombat playerCombat;
     public void Awake()
     {
         playerMotion = GetComponentInParent<PlayerMotion>();
-//        playerCombat = GetComponentInParent<PlayerCombat>();
+        playerCombat = GetComponentInParent<PlayerCombat>();
     }
     //    public void Land()
     //    {
@@ -17,10 +17,10 @@ public class EventosIgnara : MonoBehaviour
     {
         playerMotion.rollStop();
     }
-    //    public void Hit()
-    //    {
-    //        playerCombat.Hit();
-    //    } 
+    public void Hit()
+    {
+        playerCombat.Hit();
+    }
     //    public void Shoot()
     //    {
     //        playerCombat.Shoot();

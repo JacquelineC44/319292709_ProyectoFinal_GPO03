@@ -42,7 +42,7 @@ public class PlayerMotion : MonoBehaviour
     public ItemsCollision chest;
     float slopeAngle;
     //comabte 
-    //PlayerCombat playerCombat;
+    PlayerCombat playerCombat;
     Rigidbody rb;
     Animator anim;
     Vector2 _move, _mlook;
@@ -61,13 +61,13 @@ public class PlayerMotion : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         zTarget = GetComponent<ZTarget>();
-        //playerCombat = GetComponent<PlayerCombat>();
+        playerCombat = GetComponent<PlayerCombat>();
     }
-    //private void OnDrawGizmosSelected()
-    //{
-    //    Gizmos.color = Color.yellow;
-    //    Gizmos.DrawSphere(transform.position + (Vector3.up * groundDistanceUp), groundDistance);
-    //}
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position + (Vector3.up * groundDistanceUp), groundDistance);
+    }
 
     private void FixedUpdate()
     {
@@ -117,10 +117,10 @@ public class PlayerMotion : MonoBehaviour
         {
             UpdateFocus();
         }
-        //    if (playerCombat.isAttacking /*|| isJump*/)
-        //        return;
-        //    if (stop)
-        //        return;
+        if (playerCombat.isAttacking)
+            return;
+        if (stop)
+            return;
         if (!focus)
         {
             if (_move.x != 0 || _move.y != 0)
@@ -182,7 +182,7 @@ public class PlayerMotion : MonoBehaviour
         //else
         //    lastMoveInput = Vector2.zero;
 
-        if (stop || interacting)
+        if (stop || interacting || playerCombat.isAttacking)
             return;
 
         anim.SetBool("Move", (_move.x == 0 && _move.y == 0) ? false : true);
@@ -635,8 +635,8 @@ public class PlayerMotion : MonoBehaviour
     ////cofre
     public void OnUse()
     {
-        //if (!Attack())
-        //    return;
+        if (!Attack())
+            return;
         if (chest)
         {
             chest.Open();
@@ -680,7 +680,12 @@ public class PlayerMotion : MonoBehaviour
     ////combate
     //public bool Attack()
     //{
-    //    return !isJump && !stop && onGround;
+    //    return !stop && onGround;
     //}
+    public bool Attack()
+    {
+        Debug.Log("Attack check | stop: " + stop + " | onGround: " + onGround);
+        return !stop && onGround;
+    }
 }
 
