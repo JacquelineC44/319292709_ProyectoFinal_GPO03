@@ -34,6 +34,7 @@ public class PlayerMotion : MonoBehaviour
     public bool stop;
     public bool focus;
     private bool jumpWithDirection;
+    
     //roll
     public bool isRoll;
     //cofre

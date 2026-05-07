@@ -11,16 +11,17 @@ public class PlayerCombat : MonoBehaviour
     public items itemActual;
     public CapsuleCollider swordCollision;
     //    public GameObject healParticle;
-    //    public GameObject arrowPrefab;//flechas
+    public GameObject arrowPrefab;//flechas
     //    public GameObject firePrefab;//fuego
     public LayerMask enemyMask;
-    //    public Transform attachPoint;//flechas
+    public Transform attachPoint;//flechas
     public float focusAtkImpulse;
     public float combo;//flechas
-    //    public float arrowSpeed; //flecha
+    public float arrowSpeed; //flecha
     //    public float fireSpeed; //fuego
     //    public float timeFire, fireCooldown;
     public bool isAttacking;
+
     //    public bool fireExist, magicUse;
     PlayerMotion playerMotion;
     //    PlayerLife playerLife;
@@ -28,8 +29,8 @@ public class PlayerCombat : MonoBehaviour
     ZTarget ztar;
     Animator anim;
     Rigidbody rb;
-    //    CinemachineImpulseSource cinemachineImpulse; //escudo tiembla camara al golpe
     bool heavyAtk;
+    CinemachineImpulseSource cinemachineImpulse;
 
     private void Awake()
     {
@@ -127,86 +128,86 @@ public class PlayerCombat : MonoBehaviour
         StartCoroutine("comboEnd");
     }
 
-    //    public void Shoot()
-    //    {
-    //        if (ztar.t != null)
-    //            playerMotion.UpdateFocus();
-    //        if (inventory.arrows != 0)
-    //        {
-    //            GameObject arrow = Instantiate(arrowPrefab, null);
-    //            arrow.transform.position = attachPoint.position;
-    //            arrow.transform.rotation = arrowPrefab.transform.rotation;
-    //            arrow.SetActive(true);
-    //            arrow.GetComponent<arrowCollision>().cinemachineImpulse = cinemachineImpulse;
-    //            arrow.GetComponent<arrowCollision>().damage = weaponActual.pto;
-    //            //focus
-    //            if(playerMotion.targetPlayer != null)
-    //            {
-    //                arrow.transform.LookAt(playerMotion.targetPlayer);
-    //                Vector3 targetDir = arrow.transform.forward * arrowSpeed * 2f;
-    //                arrow.GetComponent<Rigidbody>().AddForce(targetDir);
-    //            }
-    //            else
-    //            {
-    //                Vector3 targetDir = arrow.transform.forward * arrowSpeed * 2f;
-    //                arrow.GetComponent<Rigidbody>().AddForce(targetDir);
-    //            }
-    //            Destroy(arrow, 5f);
-    //            inventory.arrows--;
-    //            UIManager.Instance.UpdateArrows(inventory.arrows);
-    //        }
-    //        StartCoroutine("moveAgain", .5f);
-    //    }
-    //    public void OnArrowL()
-    //    {
-    //        if (weaponActual == null)
-    //            return;
-    //        if(!isAttacking && playerMotion.Attack())
-    //        {
-    //            StopCoroutine("comboEnd");
-    //            if (inventory.weapons.Count < 2)
-    //                return;
-    //            for(int i = inventory.weapons.Count -1; i >= 0; i--)
-    //            {
-    //                if (inventory.weapons[i] == weaponActual)
-    //                {
-    //                    weaponActual = (i == 0) ? inventory.weapons[inventory.weapons.Count - 1] : inventory.weapons[i - 1];
-    //                    break;
-    //                }
-    //            }
-    //        }
-    //    }
-    //    public void OnArrowR()
-    //    {
-    //        if (weaponActual == null)
-    //            return;
-    //        if (!isAttacking && playerMotion.Attack())
-    //        {
-    //            StopCoroutine("comboEnd");
-    //            if (inventory.weapons.Count < 2)
-    //                return;
-    //            for (int i = 0; i < inventory.weapons.Count; i++)
-    //            {
-    //                if (inventory.weapons[i] == weaponActual)
-    //                {
-    //                    weaponActual = (i == inventory.weapons.Count - 1) ? inventory.weapons[0] : inventory.weapons[i + 1];
-    //                    break;
-    //                }
-    //            }
-    //            ActiveWeapon();
-    //        }
-    //    }
-    //    public void ActiveWeapon()
-    //    {
-    //        if(weaponActual.typeItem == WeaponType.sword)
-    //        {
-    //            inventory.swordActive(weaponActual);
-    //        }
-    //        else if(weaponActual.typeItem == WeaponType.crossbow)
-    //        {
-    //            inventory.crossbowActive(weaponActual);
-    //        }
-    //    }
+    public void Shoot()
+    {
+        if (ztar.t != null)
+            playerMotion.UpdateFocus();
+        if (inventory.arrows != 0)
+        {
+            GameObject arrow = Instantiate(arrowPrefab, null);
+            arrow.transform.position = attachPoint.position;
+            arrow.transform.rotation = arrowPrefab.transform.rotation;
+            arrow.SetActive(true);
+            arrow.GetComponent<arrowCollision>().cinemachineImpulse = cinemachineImpulse;
+            arrow.GetComponent<arrowCollision>().damage = weaponActual.pto;
+            //focus
+            if (playerMotion.targetPlayer != null)
+            {
+                arrow.transform.LookAt(playerMotion.targetPlayer);
+                Vector3 targetDir = arrow.transform.forward * arrowSpeed * 2f;
+                arrow.GetComponent<Rigidbody>().AddForce(targetDir);
+            }
+            else
+            {
+                Vector3 targetDir = arrow.transform.forward * arrowSpeed * 2f;
+                arrow.GetComponent<Rigidbody>().AddForce(targetDir);
+            }
+            Destroy(arrow, 5f);
+            inventory.arrows--;
+            //            UIManager.Instance.UpdateArrows(inventory.arrows);
+        }
+        StartCoroutine("moveAgain", .5f);
+    }
+    public void OnArrowL()
+    {
+        if (weaponActual == null)
+            return;
+        if (!isAttacking && playerMotion.Attack())
+        {
+            StopCoroutine("comboEnd");
+            if (inventory.weapons.Count < 2)
+                return;
+            for (int i = inventory.weapons.Count - 1; i >= 0; i--)
+            {
+                if (inventory.weapons[i] == weaponActual)
+                {
+                    weaponActual = (i == 0) ? inventory.weapons[inventory.weapons.Count - 1] : inventory.weapons[i - 1];
+                    break;
+                }
+            }
+        }
+    }
+    public void OnArrowR()
+    {
+        if (weaponActual == null)
+            return;
+        if (!isAttacking && playerMotion.Attack())
+        {
+            StopCoroutine("comboEnd");
+            if (inventory.weapons.Count < 2)
+                return;
+            for (int i = 0; i < inventory.weapons.Count; i++)
+            {
+                if (inventory.weapons[i] == weaponActual)
+                {
+                    weaponActual = (i == inventory.weapons.Count - 1) ? inventory.weapons[0] : inventory.weapons[i + 1];
+                    break;
+                }
+            }
+            ActiveWeapon();
+        }
+    }
+    public void ActiveWeapon()
+    {
+        if (weaponActual.typeItem == WeaponType.sword)
+        {
+            inventory.swordActive(weaponActual);
+        }
+        else if (weaponActual.typeItem == WeaponType.crossbow)
+        {
+            inventory.crossbowActive(weaponActual);
+        }
+    }
     IEnumerator comboEnd()
     {
         yield return new WaitForSeconds(1.5f);
