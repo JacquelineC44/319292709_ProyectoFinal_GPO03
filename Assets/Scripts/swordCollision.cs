@@ -19,8 +19,8 @@ public class swordCollision : MonoBehaviour
                 cinemachineImpulse.GenerateImpulse(Camera.main.transform.forward);
                 if (other.transform.GetComponent<targetDamage>().player)
                     other.transform.GetComponent<targetDamage>().player = playerCombat.gameObject;
-                other.transform.GetComponent<targetDamage>().Damage(attack);
-                //other.transform.GetComponent<Life>().GetHit(attack);
+                //other.transform.GetComponent<targetDamage>().Damage(attack);
+                other.transform.GetComponent<Life>().GetHit(attack);
             }
         }
     }

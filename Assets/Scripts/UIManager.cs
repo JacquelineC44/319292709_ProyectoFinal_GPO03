@@ -7,18 +7,18 @@ using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
-//    public GameObject lifeBar;
+    public GameObject lifeBar;
     public GameObject notification;
     public GameObject interactuar;
-//    public GameObject icons;
-//    public TMPro.TextMeshProUGUI potionText;
-//    public TMPro.TextMeshProUGUI arrowText;
-//    public Image potionIcon;
-//    public TMPro.TextMeshProUGUI lifeText;
-//    public Life playerLife;
-//    //fuego
-//    public Image fireIcon;
-//    public Text fireText;
+    //    public GameObject icons;
+    //    public TMPro.TextMeshProUGUI potionText;
+    //    public TMPro.TextMeshProUGUI arrowText;
+    //    public Image potionIcon;
+    public TMPro.TextMeshProUGUI lifeText;
+    public Life playerLife;
+    //    //fuego
+    //    public Image fireIcon;
+    //    public Text fireText;
 
     public static UIManager Instance;
     private void Awake()
@@ -65,17 +65,17 @@ public class UIManager : MonoBehaviour
     //    {
     //        arrowText.text = n.ToString();
     //    }
-    //    public void UpdateLife(int currentLife)
-    //    {
-    //        //lifeBar.fillAmount = (float)currentLife / playerLife.maxlife;
-    //        Vector2 v = new Vector2(currentLife, lifeBar.GetComponent<RectTransform>().sizeDelta.y);
-    //        lifeBar.GetComponent<RectTransform>().DOSizeDelta(v, .2f);
-    //        UpdateLifeText();
-    //    }
-    //    public void UpdateLifeText()
-    //    {
-    //        lifeText.text = playerLife.currentLife + "/" + playerLife.maxlife;
-    //    }
+    public void UpdateLife(int currentLife)
+    {
+        //lifeBar.fillAmount = (float)currentLife / playerLife.maxlife;
+        Vector2 v = new Vector2(currentLife * 4, lifeBar.GetComponent<RectTransform>().sizeDelta.y);
+        lifeBar.GetComponent<RectTransform>().DOSizeDelta(v, .2f);
+        UpdateLifeText();
+    }
+    public void UpdateLifeText()
+    {
+        lifeText.text = playerLife.currentLife + "/" + playerLife.maxlife;
+    }
     //    public void ShowFire()
     //    {
     //        fireIcon.gameObject.SetActive(true);
