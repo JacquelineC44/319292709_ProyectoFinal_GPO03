@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1391755112651458052
+--- !u!114 &-8329005703040981675
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Agua
-  m_Shader: {fileID: -6465566751694194690, guid: c4d7cc23a7a42de4b8c0c2d680f2bc62, type: 3}
+  m_Name: humo
+  m_Shader: {fileID: -6465566751694194690, guid: abef185139d0a3b4584d5a03aa888a62, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -81,8 +81,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Textura:
-        m_Texture: {fileID: 2800000, guid: a0ffb704a43d69d4b8576db8cd3384bd, type: 3}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: ee860f7935d8363489c37aaa45c6bfd6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -104,25 +104,23 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
+    - _Bloom: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DF_Distance: 16.16
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Divide: 10
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _InnerThereshold: 0.5
     - _Metallic: 0
-    - _NoiseScale: 10
     - _OcclusionStrength: 1
-    - _OuterTheredhold: 0.9
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -136,7 +134,6 @@ Material:
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
-    - _speed: -2
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
