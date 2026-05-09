@@ -16,7 +16,6 @@ public class EnemyMotion : MonoBehaviour
 {
     public enemyState state;
     public Transform pointOfView;
-    public GameObject target;
     public Transform player;
     public Transform[] waypoints;
     public LayerMask playerMask, visibleMask;
@@ -116,12 +115,27 @@ public class EnemyMotion : MonoBehaviour
 
             case enemyState.followPlayer:
 
-                if (timeToSearching > 30f)
+                if (agent.pathPending)
                 {
                     timeToSearching = 0;
                     bool playerView = playerDirect();
                     if (!playerView)
                     {
+                        agent.ResetPath();
+                        player = null;
+                        Stopping();
+                        StartCoroutine(nextWaypoint());
+                        return;
+
+                    }
+                }
+                if (timeToSearching > 30f)
+                {                    
+                    timeToSearching = 0;
+                    bool playerView = playerDirect();
+                    if (!playerView)
+                    {
+                        agent.ResetPath();
                         player = null;
                         Stopping();
                         StartCoroutine(nextWaypoint());

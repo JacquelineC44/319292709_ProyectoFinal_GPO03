@@ -6,14 +6,12 @@ using Unity.VisualScripting;
 
 public class targetDamage : Life
 {
-    public GameObject targetPoint;
     public Material blue;
     public Material red;
     public MeshRenderer mesh;
     public GameObject text;
     public Transform model;
     public bool inDamage;
-    public GameObject player;
 
     private void Awake()
     {

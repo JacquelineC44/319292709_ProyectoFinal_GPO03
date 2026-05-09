@@ -23,7 +23,8 @@ public class Life : MonoBehaviour
     int m_life;
     public Animator anim;
     public Rigidbody rb;
-
+    public GameObject tragetPoint;
+    public GameObject player;
     private void Start()
     {
         m_life = maxlife;

@@ -624,8 +624,8 @@ public class PlayerMotion : MonoBehaviour
     }
     void TargetActive(bool b)
     {
-        if (targetPlayer.GetComponent<targetDamage>())
-            targetPlayer.GetComponent<targetDamage>().targetPoint.SetActive(b);
+        //if (targetPlayer.GetComponent<targetDamage>())
+        //    targetPlayer.GetComponent<targetDamage>().targetPoint.SetActive(b);
     }
 
     ////roll

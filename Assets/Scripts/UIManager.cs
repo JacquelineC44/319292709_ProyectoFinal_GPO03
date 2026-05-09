@@ -25,10 +25,10 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
     }
-    //    private void Start()
-    //    {
-    //        UpdateLifeText();
-    //    }
+    private void Start()
+    {
+        UpdateLifeText();
+    }
     public void showInteractuar()
     {
         interactuar.SetActive(true);
