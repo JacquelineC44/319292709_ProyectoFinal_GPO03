@@ -33,6 +33,10 @@ public class ItemsCollision : MonoBehaviour
             player.GetComponent<PlayerMotion>().chest = this;
             UIManager.Instance.showInteractuar();
         }
+        if (other.CompareTag("Item"))
+        {
+            Destroy(other.gameObject);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -77,8 +81,8 @@ public class ItemsCollision : MonoBehaviour
         if (arrows != 0)
         {
             player.GetComponent<Inventario>().arrows += arrows;
-            //UIManager.Instance.showIcon();
-            //UIManager.Instance.UpdateArrows(player.GetComponent<Inventario>().arrows);
+            UIManager.Instance.showIcon();
+            UIManager.Instance.UpdateArrows(player.GetComponent<Inventario>().arrows);
 
         }
         switch (wType)
@@ -91,19 +95,19 @@ public class ItemsCollision : MonoBehaviour
                 player.GetComponent<Inventario>().crossbowActive(drop);
                 player.GetComponent<Inventario>().weapons.Add(drop);
                 break;
-            //            case WeaponType.heal:
-            //                if(player.GetComponent<Inventario>().items.Where(i => i == drop).Count() == 0)
-            //                {
-            //                    player.GetComponent<Inventario>().items.Add(drop);
-            //                    if(player.GetComponent<PlayerCombat>().itemActual == null)
-            //                    {
-            //                        player.GetComponent<PlayerCombat>().itemActual = player.GetComponent<Inventario>().items[0];
-            //                    }
-            //                }
-            //                player.GetComponent<Inventario>().potions += potions;
-            //                UIManager.Instance.showIcon();
-            //                UIManager.Instance.UpdatePotions(player.GetComponent<Inventario>().potions);
-            //                break;
+            case WeaponType.heal:
+                if (player.GetComponent<Inventario>().items.Where(i => i == drop).Count() == 0)
+                {
+                    player.GetComponent<Inventario>().items.Add(drop);
+                    if (player.GetComponent<PlayerCombat>().itemActual == null)
+                    {
+                        player.GetComponent<PlayerCombat>().itemActual = player.GetComponent<Inventario>().items[0];
+                    }
+                }
+                player.GetComponent<Inventario>().potions += potions;
+                UIManager.Instance.showIcon();
+                UIManager.Instance.UpdatePotions(player.GetComponent<Inventario>().potions);
+                break;
             default:
                 break;
         }

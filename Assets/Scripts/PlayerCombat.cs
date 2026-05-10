@@ -154,7 +154,7 @@ public class PlayerCombat : MonoBehaviour
             }
             Destroy(arrow, 5f);
             inventory.arrows--;
-            //            UIManager.Instance.UpdateArrows(inventory.arrows);
+            UIManager.Instance.UpdateArrows(inventory.arrows);
         }
         StartCoroutine("moveAgain", .5f);
     }
