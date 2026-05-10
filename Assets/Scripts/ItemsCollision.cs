@@ -5,7 +5,6 @@ using System.Linq;
 
 public class ItemsCollision : MonoBehaviour
 {
-    public GameObject item;
     public items drop;
     public WeaponType wType;
     public int arrows, potions;
@@ -63,12 +62,12 @@ public class ItemsCollision : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         player.GetComponent<PlayerMotion>().selectTarget(upPoint);
-        UIManager.Instance.showNotification(notificationText);
+        UIManager.Instance.showNotification(drop.msg);
         yield return new WaitForSeconds(.2f);
-        item.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        //item.SetActive(true);
+        //yield return new WaitForSeconds(2f);
         UIManager.Instance.hideNotification();
-        item.SetActive(false);
+        //item.SetActive(false);
         player.GetComponent<PlayerMotion>().chest = null;
         player.GetComponent<PlayerMotion>().interacting = false;
         player.GetComponent<PlayerMotion>().StopEnd();
