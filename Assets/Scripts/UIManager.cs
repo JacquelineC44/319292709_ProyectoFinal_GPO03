@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using JetBrains.Annotations;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,9 +14,10 @@ public class UIManager : MonoBehaviour
     public GameObject icons;
     public TMPro.TextMeshProUGUI potionText;
     public TMPro.TextMeshProUGUI arrowText;
-    //    public Image potionIcon;
+    public Image potionIcon;
     public TMPro.TextMeshProUGUI lifeText;
     public Life playerLife;
+    public bool foundPotion = false;
     //    //fuego
     //    public Image fireIcon;
     //    public Text fireText;
@@ -38,16 +40,38 @@ public class UIManager : MonoBehaviour
     {
         interactuar.SetActive(false);
     }
+    //public void showNotification(string msg)
+    //{
+    //    if (!notification.activeSelf)
+    //        notification.SetActive(true);
+    //    notification.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "";
+    //    notification.GetComponent<RectTransform>().DOSizeDelta(new Vector2(720, 200), .2f).OnComplete(() => notification.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = msg);
+    //}
     public void showNotification(string msg)
     {
-        if (!notification.activeSelf)
-            notification.SetActive(false);
-        notification.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "";
-        notification.GetComponent<RectTransform>().DOSizeDelta(new Vector2(720, 200), .2f).OnComplete(() => notification.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = msg);
+        notification.SetActive(true);
+
+        RectTransform rect = notification.GetComponent<RectTransform>();
+        rect.localScale = Vector3.one;
+        rect.sizeDelta = new Vector2(720, 200);
+
+        TMPro.TextMeshProUGUI text = notification.GetComponentInChildren<TMPro.TextMeshProUGUI>(true);
+        text.gameObject.SetActive(true);
+        text.text = msg;
+
+        Debug.Log("Mostrando notificación: " + msg);
     }
+    //public void hideNotification()
+    //{
+    //    notification.GetComponent<RectTransform>().DOSizeDelta(new Vector2(720, 0), .2f).OnComplete(() => notification.SetActive(false));
+    //}
     public void hideNotification()
     {
-        notification.GetComponent<RectTransform>().DOSizeDelta(new Vector2(720, 0), .2f).OnComplete(() => notification.SetActive(false));
+        TMPro.TextMeshProUGUI text = notification.GetComponentInChildren<TMPro.TextMeshProUGUI>(true);
+        text.text = "";
+
+        notification.GetComponent<RectTransform>().sizeDelta = new Vector2(720, 0);
+        notification.SetActive(false);
     }
     public void showIcon()
     {
@@ -87,6 +111,16 @@ public class UIManager : MonoBehaviour
     {
         lifeText.text = playerLife.currentLife + "/" + playerLife.maxlife;
     }
+    public void showPotion(int potions)
+    {
+        if (!foundPotion)
+        {
+            foundPotion = true;
+            potionIcon.gameObject.SetActive(true);
+        }
+        
+    }
+
     //    public void ShowFire()
     //    {
     //        fireIcon.gameObject.SetActive(true);

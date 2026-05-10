@@ -25,10 +25,10 @@ public class EventosIgnara : MonoBehaviour
     {
         playerCombat.Shoot();
     }
-    //    public void healEnd()
-    //    {
-    //        playerCombat.healEnd();
-    //    }
+    public void healEnd()
+    {
+        playerCombat.healEnd();
+    }
     //    public void Fire()
     //    {
     //        playerCombat.Fire();

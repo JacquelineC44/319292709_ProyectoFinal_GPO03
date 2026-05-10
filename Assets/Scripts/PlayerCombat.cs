@@ -10,7 +10,7 @@ public class PlayerCombat : MonoBehaviour
     public items weaponActual;
     public items itemActual;
     public CapsuleCollider swordCollision;
-    //    public GameObject healParticle;
+    public GameObject healParticle;
     public GameObject arrowPrefab;//flechas
     //    public GameObject firePrefab;//fuego
     public LayerMask enemyMask;
@@ -228,39 +228,39 @@ public class PlayerCombat : MonoBehaviour
         StopCoroutine("moveAgain");
         StopCoroutine("comboEnd");
     }
-    //    //curar 
-    //    public void OnUseItem()
-    //    {
-    //        if (weaponActual == null)
-    //            return;
-    //        if (itemActual == null)
-    //            return;
-    //        if(inventory.potions != 0 && playerMotion.Attack())
-    //        {
-    //            isAttacking = true;
-    //            Reset();
-    //            playerMotion.Stopping();
-    //            healParticle.SetActive(true);
-    //            anim.SetTrigger("Heal");
-    //            playerLife.currentLife += itemActual.pto;
-    //            UIManager.Instance.UpdateLife(playerLife.currentLife);
-    //            inventory.potions--;
-    //            UIManager.Instance.UpdatePotions(inventory.potions);
-    //            DG.Tweening.Sequence s = DOTween.Sequence();
-    //            s.AppendInterval(1f).OnComplete(() =>
-    //            {
-    //                healParticle.SetActive(false);
-    //                isAttacking = false;
-    //                playerMotion.StopEnd();
-    //            });
-    //        }
-    //    }
-    //    public void healEnd()
-    //    {
-    //        healParticle.SetActive(false);
-    //        isAttacking = false;
-    //        playerMotion.StopEnd();
-    //    }
+    //curar 
+    public void OnUseItem()
+    {
+        Debug.Log("Use Item");
+        if (weaponActual == null)
+            return;
+        if (itemActual == null)
+            return;
+        if (inventory.potions != 0 && playerMotion.Attack())
+        {
+            isAttacking = true;
+            Reset();
+            healParticle.SetActive(true);
+            anim.SetTrigger("Heal");
+            //playerLife.currentLife += itemActual.pto;
+            //UIManager.Instance.UpdateLife(playerLife.currentLife);
+            inventory.potions--;
+            UIManager.Instance.UpdatePotions(inventory.potions);
+            DG.Tweening.Sequence s = DOTween.Sequence();
+            s.AppendInterval(1f).OnComplete(() =>
+            {
+                healParticle.SetActive(false);
+                isAttacking = false;
+                playerMotion.StopEnd();
+            });
+        }
+    }
+    public void healEnd()
+    {
+        healParticle.SetActive(false);
+        isAttacking = false;
+        playerMotion.StopEnd();
+    }
 
 
     //    //fuego

@@ -62,8 +62,8 @@ public class ItemsCollision : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         player.GetComponent<PlayerMotion>().selectTarget(upPoint);
-        UIManager.Instance.showNotification(drop.msg);
-        yield return new WaitForSeconds(.2f);
+        UIManager.Instance.showNotification(notificationText);
+        yield return new WaitForSeconds(2f);
         //item.SetActive(true);
         //yield return new WaitForSeconds(2f);
         UIManager.Instance.hideNotification();
@@ -95,6 +95,7 @@ public class ItemsCollision : MonoBehaviour
                 player.GetComponent<Inventario>().weapons.Add(drop);
                 break;
             case WeaponType.heal:
+                UIManager.Instance.showPotion(player.GetComponent<Inventario>().potions);
                 if (player.GetComponent<Inventario>().items.Where(i => i == drop).Count() == 0)
                 {
                     player.GetComponent<Inventario>().items.Add(drop);
