@@ -37,7 +37,7 @@ public class EventosIgnara : MonoBehaviour
     {
 
     }
-    public void Foot()
+    public void FootL()
     {
 
     }

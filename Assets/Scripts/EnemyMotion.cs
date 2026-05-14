@@ -20,23 +20,23 @@ public class EnemyMotion : MonoBehaviour
     public Transform[] waypoints;
     public LayerMask playerMask, visibleMask;
 
-    public float viewDistance, speedNormal, speedCombat,
-                 angularNormal, angularCombat,
-                 stoppingDistance, timeToSearching, radius;
+    public float viewDistance, speedNormal, speedCombat, angularNormal, angularCombat, stoppingDistance, timeToSearching, radius;
 
     [Range(0, 360)]
     public float angle;
 
     public int waypointN;
     public bool playerDetected, stop, run;
-    NavMeshAgent agent;
-    Animator anim;
-    DG.Tweening.Sequence sequence;
+    protected EnemyCombat enemyCombat;
+    protected NavMeshAgent agent;
+    protected Animator anim;
+    protected DG.Tweening.Sequence sequence;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
+        enemyCombat = GetComponent<EnemyCombat>();
     }
 
     private void Start()
@@ -46,14 +46,14 @@ public class EnemyMotion : MonoBehaviour
     }
     void Update()
     {
-        if (stop)
+        if (stop && state != enemyState.attacking)
             return;
 
         machineState();
 
         anim.SetBool("Move", run);
     }
-    private void machineState()
+    protected virtual void machineState()
     {
         switch (state)
         {
@@ -161,17 +161,53 @@ public class EnemyMotion : MonoBehaviour
                     lookPos.y = 0;
                     Quaternion rotation = Quaternion.LookRotation(lookPos);
                     transform.rotation = rotation;
+                    enemyCombat.Attack();
 
                 }
                 break;
+            case enemyState.attacking:
 
+                run = false;
+
+                if (player == null)
+                {
+                    state = enemyState.patrolling;
+                    agent.stoppingDistance = 1;
+                    agent.speed = speedNormal;
+                    agent.angularSpeed = angularNormal;
+                    StopEnd();
+                    break;
+                }
+
+                Vector3 targetAttack = player.position;
+                Vector3 lookAttack = targetAttack - transform.position;
+                lookAttack.y = 0;
+
+                if (lookAttack != Vector3.zero)
+                    transform.rotation = Quaternion.LookRotation(lookAttack);
+
+                float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+
+                if (distanceToPlayer > agent.stoppingDistance)
+                {
+                    state = enemyState.followPlayer;
+                    StopEnd();
+                    break;
+                }
+
+                enemyCombat.Attack();
+
+                break;
+            default:
+                break;
         }
     }
 
-    private bool OnPlayerDetect()
+    protected bool OnPlayerDetect()
     {
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, playerMask);
-        if (rangeChecks.Length != 0)        {
+        if (rangeChecks.Length != 0)        
+        {
             RaycastHit hit;
             Transform playerT = rangeChecks[0].transform;
             Vector3 directionToTarget = ((playerT.position + (Vector3.up * 1.5f)) - pointOfView.position);
@@ -190,7 +226,7 @@ public class EnemyMotion : MonoBehaviour
         return false;
     }
 
-    private bool playerDirect()
+    protected bool playerDirect()
     {
         if (player == null)
             return false;
@@ -229,13 +265,13 @@ public class EnemyMotion : MonoBehaviour
         {
             state = enemyState.alert;
             StopEnd();
-            
+            anim.SetBool("Alert", true);
             sequence = DOTween.Sequence();
 
             sequence.AppendInterval(1f).OnComplete(() =>
             {
                 Stopping();
-                anim.SetBool("Alert", true);
+                anim.SetBool("Alert", false);
                 state = enemyState.patrolling;
                 agent.stoppingDistance = 1;
                 agent.speed = speedNormal;
@@ -255,7 +291,7 @@ public class EnemyMotion : MonoBehaviour
         anim.SetBool("Move", run);
     }
 
-    public void StopEnd()
+    public virtual void StopEnd()
     {
         if (state == enemyState.attacking)
         {

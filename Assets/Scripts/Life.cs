@@ -23,7 +23,7 @@ public class Life : MonoBehaviour
     int m_life;
     public Animator anim;
     public Rigidbody rb;
-    public GameObject tragetPoint;
+    public GameObject targetPoint;
     public GameObject player;
     private void Start()
     {

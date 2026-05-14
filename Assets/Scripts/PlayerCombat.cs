@@ -24,18 +24,19 @@ public class PlayerCombat : MonoBehaviour
 
     //    public bool fireExist, magicUse;
     PlayerMotion playerMotion;
-    //    PlayerLife playerLife;
+    PlayerLife playerLife;
     Inventario inventory;
     ZTarget ztar;
     Animator anim;
     Rigidbody rb;
     bool heavyAtk;
     CinemachineImpulseSource cinemachineImpulse;
+    public GameObject swordObject;
 
     private void Awake()
     {
         playerMotion = GetComponent<PlayerMotion>();
-        //        playerLife = GetComponent<PlayerLife>();
+        playerLife = GetComponent<PlayerLife>();
         inventory = GetComponent<Inventario>();
         ztar = GetComponent<ZTarget>();
         anim = GetComponentInChildren<Animator>();
@@ -138,6 +139,7 @@ public class PlayerCombat : MonoBehaviour
             arrow.transform.position = attachPoint.position;
             arrow.transform.rotation = arrowPrefab.transform.rotation;
             arrow.SetActive(true);
+            arrow.GetComponent<arrowCollision>().player = gameObject;
             arrow.GetComponent<arrowCollision>().cinemachineImpulse = cinemachineImpulse;
             arrow.GetComponent<arrowCollision>().damage = weaponActual.pto;
             //focus
@@ -242,8 +244,8 @@ public class PlayerCombat : MonoBehaviour
             Reset();
             healParticle.SetActive(true);
             anim.SetTrigger("Heal");
-            //playerLife.currentLife += itemActual.pto;
-            //UIManager.Instance.UpdateLife(playerLife.currentLife);
+            playerLife.currentLife += itemActual.pto;
+            UIManager.Instance.UpdateLife(playerLife.currentLife);
             inventory.potions--;
             UIManager.Instance.UpdatePotions(inventory.potions);
             DG.Tweening.Sequence s = DOTween.Sequence();
@@ -289,7 +291,7 @@ public class PlayerCombat : MonoBehaviour
     //        fireBall.SetActive(true);
     //        if(playerMotion.targetPlayer != null)
     //        {
-    //            fireBall.transform.LookAt(playerMotion.targetPlayer.position);
+    //            fireBall.transform.LookAt(playerMotion.targetPlayer);
     //            Vector3 targetDir = fireBall.transform.forward * fireSpeed * 2f;
     //            fireBall.GetComponent<Rigidbody>().AddForce(targetDir);
     //        }

@@ -572,6 +572,8 @@ public class PlayerMotion : MonoBehaviour
             }
             if (targetPlayer == null)
             {
+                anim.SetBool("isFocus", false);
+                anim.SetTrigger("SwitchWeapon");
                 focus = false;
                 return;
             }
@@ -624,8 +626,8 @@ public class PlayerMotion : MonoBehaviour
     }
     void TargetActive(bool b)
     {
-        //if (targetPlayer.GetComponent<targetDamage>())
-        //    targetPlayer.GetComponent<targetDamage>().targetPoint.SetActive(b);
+        if (targetPlayer.GetComponent<Life>())
+            targetPlayer.GetComponent<Life>().targetPoint.SetActive(b);
     }
 
     ////roll

@@ -1,7 +1,8 @@
+using NUnit;
 using System.Collections;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using System.Linq;
 
 public class ItemsCollision : MonoBehaviour
 {
@@ -105,6 +106,7 @@ public class ItemsCollision : MonoBehaviour
                     }
                 }
                 player.GetComponent<Inventario>().potions += potions;
+                Object.FindFirstObjectByType<InventoryCOntroller>().AddItemToInventory(drop, player.GetComponent<Inventario>().potions);
                 UIManager.Instance.showIcon();
                 UIManager.Instance.UpdatePotions(player.GetComponent<Inventario>().potions);
                 break;

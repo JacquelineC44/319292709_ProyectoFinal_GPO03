@@ -33,4 +33,14 @@ public class InventoryCOntroller : MonoBehaviour
         inventoryUI.Hide();
         playerinput.SwitchCurrentActionMap("CharacterController");
     }
+    public void AddItemToInventory(items item, int quantity)
+    {
+        if (item == null)
+            return;
+
+        if (item.typeItem == WeaponType.heal)
+        {
+            inventoryUI.UpdateData(1, item, quantity);
+        }
+    }
 }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: EnemyAnimCrossbow
+  m_Controller: {fileID: 9100000, guid: fa216168b5100084fb2429e6c22e732c, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 9091fa4a694390944814caa608f56052, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 6572be1761d2cc342951ebf49aae8242, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 260ff14f88ece144bbdc2cf750023ffd, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: db730fded97debc4792e2947df773ae5, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: b227d027291994d499b0c516786426be, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 2ac2cdc6ab05eaf4f82516f6029ea271, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 806843cceef7cc9468d4ceccd1b7edf3, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 94e9806e96f9a894aa8b34c52ea8fdec, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: d1c68d6dc1029604bb583ce7bd0ca2e8, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c0245eba0e056ac4db9c48566d4444f1, type: 3}
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 83cbc096e39b3194dbc0323a115a2d3c, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: b297e6d2db9da4f4a8f17cb57b8bd5ba, type: 3}

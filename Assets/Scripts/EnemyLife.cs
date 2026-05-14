@@ -14,12 +14,12 @@ public class EnemyLife : Life
     public NavMeshAgent agent;
 
     EnemyMotion enemyMotion;
-    //EnemyCombat enemyCombat;
+    EnemyCombat enemyCombat;
 
     private void Awake()
     {
         enemyMotion = GetComponent<EnemyMotion>();
-        //enemyCombat = GetComponent<EnemyCombat>();
+        enemyCombat = GetComponent<EnemyCombat>();
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -74,7 +74,7 @@ public class EnemyLife : Life
         }
         else
         {
-            //enemyCombat.isAttacking = false;
+            enemyCombat.isAttacking = false;
 
             if (enemyMotion.player == null)
             {

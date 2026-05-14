@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::items
   itemName: Pocion
   typeItem: 3
+  itemImage: {fileID: 21300000, guid: 94af0647b29859d4d9de7739aa7d7052, type: 3}
   pto: 50
   msg: Has encontrado una pocima para regenerar vida.
+  description: 

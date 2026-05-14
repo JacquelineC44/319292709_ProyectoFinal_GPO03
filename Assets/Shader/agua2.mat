@@ -141,8 +141,8 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _deepdt_Col: {r: 0.117647044, g: 0.22176707, b: 0.3882353, a: 1}
-    - _shadowColor: {r: 0.15614808, g: 0.34749612, b: 0.90943396, a: 1}
-    - _specular_color: {r: 0.16664283, g: 0.39377993, b: 0.5698112, a: 1}
+    - _deepdt_Col: {r: 0.03864007, g: 0.14312616, b: 0.3056603, a: 1}
+    - _shadowColor: {r: 0.08951936, g: 0.16201514, b: 0.3735848, a: 1}
+    - _specular_color: {r: 0.08718398, g: 0.2059596, b: 0.2981131, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

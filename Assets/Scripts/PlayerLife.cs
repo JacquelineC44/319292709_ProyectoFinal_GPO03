@@ -39,7 +39,7 @@ public class PlayerLife : Life
             StartCoroutine("death");
 
         }
-        //anim.Rebind();
+        anim.Rebind();
         if (inventory.swordUse)
         {
             anim.SetBool("Weapon", true);

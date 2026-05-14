@@ -217,6 +217,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""8fec9ac8-2ab8-4a88-965d-c568a1357542"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -571,6 +580,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""ActiveInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b0b4a97d-eb74-41fe-8492-6e28919a657c"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -692,6 +712,34 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UIPause"",
+            ""id"": ""2d471a16-b107-41e2-bcbd-bc4486d519e0"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""a9c4c280-5353-4620-b608-82a1a2a730bc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c7a64a90-04da-4a55-9480-f3f6d6930cd7"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -712,6 +760,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterController_Magic = m_CharacterController.FindAction("Magic", throwIfNotFound: true);
         m_CharacterController_roll = m_CharacterController.FindAction("roll", throwIfNotFound: true);
         m_CharacterController_ActiveInventory = m_CharacterController.FindAction("ActiveInventory", throwIfNotFound: true);
+        m_CharacterController_Pause = m_CharacterController.FindAction("Pause", throwIfNotFound: true);
         // UIInventory
         m_UIInventory = asset.FindActionMap("UIInventory", throwIfNotFound: true);
         m_UIInventory_Navigate = m_UIInventory.FindAction("Navigate", throwIfNotFound: true);
@@ -719,12 +768,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_UIInventory_Cancel = m_UIInventory.FindAction("Cancel", throwIfNotFound: true);
         m_UIInventory_ItemAction = m_UIInventory.FindAction("ItemAction", throwIfNotFound: true);
         m_UIInventory_CloseInventory = m_UIInventory.FindAction("CloseInventory", throwIfNotFound: true);
+        // UIPause
+        m_UIPause = asset.FindActionMap("UIPause", throwIfNotFound: true);
+        m_UIPause_Newaction = m_UIPause.FindAction("New action", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
     {
         UnityEngine.Debug.Assert(!m_CharacterController.enabled, "This will cause a leak and performance issues, PlayerInput.CharacterController.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UIInventory.enabled, "This will cause a leak and performance issues, PlayerInput.UIInventory.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UIPause.enabled, "This will cause a leak and performance issues, PlayerInput.UIPause.Disable() has not been called.");
     }
 
     /// <summary>
@@ -814,6 +867,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterController_Magic;
     private readonly InputAction m_CharacterController_roll;
     private readonly InputAction m_CharacterController_ActiveInventory;
+    private readonly InputAction m_CharacterController_Pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "CharacterController".
     /// </summary>
@@ -882,6 +936,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ActiveInventory => m_Wrapper.m_CharacterController_ActiveInventory;
         /// <summary>
+        /// Provides access to the underlying input action "CharacterController/Pause".
+        /// </summary>
+        public InputAction @Pause => m_Wrapper.m_CharacterController_Pause;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_CharacterController; }
@@ -949,6 +1007,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ActiveInventory.started += instance.OnActiveInventory;
             @ActiveInventory.performed += instance.OnActiveInventory;
             @ActiveInventory.canceled += instance.OnActiveInventory;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -1002,6 +1063,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ActiveInventory.started -= instance.OnActiveInventory;
             @ActiveInventory.performed -= instance.OnActiveInventory;
             @ActiveInventory.canceled -= instance.OnActiveInventory;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
@@ -1175,6 +1239,102 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UIInventoryActions" /> instance referencing this action map.
     /// </summary>
     public UIInventoryActions @UIInventory => new UIInventoryActions(this);
+
+    // UIPause
+    private readonly InputActionMap m_UIPause;
+    private List<IUIPauseActions> m_UIPauseActionsCallbackInterfaces = new List<IUIPauseActions>();
+    private readonly InputAction m_UIPause_Newaction;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "UIPause".
+    /// </summary>
+    public struct UIPauseActions
+    {
+        private @PlayerInput m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public UIPauseActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "UIPause/Newaction".
+        /// </summary>
+        public InputAction @Newaction => m_Wrapper.m_UIPause_Newaction;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_UIPause; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="UIPauseActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(UIPauseActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="UIPauseActions" />
+        public void AddCallbacks(IUIPauseActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIPauseActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIPauseActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="UIPauseActions" />
+        private void UnregisterCallbacks(IUIPauseActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="UIPauseActions.UnregisterCallbacks(IUIPauseActions)" />.
+        /// </summary>
+        /// <seealso cref="UIPauseActions.UnregisterCallbacks(IUIPauseActions)" />
+        public void RemoveCallbacks(IUIPauseActions instance)
+        {
+            if (m_Wrapper.m_UIPauseActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="UIPauseActions.AddCallbacks(IUIPauseActions)" />
+        /// <seealso cref="UIPauseActions.RemoveCallbacks(IUIPauseActions)" />
+        /// <seealso cref="UIPauseActions.UnregisterCallbacks(IUIPauseActions)" />
+        public void SetCallbacks(IUIPauseActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIPauseActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIPauseActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="UIPauseActions" /> instance referencing this action map.
+    /// </summary>
+    public UIPauseActions @UIPause => new UIPauseActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "CharacterController" which allows adding and removing callbacks.
     /// </summary>
@@ -1280,6 +1440,13 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnActiveInventory(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPause(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UIInventory" which allows adding and removing callbacks.
@@ -1323,5 +1490,20 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCloseInventory(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UIPause" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="UIPauseActions.AddCallbacks(IUIPauseActions)" />
+    /// <seealso cref="UIPauseActions.RemoveCallbacks(IUIPauseActions)" />
+    public interface IUIPauseActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

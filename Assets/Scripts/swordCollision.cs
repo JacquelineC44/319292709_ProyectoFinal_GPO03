@@ -14,12 +14,11 @@ public class swordCollision : MonoBehaviour
     {
         if (other.tag == "Target")
         {
-            if (other.transform.GetComponent<targetDamage>() != null)
+            if (other.transform.GetComponent<Life>() != null)
             {
                 cinemachineImpulse.GenerateImpulse(Camera.main.transform.forward);
-                if (other.transform.GetComponent<targetDamage>().player)
-                    other.transform.GetComponent<targetDamage>().player = playerCombat.gameObject;
-                //other.transform.GetComponent<targetDamage>().Damage(attack);
+                if (other.transform.GetComponent<Life>().player == null)
+                    other.transform.GetComponent<Life>().player = playerCombat.gameObject;
                 other.transform.GetComponent<Life>().GetHit(attack);
             }
         }
