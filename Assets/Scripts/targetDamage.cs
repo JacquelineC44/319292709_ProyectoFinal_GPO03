@@ -12,7 +12,7 @@ public class targetDamage : Life
     public GameObject text;
     public Transform model;
     public bool inDamage;
-
+    public float espera = 1f;
     private void Awake()
     {
         mesh = GetComponentInChildren<MeshRenderer>();
@@ -36,7 +36,7 @@ public class targetDamage : Life
         DG.Tweening.Sequence time = DOTween.Sequence();
         time.AppendInterval(.2f).OnComplete(() => Time.timeScale = 1).SetUpdate(true);
         DG.Tweening.Sequence s = DOTween.Sequence();
-        s.AppendInterval(1f).OnComplete(() =>
+        s.AppendInterval(espera).OnComplete(() =>
         {
             inDamage = false;
             if (currentLife > 0)
@@ -51,11 +51,11 @@ public class targetDamage : Life
         });
 
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
-            other.GetComponent<Life>().GetHit(25);
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Player")
+    //        other.GetComponent<Life>().GetHit(25);
+    //}
     private void OnDestroy()
     {
         if (player != null)

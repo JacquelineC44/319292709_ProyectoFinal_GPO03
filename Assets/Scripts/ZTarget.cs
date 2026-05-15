@@ -22,6 +22,7 @@ public class ZTarget : MonoBehaviour
     //Solamente usarlo para que el focus sea los enemigos que tiene de enfrente, escoge el mas cercano
     public Transform FirstTarget()
     {
+        Debug.Log("Elije el primero");
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, viewScope);
         impacts.Clear();
         foreach (Collider hitCollider in hitColliders)

@@ -556,6 +556,7 @@ public class PlayerMotion : MonoBehaviour
     }
     public void OnFocus(InputValue value)
     {
+        Debug.Log("Entro a Onfocus");
         focus = value.isPressed;
         if (stop || isJump)
             return;
@@ -566,6 +567,7 @@ public class PlayerMotion : MonoBehaviour
     {
         if (focus)
         {
+            Debug.Log("Entro al isFOcus");
             if (targetPlayer == null)
             {
                 targetPlayer = zTarget.FirstTarget();

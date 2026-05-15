@@ -92,8 +92,7 @@ public class PlayerCombat : MonoBehaviour
             return;
         if (!isAttacking && playerMotion.Attack())
         {
-            isAttacking = true;
-            
+            isAttacking = true;            
             Reset();
             rb.linearVelocity = Vector3.zero;
             //playerMotion.Stopping();
@@ -102,6 +101,7 @@ public class PlayerCombat : MonoBehaviour
                 heavyAtk = true;
                 anim.SetInteger("Attack", 2);
             }
+            //checar despues
             if (weaponActual.typeItem == WeaponType.crossbow)
             {
                 anim.SetInteger("Attack", 4);
@@ -128,7 +128,6 @@ public class PlayerCombat : MonoBehaviour
         StartCoroutine("moveAgain", (heavyAtk) ? .8f : .5f);
         StartCoroutine("comboEnd");
     }
-
     public void Shoot()
     {
         if (ztar.t != null)
