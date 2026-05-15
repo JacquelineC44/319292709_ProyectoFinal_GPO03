@@ -37,7 +37,6 @@ public class PlayerLife : Life
             playerMotion.enabled = false;
             playerCombat.enabled = false;
             StartCoroutine("death");
-
         }
         anim.Rebind();
         if (inventory.swordUse)
@@ -76,7 +75,7 @@ public class PlayerLife : Life
     }
     IEnumerator death()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 }

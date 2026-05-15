@@ -41,7 +41,7 @@ public class PlayerCombat : MonoBehaviour
         ztar = GetComponent<ZTarget>();
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
-        //        cinemachineImpulse = GetComponent<CinemachineImpulseSource>();
+        cinemachineImpulse = GetComponent<CinemachineImpulseSource>();
 
     }
     public void OnAttackL()
@@ -136,10 +136,10 @@ public class PlayerCombat : MonoBehaviour
         {
             GameObject arrow = Instantiate(arrowPrefab, null);
             arrow.transform.position = attachPoint.position;
-            arrow.transform.rotation = arrowPrefab.transform.rotation;
+            //arrow.transform.rotation = arrowPrefab.transform.rotation;
+            arrow.transform.rotation = attachPoint.rotation;
             arrow.SetActive(true);
             arrow.GetComponent<arrowCollision>().player = gameObject;
-            arrow.GetComponent<arrowCollision>().cinemachineImpulse = cinemachineImpulse;
             arrow.GetComponent<arrowCollision>().damage = weaponActual.pto;
             //focus
             if (playerMotion.targetPlayer != null)

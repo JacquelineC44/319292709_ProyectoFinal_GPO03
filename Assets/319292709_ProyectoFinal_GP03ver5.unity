@@ -44350,6 +44350,7 @@ GameObject:
   - component: {fileID: 930301616}
   - component: {fileID: 930301615}
   - component: {fileID: 930301614}
+  - component: {fileID: 930301617}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -44385,9 +44386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f414c167e39adba40b51f6e966f4b606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::arrowCollision
-  damage: 0
+  damage: 20
   player: {fileID: 0}
-  cinemachineImpulse: {fileID: 0}
 --- !u!135 &930301615
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -44436,6 +44436,59 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &930301617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930301612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 2
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.2
+    ImpulseType: 0
+    DissipationRate: 0.25
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!4 &931160726 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8495900241442199257, guid: 41e97680cb9672041b35edc626ad026a, type: 3}
@@ -65439,7 +65492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemsCollision
   drop: {fileID: 11400000, guid: 13ed89b4b6e63224bb99df0f5106dba2, type: 2}
   wType: 0
-  arrows: 0
+  arrows: 20
   potions: 0
   open: 0
   notificationText: '"Has encontrado una pocima"'
@@ -90109,7 +90162,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 98f3be3949eb6dd40b87faf21301bc07, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 194352fa63d125f4799226ad562b1a41, type: 2}
+      objectReference: {fileID: 9100000, guid: 7ff0cf27ed8e9684b9bdd381bab1f846, type: 2}
     - target: {fileID: 6240733294840144465, guid: 98f3be3949eb6dd40b87faf21301bc07, type: 3}
       propertyPath: m_Layer
       value: 0
