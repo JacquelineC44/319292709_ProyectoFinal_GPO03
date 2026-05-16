@@ -9,7 +9,7 @@ public class ItemsCollision : MonoBehaviour
     public items drop;
     public WeaponType wType;
     public int arrows, potions;
-    //    public bool fireMagic;
+    public bool fireMagic;
     public bool open;
     public string notificationText;
     public Transform upPoint;
@@ -72,12 +72,11 @@ public class ItemsCollision : MonoBehaviour
         player.GetComponent<PlayerMotion>().chest = null;
         player.GetComponent<PlayerMotion>().interacting = false;
         player.GetComponent<PlayerMotion>().StopEnd();
-        //        if (fireMagic)
-        //        {
-        //            player.GetComponent<PlayerCombat>().fireExist = fireMagic;
-        //            UIManager.Instance.ShowFire();
-
-        //        }
+        if (fireMagic)
+        {
+            player.GetComponent<PlayerCombat>().fireExist = fireMagic;
+            UIManager.Instance.ShowFire();
+        }
         if (arrows != 0)
         {
             player.GetComponent<Inventario>().arrows += arrows;

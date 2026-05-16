@@ -19,8 +19,8 @@ public class UIManager : MonoBehaviour
     public Life playerLife;
     public bool foundPotion = false;
     //    //fuego
-    //    public Image fireIcon;
-    //    public Text fireText;
+    public Image fireIcon;
+    public Text fireText;
 
     public static UIManager Instance;
     public float maxBarWidth = 1010f;
@@ -121,20 +121,19 @@ public class UIManager : MonoBehaviour
         
     }
 
-    //    public void ShowFire()
-    //    {
-    //        fireIcon.gameObject.SetActive(true);
-    //    }
-    //    public void FireUse()
-    //    {
-    //        fireIcon.DOFade(0, 0);
-    //    }
-    //    public void ShowFireCooldown(float cooldown)
-    //    {
-    //        Sequence s = DOTween.Sequence();
-    //        fireIcon.DOFade(1f, cooldown);
-    //        s.Append(DOVirtual.Float(cooldown, 0f, cooldown, v => fireText.text = Mathf.RoundToInt(v).ToString())).OnComplete(()=> fireText.text = "");
-
-    //    }
+    public void ShowFire()
+    {
+        fireIcon.gameObject.SetActive(true);
+    }
+    public void FireUse()
+    {
+        fireIcon.DOFade(0, 0);
+    }
+    public void ShowFireCooldown(float cooldown)
+    {
+        DG.Tweening.Sequence s = DOTween.Sequence();
+        fireIcon.DOFade(1f, cooldown);
+        s.Append(DOVirtual.Float(cooldown, 0f, cooldown, v => fireText.text = Mathf.RoundToInt(v).ToString())).OnComplete(() => fireText.text = "");
+    }
 
 }

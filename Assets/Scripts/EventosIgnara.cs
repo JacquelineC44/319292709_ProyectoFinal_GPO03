@@ -29,10 +29,10 @@ public class EventosIgnara : MonoBehaviour
     {
         playerCombat.healEnd();
     }
-    //    public void Fire()
-    //    {
-    //        playerCombat.Fire();
-    //    }
+    public void Fire()
+    {
+        playerCombat.Fire();
+    }
     public void FootR()
     {
         PlayFootstep();

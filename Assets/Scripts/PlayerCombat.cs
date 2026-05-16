@@ -12,17 +12,17 @@ public class PlayerCombat : MonoBehaviour
     public CapsuleCollider swordCollision;
     public GameObject healParticle;
     public GameObject arrowPrefab;//flechas
-    //    public GameObject firePrefab;//fuego
+    public GameObject firePrefab;//fuego
     public LayerMask enemyMask;
     public Transform attachPoint;//flechas
     public float focusAtkImpulse;
     public float combo;//flechas
     public float arrowSpeed; //flecha
-    //    public float fireSpeed; //fuego
-    //    public float timeFire, fireCooldown;
+    public float fireSpeed; //fuego
+    public float timeFire, fireCooldown;
     public bool isAttacking;
 
-    //    public bool fireExist, magicUse;
+    public bool fireExist, magicUse;
     PlayerMotion playerMotion;
     PlayerLife playerLife;
     Inventario inventory;
@@ -265,53 +265,55 @@ public class PlayerCombat : MonoBehaviour
 
 
     //    //fuego
-    //    public void OnMagic()
-    //    {
-    //        if (weaponActual == null || !fireExist || magicUse)
-    //            return;
-    //        if (!isAttacking && playerMotion.Attack())
-    //        {
-    //            isAttacking = true;
-    //            Reset();
-    //            playerMotion.Stopping();
-    //            magicUse = true;
-    //            anim.SetBool("MagicUse", true);
-    //            anim.SetTrigger("Magic");
-    //        }
-    //    }
-    //    public void Fire()
-    //    {
-    //        if (ztar.t != null)
-    //            playerMotion.UpdateFocus();
-    //        UIManager.Instance.FireUse();
-    //        GameObject fireBall = Instantiate(firePrefab, null);
-    //        fireBall.transform.position = firePrefab.transform.position;
-    //        fireBall.transform.rotation = firePrefab.transform.rotation;
-    //        fireBall.SetActive(true);
-    //        if(playerMotion.targetPlayer != null)
-    //        {
-    //            fireBall.transform.LookAt(playerMotion.targetPlayer);
-    //            Vector3 targetDir = fireBall.transform.forward * fireSpeed * 2f;
-    //            fireBall.GetComponent<Rigidbody>().AddForce(targetDir);
-    //        }
-    //        else
-    //        {
-    //            Vector3 targetDir = fireBall.transform.forward * fireSpeed * 2f;
-    //            fireBall.GetComponent<Rigidbody>().AddForce(targetDir);
-    //        }
-    //        Destroy(fireBall, 5f);
-    //        StartCoroutine("fireOff");
-    //    }
-    //    IEnumerator fireOff()
-    //    {
-    //        yield return new WaitForSeconds(timeFire);
-    //        anim.SetBool("MagicOff", false);
-    //        yield return new WaitForSeconds(.5f);
-    //        isAttacking = false;
-    //        playerMotion.StopEnd();
-    //        UIManager.Instance.ShowFireCooldown(fireCooldown);
-    //        yield return new WaitForSeconds(fireCooldown);
-    //        magicUse = false;
+    public void OnMagic()
+    {
+        if (weaponActual == null || !fireExist || magicUse)
+            return;
+        if (!isAttacking && playerMotion.Attack())
+        {
+            isAttacking = true;
+            Reset();
+            magicUse = true;
+            anim.SetBool("MagicOff", true);
+            anim.SetTrigger("Magic");
+        }
+    }
+    public void Fire()
+    {
+        if (ztar.t != null)
+            playerMotion.UpdateFocus();
+        UIManager.Instance.FireUse();
+        GameObject fireBall = Instantiate(firePrefab, null);
+        //fireBall.transform.position = firePrefab.transform.position;
+        //fireBall.transform.rotation = firePrefab.transform.rotation;
+        fireBall.transform.position = attachPoint.position;
+        fireBall.transform.rotation = attachPoint.rotation;
+        fireBall.SetActive(true);
 
-    //    }
+        if (playerMotion.targetPlayer != null)
+        {
+            fireBall.transform.LookAt(playerMotion.targetPlayer);
+            Vector3 targetDir = fireBall.transform.forward * fireSpeed * 2f;
+            fireBall.GetComponent<Rigidbody>().AddForce(targetDir);
+        }
+        else
+        {
+            Vector3 targetDir = fireBall.transform.forward * fireSpeed * 2f;
+            fireBall.GetComponent<Rigidbody>().AddForce(targetDir);
+        }
+        Destroy(fireBall, 5f);
+        StartCoroutine("fireOff");
+    }
+    IEnumerator fireOff()
+    {
+        yield return new WaitForSeconds(timeFire);
+        anim.SetBool("MagicOff", false);
+        yield return new WaitForSeconds(.5f);
+        isAttacking = false;
+        playerMotion.StopEnd();
+        UIManager.Instance.ShowFireCooldown(fireCooldown);
+        yield return new WaitForSeconds(fireCooldown);
+        magicUse = false;
+
+    }
 }
