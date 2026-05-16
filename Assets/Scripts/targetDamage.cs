@@ -51,11 +51,11 @@ public class targetDamage : Life
         });
 
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
-            other.GetComponent<Life>().GetHit(25);
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Player")
+    //        other.GetComponent<Life>().GetHit(25);
+    //}
     private void OnDestroy()
     {
         if (player != null)

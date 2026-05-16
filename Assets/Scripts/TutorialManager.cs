@@ -4,9 +4,16 @@ using TMPro;
 
 public class TutorialManager : MonoBehaviour
 {
+    public enum StepType
+    {
+        Mensaje,
+        Accion
+    }
+
     [System.Serializable]
     public class TutorialStep
     {
+        public StepType tipo;
         public string accion;
         [TextArea] public string mensaje;
     }
@@ -15,10 +22,24 @@ public class TutorialManager : MonoBehaviour
     public TMP_Text textoTutorial;
     public List<TutorialStep> pasos = new List<TutorialStep>();
 
-    public bool iniciarAlComenzar = false;
+    public bool iniciarAlComenzar;
 
-    private int pasoActual = 0;
-    private bool activo = false;
+    private int pasoActual;
+    private bool activo;
+
+    public static TutorialManager tutorialActivo;
+    public GameObject objetoAlTerminar;
+
+    private void OnEnable()
+    {
+        tutorialActivo = this;
+    }
+
+    private void OnDisable()
+    {
+        if (tutorialActivo == this)
+            tutorialActivo = null;
+    }
 
     void Start()
     {
@@ -34,7 +55,6 @@ public class TutorialManager : MonoBehaviour
 
         pasoActual = 0;
         activo = true;
-
         MostrarPaso();
     }
 
@@ -48,24 +68,46 @@ public class TutorialManager : MonoBehaviour
     {
         if (!activo) return;
 
-        if (accion != pasos[pasoActual].accion)
-            return;
+        TutorialStep paso = pasos[pasoActual];
+
+        if (paso.tipo == StepType.Mensaje)
+        {
+            if (accion != "continuar")
+                return;
+        }
+
+        if (paso.tipo == StepType.Accion)
+        {
+            if (accion != paso.accion)
+                return;
+        }
 
         pasoActual++;
 
         if (pasoActual >= pasos.Count)
-        {
             TerminarSecuencia();
-        }
         else
-        {
             MostrarPaso();
-        }
     }
 
     void TerminarSecuencia()
     {
         activo = false;
         panelTutorial.SetActive(false);
+
+        if (objetoAlTerminar != null)
+            objetoAlTerminar.SetActive(false);
+    }
+
+    public bool TutorialTerminado()
+    {
+        return !activo && pasoActual >= pasos.Count;
+    }
+
+    public bool EsperandoContinuar()
+    {
+        if (!activo) return false;
+
+        return pasos[pasoActual].tipo == StepType.Mensaje;
     }
 }

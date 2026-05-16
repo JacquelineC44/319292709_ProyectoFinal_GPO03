@@ -16,8 +16,10 @@ public class Inventario : MonoBehaviour
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
-        weapons = new List<items>();
-        items = new List<items>();
+        if (weapons == null)
+            weapons = new List<items>();
+        if (items == null)
+            items = new List<items>();
         playerCombat = GetComponent<PlayerCombat>();
     }
 
@@ -98,4 +100,19 @@ public class Inventario : MonoBehaviour
         }
     }
 
+    public bool ActivarEspadaSiExiste()
+    {
+        foreach (items item in weapons)
+        {
+            if (item.typeItem == WeaponType.sword)
+            {
+                swordActive(item);
+                equippedItem = item;
+                return true;
+            }
+        }
+
+        Debug.LogWarning("No hay espada en el inventario.");
+        return false;
+    }
 }

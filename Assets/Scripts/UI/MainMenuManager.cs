@@ -18,12 +18,12 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.SetInt("PartidaGuardada", 1);
         PlayerPrefs.Save();
 
-        StartCoroutine(CargarEscena("319292709_ProyectoFinal_GP03ver4"));
+        StartCoroutine(CargarEscena("319292709_ProyectoFinal_GP03ver5"));
     }
 
     public void ContinuarPartida()
     {
-        StartCoroutine(CargarEscena("319292709_ProyectoFinal_GP03ver4"));
+        StartCoroutine(CargarEscena("319292709_ProyectoFinal_GP03ver5"));
     }
 
     IEnumerator CargarEscena(string nombreEscena)

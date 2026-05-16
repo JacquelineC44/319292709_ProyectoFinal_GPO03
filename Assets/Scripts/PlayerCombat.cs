@@ -33,6 +33,7 @@ public class PlayerCombat : MonoBehaviour
     CinemachineImpulseSource cinemachineImpulse;
     public GameObject swordObject;
 
+    Coroutine desarmarCoroutine;
     private void Awake()
     {
         playerMotion = GetComponent<PlayerMotion>();
@@ -44,14 +45,27 @@ public class PlayerCombat : MonoBehaviour
         cinemachineImpulse = GetComponent<CinemachineImpulseSource>();
 
     }
+    private void Start()
+    {
+        fireExist = true;
+
+        if (UIManager.Instance != null)
+            UIManager.Instance.ShowFire();
+    }
     public void OnAttackL()
     {
+        if (TutorialManager.tutorialActivo != null)
+            TutorialManager.tutorialActivo.CompletarAccion("atacar_l");
         if (weaponActual == null)
         {
-            return;
+            bool pudoActivarEspada = inventory.ActivarEspadaSiExiste();
+
+            if (!pudoActivarEspada)
+                return;
         }
         if (!isAttacking && playerMotion.Attack())
         {
+            ReiniciarTiempoDesarmar();
             Debug.Log("Ataque L");
             isAttacking = true;
             StopCoroutine("moveAgain");
@@ -88,10 +102,18 @@ public class PlayerCombat : MonoBehaviour
     }
     public void OnAttackP()
     {
+        if (TutorialManager.tutorialActivo != null)
+            TutorialManager.tutorialActivo.CompletarAccion("atacar_p");
         if (weaponActual == null)
-            return;
+        {
+            bool pudoActivarEspada = inventory.ActivarEspadaSiExiste();
+
+            if (!pudoActivarEspada)
+                return;
+        }
         if (!isAttacking && playerMotion.Attack())
         {
+            ReiniciarTiempoDesarmar();
             isAttacking = true;            
             Reset();
             rb.linearVelocity = Vector3.zero;
@@ -267,8 +289,10 @@ public class PlayerCombat : MonoBehaviour
     //    //fuego
     public void OnMagic()
     {
-        if (weaponActual == null || !fireExist || magicUse)
+        if (!fireExist || magicUse)
             return;
+        if (TutorialManager.tutorialActivo != null)
+            TutorialManager.tutorialActivo.CompletarAccion("fire");
         if (!isAttacking && playerMotion.Attack())
         {
             isAttacking = true;
@@ -284,10 +308,10 @@ public class PlayerCombat : MonoBehaviour
             playerMotion.UpdateFocus();
         UIManager.Instance.FireUse();
         GameObject fireBall = Instantiate(firePrefab, null);
-        //fireBall.transform.position = firePrefab.transform.position;
-        //fireBall.transform.rotation = firePrefab.transform.rotation;
-        fireBall.transform.position = attachPoint.position;
-        fireBall.transform.rotation = attachPoint.rotation;
+        fireBall.transform.position = firePrefab.transform.position;
+        fireBall.transform.rotation = firePrefab.transform.rotation;
+        //fireBall.transform.position = attachPoint.position;
+        //fireBall.transform.rotation = attachPoint.rotation;
         fireBall.SetActive(true);
 
         if (playerMotion.targetPlayer != null)
@@ -315,5 +339,25 @@ public class PlayerCombat : MonoBehaviour
         yield return new WaitForSeconds(fireCooldown);
         magicUse = false;
 
+    }
+
+    void ReiniciarTiempoDesarmar()
+    {
+        if (desarmarCoroutine != null)
+            StopCoroutine(desarmarCoroutine);
+
+        desarmarCoroutine = StartCoroutine(DesarmarPorInactividad());
+    }
+
+    IEnumerator DesarmarPorInactividad()
+    {
+        yield return new WaitForSeconds(10f);
+
+        if (!isAttacking && weaponActual != null && weaponActual.typeItem == WeaponType.sword)
+        {
+            inventory.swordInactive();
+            weaponActual = null;
+            combo = 0;
+        }
     }
 }

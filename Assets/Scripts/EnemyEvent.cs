@@ -11,6 +11,7 @@ public class EnemyEvent : MonoBehaviour
 
     public void Hit()
     {
+        Debug.Log("EnemyEvent llamó Hit");
         enemyCombat.Hit();
     }
     public void Shoot()

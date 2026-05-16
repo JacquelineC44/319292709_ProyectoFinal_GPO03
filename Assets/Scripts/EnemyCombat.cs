@@ -64,9 +64,10 @@ public class EnemyCombat : MonoBehaviour
             Combo2();
         }
     }
+
     //void Combo1()
     //{
-    //    Collider[] rangeChecks = Physics.OverlapSphere(handL.position, handArea, playerMask);
+    //    Collider[] rangeChecks = Physics.OverlapSphere(swordPoint.position, swordArea, playerMask);
 
     //    if (rangeChecks.Length > 0)
     //    {
@@ -76,32 +77,21 @@ public class EnemyCombat : MonoBehaviour
     //            enemyMotion.pointOfView.position,
     //            enemyMotion.pointOfView.forward,
     //            out hit,
-    //            1f,
+    //            2.5f,
     //            playerMask
     //        );
+
     //        if (hit.collider != null)
     //        {
-    //            //if (hit.collider.tag == "Shield")
-    //            //{
-    //            //    hit.collider.GetComponentInParent<PlayerCombat>().Block();
-    //            //}
-    //            //else
-    //            //{
     //            hit.collider.GetComponent<PlayerLife>().GetHit(atkDamage1);
-    //            //}
-
     //        }
-
-
     //    }
 
-    //    Sequence s = DOTween.Sequence();
+    //    Debug.Log("COMBO1 TERMINA, libera ataque");
 
-    //    s.AppendInterval(1.5f).OnComplete(() =>
-    //    {
-    //        isAttacking = false;
-    //        enemyMotion.StopEnd();
-    //    });
+    //    isAttacking = false;
+    //    atkC = 0;
+    //    enemyMotion.StopEnd();
     //}
 
     void Combo1()
@@ -110,69 +100,91 @@ public class EnemyCombat : MonoBehaviour
 
         if (rangeChecks.Length > 0)
         {
-            RaycastHit hit;
+            PlayerLife playerLife = rangeChecks[0].GetComponent<PlayerLife>();
 
-            Physics.Raycast(
-                enemyMotion.pointOfView.position,
-                enemyMotion.pointOfView.forward,
-                out hit,
-                1f,
-                playerMask
-            );
-
-            if (hit.collider != null)
-            {
-                hit.collider.GetComponent<PlayerLife>().GetHit(atkDamage1);
-            }
+            if (playerLife != null)
+                playerLife.GetHit(atkDamage1);
         }
 
-        Debug.Log("COMBO1 TERMINA, libera ataque");
-
-        isAttacking = false;
-        atkC = 0;
-        enemyMotion.StopEnd();
+        StartCoroutine(EsperarSiguienteAtaque());
     }
+    private void OnDrawGizmosSelected()
+    {
+        if (swordPoint == null) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(swordPoint.position, swordArea);
+    }
+    //void Combo2()
+    //{
+    //    Vector3 sword = swordPoint.position;
+    //    int damage = (atkC == 0) ? atkDamage1 : atkDamage2;
+
+    //    Collider[] rangeChecks = Physics.OverlapSphere(swordPoint.position, swordArea, playerMask);
+
+    //    if (rangeChecks.Length > 0)
+    //    {
+    //        RaycastHit hit;
+
+    //        Physics.Raycast(enemyMotion.pointOfView.position, enemyMotion.pointOfView.forward, out hit, 2.5f, playerMask);
+    //        if(hit.collider != null)
+    //        {
+    //            //if (hit.collider.tag == "Shield")
+    //            //{
+    //            //    hit.collider.GetComponentInParent<PlayerCombat>().Block();
+    //            //}
+    //            //else
+    //            //{
+    //            hit.collider.GetComponent<PlayerLife>().GetHit(damage);
+    //            //}
+
+    //        }
+
+
+    //    }
+
+    //    if (atkC >= 1)
+    //    {
+    //        Debug.Log("COMBO2 llamado. atkC = " + atkC);
+    //        Sequence s = DOTween.Sequence();
+
+    //        s.AppendInterval(1.5f).OnComplete(() =>
+    //        {
+    //            atkC = 0;
+    //            isAttacking = false;
+    //            enemyMotion.StopEnd();
+    //        });
+    //    }
+
+    //    atkC++;
+    //}
     void Combo2()
     {
-        Vector3 sword = swordPoint.position;
         int damage = (atkC == 0) ? atkDamage1 : atkDamage2;
 
         Collider[] rangeChecks = Physics.OverlapSphere(swordPoint.position, swordArea, playerMask);
 
         if (rangeChecks.Length > 0)
         {
-            RaycastHit hit;
+            PlayerLife playerLife = rangeChecks[0].GetComponent<PlayerLife>();
 
-            Physics.Raycast(enemyMotion.pointOfView.position, enemyMotion.pointOfView.forward, out hit, 1f, playerMask);
-            if(hit.collider != null)
-            {
-                //if (hit.collider.tag == "Shield")
-                //{
-                //    hit.collider.GetComponentInParent<PlayerCombat>().Block();
-                //}
-                //else
-                //{
-                hit.collider.GetComponent<PlayerLife>().GetHit(damage);
-                //}
-
-            }
-
-
+            if (playerLife != null)
+                playerLife.GetHit(damage);
         }
 
         if (atkC >= 1)
         {
-            Debug.Log("COMBO2 llamado. atkC = " + atkC);
-            Sequence s = DOTween.Sequence();
-
-            s.AppendInterval(1.5f).OnComplete(() =>
-            {
-                atkC = 0;
-                isAttacking = false;
-                enemyMotion.StopEnd();
-            });
+            StartCoroutine(EsperarSiguienteAtaque());
         }
 
         atkC++;
+    }
+    IEnumerator EsperarSiguienteAtaque()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        atkC = 0;
+        isAttacking = false;
+        enemyMotion.StopEnd();
     }
 }

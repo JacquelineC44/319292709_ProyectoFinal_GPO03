@@ -57,7 +57,10 @@ public class PlayerLife : Life
         rb.linearVelocity = Vector3.zero;
         particleDamage.SetActive(false);
         particleDamage.SetActive(true);
-        cinemachineImpulse.GenerateImpulse(Camera.main.transform.forward);
+        if (cinemachineImpulse != null && Camera.main != null)
+        {
+            cinemachineImpulse.GenerateImpulse(Camera.main.transform.forward);
+        }
         anim.SetTrigger("Hit");
         Sequence time = DOTween.Sequence();
         Time.timeScale = 0.4f;

@@ -55,7 +55,7 @@ public class PlayerMotion : MonoBehaviour
     ZTarget zTarget;
     //roll
     DG.Tweening.Sequence s;
-
+    TutorialManager tutorialActual;
 
     private void Awake()
     {
@@ -195,242 +195,13 @@ public class PlayerMotion : MonoBehaviour
         anim.SetFloat("MoveX", _move.x);
         anim.SetFloat("MoveY", _move.y);
     }
-    //public void OnJump()
-    //{
-    //    if (!Attack())
-    //        return;
-    //    playerCombat.Reset();
-    //    Stopping();
-    //    //roll
-    //    if (focus)
-    //    {
-    //        if (_move.x != 0 || _move.y != 0)
-    //        {
-    //            if(Mathf.Abs(_move.x) > Mathf.Abs(_move.y))
-    //            {
-    //                _move.y = 0;
-    //            }
-    //            else if (Mathf.Abs(_move.y) > Mathf.Abs(_move.x))
-    //            {
-    //                _move.x = 0;
-    //            }
-    //            else if(Mathf.Abs(_move.x) == Mathf.Abs(_move.y))
-    //            {
-    //                _move.y = 0;
-    //            }
-    //            if (_move.x != 0)
-    //                _move.x = (_move.x < 0) ? -1f : 1f;
-    //            if (_move.y != 0)
-    //                _move.y = (_move.y < 0) ? -1f : 1f;
-    //            anim.SetFloat("MoveX", _move.x);
-    //            anim.SetFloat("MoveY", _move.y);
-    //            Vector3 move = cam.forward * _move.y;
-    //            move.Normalize();
-    //            move.y = 0;
-    //            if(_move.x != 0)
-    //            {
-    //                rb.AddForce(move * dodgePower * rollMultiplayer, ForceMode.Impulse);
-    //            }
-    //            else
-    //            {
-    //                rb.AddForce(move * rollPower * rollMultiplayer, ForceMode.Impulse);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            rb.linearVelocity = Vector2.zero;
-    //            rb.AddForce(cam.forward*rollPower, ForceMode.Impulse);
-    //        }
-    //        anim.SetTrigger("Jumping");
-    //        isRoll = true;
-    //        s = DOTween.Sequence();
-    //        s.AppendInterval(.5f).OnComplete(() =>
-    //        {
-    //            if (isRoll)
-    //                StopEnd();
-    //        });
-    //    }
-    //    //borrar salto
-    //    //else
-    //    //{
-    //    //    isJump = true;
-    //    //    Vector2 moveDir = _move;
-    //    //    anim.SetTrigger("Jumping");
-    //    //    if (moveDir != Vector2.zero)
-    //    //    {
-    //    //        Vector3 dir = cam.forward * moveDir;
-    //    //        dir += cam.right * moveDir.x;
-    //    //        dir.Normalize();
-    //    //        dir.y = 0;
-    //    //        Quaternion targetR = Quaternion.LookRotation(dir);
-    //    //        transform.rotation = targetR;
-    //    //        rb.AddForce((transform.forward + Vector3.up) * jumpPower, ForceMode.Impulse);
-    //    //    }
-    //    //    else
-    //    //    {
-    //    //        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-    //    //    }
-    //    //    anim.SetBool("OnAir", true);
-
-    //    //}
-    //        //
-
-    //}
-    ///*
-    //public void OnJump()
-    //{
-    //    if (!onGround)
-    //        return;
-
-    //    Vector2 moveDir = _move;
-
-    //    jumpWithDirection = false;
-    //    jumpDirection = Vector3.zero;
-
-    //    if (moveDir != Vector2.zero)
-    //    {
-    //        Vector3 dir = cam.forward * moveDir.y;
-    //        dir += cam.right * moveDir.x;
-    //        dir.y = 0;
-    //        dir.Normalize();
-
-    //        if (dir != Vector3.zero)
-    //        {
-    //            jumpWithDirection = true;
-    //            jumpDirection = dir;
-    //            transform.rotation = Quaternion.LookRotation(dir);
-    //        }
-    //    }
-
-    //    Stopping();
-    //    isJump = true;
-    //    anim.SetTrigger("Jumping");
-    //    anim.SetBool("OnAir", true);
-
-    //    if (jumpWithDirection)
-    //    {
-    //        rb.linearVelocity = Vector3.zero;
-    //        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-    //    }
-    //    else
-    //    {
-    //        rb.linearVelocity = Vector3.zero;
-    //        rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-    //    }
-    //}*/
-    ////public void OnJump()
-    ////{
-    ////    if (!onGround)
-    ////    {
-    ////        return;
-    ////    }
-
-    ////    Vector2 moveDir = _move;
-
-    ////    jumpWithDirection = false;
-    ////    jumpDirection = Vector3.zero;
-
-    ////    Stopping();
-    ////    isJump = true;
-    ////    anim.SetTrigger("Jumping");
-    ////    anim.SetBool("OnAir", true);
-
-    ////    rb.linearVelocity = Vector3.zero;
-
-    ////    if (moveDir != Vector2.zero)
-    ////    {
-    ////        Debug.Log("DECISION: intento de salto con direccion");
-
-    ////        Vector3 dir = cam.forward * moveDir.y;
-    ////        dir += cam.right * moveDir.x;
-    ////        dir.y = 0;
-    ////        dir.Normalize();
-
-    ////        Debug.Log("dir calculada: " + dir);
-
-    ////        if (dir != Vector3.zero)
-    ////        {
-    ////            Debug.Log("RESULTADO: SALTO CON DIRECCION");
-
-    ////            jumpWithDirection = true;
-    ////            jumpDirection = dir;
-
-    ////            Quaternion targetR = Quaternion.LookRotation(dir);
-    ////            transform.rotation = targetR;
-
-    ////            rb.AddForce((dir + Vector3.up) * jumpPower, ForceMode.Impulse);
-    ////            return;
-    ////        }
-    ////        else
-    ////        {
-    ////            Debug.Log("RESULTADO: moveDir tenia valor, pero dir quedo en cero");
-    ////        }
-    ////    }
-    ////    else
-    ////    {
-    ////        Debug.Log("DECISION: moveDir es cero");
-    ////    }
-
-    ////    Debug.Log("RESULTADO: SALTO VERTICAL");
-    ////    rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-    ////}
-    ///
-    /*public void OnRoll()
-    {
-        Debug.Log("Roll");
-        if(_move.x != 0 || _move.y != 0)
-        {
-            if(Mathf.Abs(_move.x)  < Mathf.Abs(_move.y))
-            {
-                _move.y = 0;
-            }
-            else if(Mathf.Abs(_move.y) > Mathf.Abs(_move.x))
-            {
-                _move.x = 0;
-            }
-            else if (Mathf.Abs(_move.y) == Mathf.Abs(_move.x))
-            {
-                _move.y = 0;
-            }
-            if (_move.x != 0)
-                _move.x = (_move.x < 0) ? -1f : 1f;
-            if (_move.y != 0)
-                _move.y = (_move.y < 0) ? -1f : 1f;
-            anim.SetFloat("MoveX", _move.x);
-            anim.SetFloat("MoveY", _move.y);
-            Vector3 move = cam.forward * _move.y;
-            move += cam.right * _move.x;
-            move.Normalize();
-            move.y = 0;
-            if(_move.x != 0)
-            {
-                rb.AddForce(move * dodgePower * rollMultiplayer, ForceMode.Impulse);
-            }
-            else
-            {
-                rb.AddForce(move * rollPower * rollMultiplayer, ForceMode.Impulse);
-            }
-        }
-        else
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.AddForce(cam.forward * rollPower, ForceMode.Impulse);
-        }
-        anim.SetTrigger("Jumping");
-        isRoll = true;
-        s = DOTween.Sequence();
-        s.AppendInterval(.5f).OnComplete(() =>
-        {
-            if (isRoll)
-                StopEnd();
-        });
-    }*/
     public void OnRoll()
     {
+        if (TutorialManager.tutorialActivo != null)
+            TutorialManager.tutorialActivo.CompletarAccion("roll");
+
         if (isRoll)
             return;
-
-        Debug.Log("Roll");
 
         isRoll = true;
 
@@ -556,7 +327,8 @@ public class PlayerMotion : MonoBehaviour
     }
     public void OnFocus(InputValue value)
     {
-        Debug.Log("Entro a Onfocus");
+        if (TutorialManager.tutorialActivo != null)
+            TutorialManager.tutorialActivo.CompletarAccion("focus");
         focus = value.isPressed;
         if (stop || isJump)
             return;
@@ -640,6 +412,13 @@ public class PlayerMotion : MonoBehaviour
     ////cofre
     public void OnUse()
     {
+        tutorialActual = TutorialManager.tutorialActivo;
+
+        if (tutorialActual != null && tutorialActual.EsperandoContinuar())
+        {
+            tutorialActual.CompletarAccion("continuar");
+            return;
+        }
         if (!Attack())
             return;
         if (chest)
