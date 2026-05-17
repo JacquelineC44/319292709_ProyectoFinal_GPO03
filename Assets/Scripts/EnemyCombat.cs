@@ -14,6 +14,8 @@ public class EnemyCombat : MonoBehaviour
 
     protected EnemyMotion enemyMotion;
     protected Animator anim;
+    public float tiempoEntreAtaques = 1f;
+    private bool yaHizoDaño;
 
     private void Awake()
     {
@@ -31,38 +33,109 @@ public class EnemyCombat : MonoBehaviour
     //    anim.SetInteger("Attack", atkN);
     //    anim.SetTrigger("Atk");
     //}
+    //public virtual void Attack()
+    //{
+    //    Debug.Log("INTENTA ATACAR. isAttacking = " + isAttacking);
+
+    //    if (isAttacking)
+    //    {
+    //        Debug.Log("NO ATACA porque isAttacking sigue en TRUE");
+    //        return;
+    //    }
+
+    //    Debug.Log("SI ATACA. Se activa animación");
+
+    //    isAttacking = true;
+    //    atkC = 0;
+
+    //    atkN = Random.Range(0, 2);
+    //    Debug.Log("Ataque elegido: " + atkN);
+
+    //    anim.SetInteger("Attack", atkN);
+    //    anim.SetTrigger("Atk");
+    //}
     public virtual void Attack()
     {
-        Debug.Log("INTENTA ATACAR. isAttacking = " + isAttacking);
-
         if (isAttacking)
-        {
-            Debug.Log("NO ATACA porque isAttacking sigue en TRUE");
             return;
-        }
-
-        Debug.Log("SI ATACA. Se activa animación");
 
         isAttacking = true;
-        atkC = 0;
+        yaHizoDaño = false;
 
-        atkN = Random.Range(0, 2);
-        Debug.Log("Ataque elegido: " + atkN);
-
-        anim.SetInteger("Attack", atkN);
+        anim.SetInteger("Attack", 0);
         anim.SetTrigger("Atk");
     }
+
+    //public virtual void Hit()
+    //{
+    //    Debug.Log("EVENTO HIT EJECUTADO");
+    //    if (atkN == 0)
+    //    {
+    //        Combo1();
+    //    }
+    //    else
+    //    {
+    //        Combo2();
+    //    }
+    //}
     public virtual void Hit()
     {
         Debug.Log("EVENTO HIT EJECUTADO");
-        if (atkN == 0)
+        AtaqueSimple();
+    }
+    //public void AtaqueSimple()
+    //{
+    //    Collider[] rangeChecks = Physics.OverlapSphere(swordPoint.position, swordArea, playerMask);
+
+    //    foreach (Collider col in rangeChecks)
+    //    {
+    //        PlayerLife playerLife = col.GetComponentInParent<PlayerLife>();
+
+    //        if (playerLife != null)
+    //        {
+    //            playerLife.GetHit(atkDamage1);
+    //            return;
+    //        }
+    //    }
+    //}
+    public void AtaqueSimple()
+    {
+        if (yaHizoDaño)
+            return;
+
+        Collider[] rangeChecks = Physics.OverlapSphere(swordPoint.position, swordArea, playerMask);
+
+        foreach (Collider col in rangeChecks)
         {
-            Combo1();
+            PlayerLife playerLife = col.GetComponentInParent<PlayerLife>();
+
+            if (playerLife != null)
+            {
+                yaHizoDaño = true;
+                playerLife.GetHit(atkDamage1);
+                return;
+            }
         }
-        else
-        {
-            Combo2();
-        }
+    }
+
+    //public void EndAttack()
+    //{
+    //    isAttacking = false;
+    //    atkC = 0;
+    //    enemyMotion.StopEnd();
+    //}
+    public void EndAttack()
+    {
+        StartCoroutine(EsperarParaVolverAtacar());
+    }
+
+    IEnumerator EsperarParaVolverAtacar()
+    {
+        yield return new WaitForSeconds(tiempoEntreAtaques);
+
+        isAttacking = false;
+        atkC = 0;
+        enemyMotion.StopEnd();
     }
 
     //void Combo1()
@@ -105,8 +178,9 @@ public class EnemyCombat : MonoBehaviour
             if (playerLife != null)
                 playerLife.GetHit(atkDamage1);
         }
-
-        StartCoroutine(EsperarSiguienteAtaque());
+        atkC = 1;
+        anim.SetInteger("Attack", 2);
+        //StartCoroutine(EsperarSiguienteAtaque());
     }
     private void OnDrawGizmosSelected()
     {
@@ -158,26 +232,40 @@ public class EnemyCombat : MonoBehaviour
 
     //    atkC++;
     //}
+    //void Combo2()
+    //{
+    //    int damage = (atkC == 0) ? atkDamage1 : atkDamage2;
+
+    //    Collider[] rangeChecks = Physics.OverlapSphere(swordPoint.position, swordArea, playerMask);
+
+    //    if (rangeChecks.Length > 0)
+    //    {
+    //        PlayerLife playerLife = rangeChecks[0].GetComponent<PlayerLife>();
+
+    //        if (playerLife != null)
+    //            playerLife.GetHit(damage);
+    //    }
+
+    //    if (atkC >= 1)
+    //    {
+    //        StartCoroutine(EsperarSiguienteAtaque());
+    //    }
+
+    //    atkC++;
+    //}
     void Combo2()
     {
-        int damage = (atkC == 0) ? atkDamage1 : atkDamage2;
-
         Collider[] rangeChecks = Physics.OverlapSphere(swordPoint.position, swordArea, playerMask);
 
         if (rangeChecks.Length > 0)
         {
-            PlayerLife playerLife = rangeChecks[0].GetComponent<PlayerLife>();
+            PlayerLife playerLife = rangeChecks[0].GetComponentInParent<PlayerLife>();
 
             if (playerLife != null)
-                playerLife.GetHit(damage);
+                playerLife.GetHit(atkDamage2);
         }
 
-        if (atkC >= 1)
-        {
-            StartCoroutine(EsperarSiguienteAtaque());
-        }
-
-        atkC++;
+        StartCoroutine(EsperarSiguienteAtaque());
     }
     IEnumerator EsperarSiguienteAtaque()
     {

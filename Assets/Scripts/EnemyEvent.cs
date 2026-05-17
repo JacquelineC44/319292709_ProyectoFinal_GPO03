@@ -26,4 +26,8 @@ public class EnemyEvent : MonoBehaviour
     {
 
     }
+    public void EndAttack()
+    {
+        enemyCombat.EndAttack();
+    }
 }

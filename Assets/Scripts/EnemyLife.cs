@@ -33,7 +33,7 @@ public class EnemyLife : Life
 
         enemyMotion.Stopping();
         enemyMotion.ResetEnemy();
-        StopCoroutine("AttackAgain");
+        //StopCoroutine("AttackAgain");
         anim.Rebind();
         anim.SetInteger("Life", currentLife);
         anim.SetTrigger("Hit");
@@ -49,9 +49,39 @@ public class EnemyLife : Life
         float y = t.GetComponent<RectTransform>().position.y;
         t.GetComponent<RectTransform>().DOMoveY(y + 250f, 1f);
         t.GetComponent<Text>().DOFade(0, 1f).OnComplete(() => Destroy(t));
-        DG.Tweening.Sequence s = DOTween.Sequence();
-        s.AppendInterval(.5f).OnComplete(() => inDamage = false);
-        StartCoroutine("AttackAgain");
+        //DG.Tweening.Sequence s = DOTween.Sequence();
+        //s.AppendInterval(.5f).OnComplete(() => inDamage = false);
+        //StartCoroutine("AttackAgain");
+        StartCoroutine(RecuperarDespuesDeGolpe());
+    }
+
+    IEnumerator RecuperarDespuesDeGolpe()
+    {
+        yield return new WaitForSeconds(.8f);
+
+        inDamage = false;
+
+        if (currentLife <= 0)
+        {
+            if (player != null)
+                player.GetComponent<PlayerMotion>().isFocus();
+
+            enemyMotion.enabled = false;
+            this.enabled = false;
+
+            yield return new WaitForSeconds(.2f);
+
+            particleDead.transform.parent = null;
+            particleDead.SetActive(true);
+
+            Destroy(particleDead, .1f);
+            Destroy(gameObject);
+        }
+        else
+        {
+            enemyCombat.isAttacking = false;
+            enemyMotion.StopEnd();
+        }
     }
     IEnumerator AttackAgain()
     {

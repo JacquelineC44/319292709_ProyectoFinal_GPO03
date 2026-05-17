@@ -143,12 +143,29 @@ public class PlayerCombat : MonoBehaviour
 
         }
     }
+    //public void Hit()
+    //{
+    //    swordCollision.enabled = true;
+    //    Reset();
+    //    StartCoroutine("moveAgain", (heavyAtk) ? .8f : .5f);
+    //    StartCoroutine("comboEnd");
+    //}
     public void Hit()
     {
         swordCollision.enabled = true;
+
         Reset();
+
+        StartCoroutine(ApagarEspadaDespues(.2f));
+
         StartCoroutine("moveAgain", (heavyAtk) ? .8f : .5f);
         StartCoroutine("comboEnd");
+    }
+
+    IEnumerator ApagarEspadaDespues(float tiempo)
+    {
+        yield return new WaitForSeconds(tiempo);
+        swordCollision.enabled = false;
     }
     public void Shoot()
     {

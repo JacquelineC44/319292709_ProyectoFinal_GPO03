@@ -30075,6 +30075,7 @@ MonoBehaviour:
   atkDamage2: 0
   atkN: 0
   atkC: 0
+  tiempoEntreAtaques: 1
   arrowPrefab: {fileID: 620771699}
   attachPoint: {fileID: 1040018185}
   arrowSpeed: 500
@@ -36176,7 +36177,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &758937377
 Transform:
   m_ObjectHideFlags: 0
@@ -37442,11 +37443,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   swordPoint: {fileID: 1727199900}
-  swordArea: 1
-  atkDamage1: 0
+  swordArea: 3
+  atkDamage1: 10
   atkDamage2: 0
   atkN: 0
   atkC: 0
+  tiempoEntreAtaques: 1
 --- !u!114 &781085698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37459,7 +37461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca11877811af8c3439faa4daea3b4481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLife
-  maxlife: 300
+  maxlife: 150
   anim: {fileID: 0}
   rb: {fileID: 0}
   targetPoint: {fileID: 6238930823521798456}
@@ -64907,7 +64909,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1353000236
 MonoBehaviour:
   m_ObjectHideFlags: 0
