@@ -56,6 +56,18 @@ public class DialogueManager : MonoBehaviour
 
     private Coroutine cerrarCoroutine;
 
+
+    [System.Serializable]
+    public class LineaDialogo
+    {
+        public string personaje;
+
+        [TextArea(2, 4)]
+        public string texto;
+
+        public AudioClip voz;
+    }
+
     public void MostrarDialogo(string texto, AudioClip voz)
     {
         panelDialogo.SetActive(true);
@@ -78,15 +90,68 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    //IEnumerator CerrarCuandoTermineAudio(float duracion)
+    //{
+    //    yield return new WaitForSeconds(duracion);
+    //    panelDialogo.SetActive(false);
+    //}
+
+    //IEnumerator CerrarDespuesDeTiempo(float tiempo)
+    //{
+    //    yield return new WaitForSeconds(tiempo);
+    //    panelDialogo.SetActive(false);
+    //}
     IEnumerator CerrarCuandoTermineAudio(float duracion)
     {
         yield return new WaitForSeconds(duracion);
-        panelDialogo.SetActive(false);
+        CerrarDialogo();
     }
 
     IEnumerator CerrarDespuesDeTiempo(float tiempo)
     {
         yield return new WaitForSeconds(tiempo);
+        CerrarDialogo();
+    }
+    public void CerrarDialogo()
+    {
+        if (cerrarCoroutine != null)
+        {
+            StopCoroutine(cerrarCoroutine);
+            cerrarCoroutine = null;
+        }
+
+        if (audioSource != null)
+            audioSource.Stop();
+
+        if (panelDialogo != null)
+            panelDialogo.SetActive(false);
+    }
+    public void MostrarDialogoPorLineas(LineaDialogo[] lineas)
+    {
+        StartCoroutine(ReproducirLineas(lineas));
+    }
+
+    IEnumerator ReproducirLineas(LineaDialogo[] lineas)
+    {
+        panelDialogo.SetActive(true);
+
+        foreach (LineaDialogo linea in lineas)
+        {
+            textoDialogo.text = linea.texto;
+
+            if (linea.voz != null)
+            {
+                audioSource.clip = linea.voz;
+                audioSource.Play();
+
+                yield return new WaitForSeconds(linea.voz.length);
+            }
+            else
+            {
+                yield return new WaitForSeconds(3f);
+            }
+        }
+
         panelDialogo.SetActive(false);
     }
 }
