@@ -21,7 +21,7 @@ public class PlayerLife : Life
     }
     public override void GetHit(int damage)
     {
-        Debug.Log("PLAYER RECIBIÓ DAÑO: " + damage);
+        //Debug.Log("PLAYER RECIBIÓ DAÑO: " + damage);
         if (currentLife == 0)
             return;
         base.GetHit(damage);

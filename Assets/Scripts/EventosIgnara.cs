@@ -19,7 +19,14 @@ public class EventosIgnara : MonoBehaviour
     }
     public void Hit()
     {
+        Debug.Log("EVENTO HIT desde: " + gameObject.name +
+          " instance: " + GetInstanceID());
         playerCombat.Hit();
+    }
+
+    public void EndHit()
+    {
+        playerCombat.EndHit();
     }
     public void Shoot()
     {

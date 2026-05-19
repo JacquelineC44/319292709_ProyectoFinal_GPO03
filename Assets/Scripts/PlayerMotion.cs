@@ -468,7 +468,7 @@ public class PlayerMotion : MonoBehaviour
     //}
     public bool Attack()
     {
-        Debug.Log("Attack check | stop: " + stop + " | onGround: " + onGround);
+        //Debug.Log("Attack check | stop: " + stop + " | onGround: " + onGround);
         return !stop && onGround;
     }
 }

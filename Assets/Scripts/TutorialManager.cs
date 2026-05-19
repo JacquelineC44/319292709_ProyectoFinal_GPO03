@@ -97,6 +97,9 @@ public class TutorialManager : MonoBehaviour
 
         if (objetoAlTerminar != null)
             objetoAlTerminar.SetActive(false);
+
+        if (MissionManager.Instance != null)
+            MissionManager.Instance.SiguientePaso();
     }
 
     public bool TutorialTerminado()

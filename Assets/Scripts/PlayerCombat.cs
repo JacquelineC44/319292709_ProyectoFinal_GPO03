@@ -52,41 +52,109 @@ public class PlayerCombat : MonoBehaviour
         if (UIManager.Instance != null)
             UIManager.Instance.ShowFire();
     }
+    //public void OnAttackL()
+    //{
+    //    Debug.Log("BOTON ATAQUE L PRESIONADO: " + Time.time);
+    //    if (TutorialManager.tutorialActivo != null)
+    //        TutorialManager.tutorialActivo.CompletarAccion("atacar_l");
+
+    //    if (weaponActual == null)
+    //    {
+    //        bool pudoActivarEspada = inventory.ActivarEspadaSiExiste();
+
+    //        if (!pudoActivarEspada)
+    //            return;
+    //    }
+    //    Debug.Log("ANTES DEL IF: isAttacking=" + isAttacking + " playerMotion.Attack=" + playerMotion.Attack());
+    //    if (!isAttacking && playerMotion.Attack())
+    //    {
+    //        ReiniciarTiempoDesarmar();
+    //        Debug.Log("Ataque L");
+    //        isAttacking = true;
+    //        StopCoroutine("moveAgain");
+    //        StopCoroutine("comboEnd");
+    //        rb.linearVelocity = Vector3.zero;
+    //        //playerMotion.Stopping();
+    //        anim.SetFloat("Combo", combo);
+    //        if (weaponActual.typeItem == WeaponType.sword)
+    //            anim.SetInteger("Attack", 1);
+    //        if (weaponActual.typeItem == WeaponType.crossbow)
+    //            anim.SetInteger("Attack", 4);//modificar en mi arbol de anijmacion
+    //        anim.SetTrigger("Atk");
+    //        if (combo == 2)
+    //        {
+    //            combo = 0;
+    //        }
+    //        else
+    //        {
+    //            combo++;
+    //        }
+    //        //flechas
+    //        if (playerMotion.focus && weaponActual.typeItem != WeaponType.crossbow)
+    //        {
+    //            if (playerMotion.targetPlayer != null)
+    //            {
+    //                if (Vector3.Distance(transform.position, playerMotion.targetPlayer.position) > 1f)
+    //                    rb.AddForce(playerMotion.cam.forward * focusAtkImpulse, ForceMode.Impulse);
+    //            }
+
+    //        }
+    //        StartCoroutine("moveAgain", 1f);
+    //        StartCoroutine("comboEnd");
+    //    }
+    //}
     public void OnAttackL()
     {
+        Debug.Log("BOTON ATAQUE L PRESIONADO: " + Time.time);
+
         if (TutorialManager.tutorialActivo != null)
             TutorialManager.tutorialActivo.CompletarAccion("atacar_l");
+
         if (weaponActual == null)
         {
             bool pudoActivarEspada = inventory.ActivarEspadaSiExiste();
 
             if (!pudoActivarEspada)
+            {
+                Debug.Log("NO ATACA: no hay arma");
                 return;
+            }
         }
-        if (!isAttacking && playerMotion.Attack())
+
+        bool puedeAtacarMotion = playerMotion.Attack();
+
+        Debug.Log("ANTES DEL IF: isAttacking=" + isAttacking +
+                  " playerMotion.Attack=" + puedeAtacarMotion);
+
+        if (!isAttacking && puedeAtacarMotion)
         {
+            Debug.Log("ENTRÓ AL ATAQUE L: " + Time.time);
+
             ReiniciarTiempoDesarmar();
             Debug.Log("Ataque L");
+
             isAttacking = true;
+
             StopCoroutine("moveAgain");
             StopCoroutine("comboEnd");
+
             rb.linearVelocity = Vector3.zero;
-            //playerMotion.Stopping();
+
             anim.SetFloat("Combo", combo);
+
             if (weaponActual.typeItem == WeaponType.sword)
                 anim.SetInteger("Attack", 1);
+
             if (weaponActual.typeItem == WeaponType.crossbow)
-                anim.SetInteger("Attack", 4);//modificar en mi arbol de anijmacion
+                anim.SetInteger("Attack", 4);
+
             anim.SetTrigger("Atk");
+
             if (combo == 2)
-            {
                 combo = 0;
-            }
             else
-            {
                 combo++;
-            }
-            //flechas
+
             if (playerMotion.focus && weaponActual.typeItem != WeaponType.crossbow)
             {
                 if (playerMotion.targetPlayer != null)
@@ -94,10 +162,15 @@ public class PlayerCombat : MonoBehaviour
                     if (Vector3.Distance(transform.position, playerMotion.targetPlayer.position) > 1f)
                         rb.AddForce(playerMotion.cam.forward * focusAtkImpulse, ForceMode.Impulse);
                 }
-
             }
-            StartCoroutine("moveAgain", 1f);
+
+            StartCoroutine("moveAgain", 0.3f);
             StartCoroutine("comboEnd");
+        }
+        else
+        {
+            Debug.Log("NO ENTRÓ AL ATAQUE L: isAttacking=" + isAttacking +
+                      " playerMotion.Attack=" + puedeAtacarMotion);
         }
     }
     public void OnAttackP()
@@ -150,17 +223,30 @@ public class PlayerCombat : MonoBehaviour
     //    StartCoroutine("moveAgain", (heavyAtk) ? .8f : .5f);
     //    StartCoroutine("comboEnd");
     //}
+    //public void Hit()
+    //{
+    //    Debug.Log("EVENTO HIT DE ESPADA: " + Time.time);
+    //    swordCollision.enabled = true;
+
+    //    Reset();
+
+    //    StartCoroutine(ApagarEspadaDespues(.25f));
+
+    //    StartCoroutine("moveAgain", (heavyAtk) ? .8f : .5f);
+    //    StartCoroutine("comboEnd");
+    //}
     public void Hit()
     {
+        Debug.Log("EVENTO HIT DE ESPADA: " + Time.time);
         swordCollision.enabled = true;
-
-        Reset();
-
-        StartCoroutine(ApagarEspadaDespues(.2f));
-
-        StartCoroutine("moveAgain", (heavyAtk) ? .8f : .5f);
-        StartCoroutine("comboEnd");
     }
+
+    public void EndHit()
+    {
+        Debug.Log("EVENTO END HIT DE ESPADA: " + Time.time);
+        swordCollision.enabled = false;
+    }
+
 
     IEnumerator ApagarEspadaDespues(float tiempo)
     {

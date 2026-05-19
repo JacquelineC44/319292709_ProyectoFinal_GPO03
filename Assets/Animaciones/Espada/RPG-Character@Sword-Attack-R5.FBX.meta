@@ -787,8 +787,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.35480872
+      - time: 0.3102267
         functionName: Hit
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.4351406
+        functionName: EndHit
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

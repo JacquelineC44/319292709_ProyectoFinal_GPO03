@@ -33,6 +33,7 @@ public class EnemyLife : Life
 
         enemyMotion.Stopping();
         enemyMotion.ResetEnemy();
+        enemyCombat.BloquearAtaquePorGolpe(1f);
         //StopCoroutine("AttackAgain");
         anim.Rebind();
         anim.SetInteger("Life", currentLife);
@@ -79,7 +80,6 @@ public class EnemyLife : Life
         }
         else
         {
-            enemyCombat.isAttacking = false;
             enemyMotion.StopEnd();
         }
     }
@@ -123,5 +123,7 @@ public class EnemyLife : Life
             player.GetComponent<PlayerMotion>().noTarget();
             player = null;
         }
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.EnemyLostPlayer();
     }
 }

@@ -16,6 +16,7 @@ public class EnemyCombat : MonoBehaviour
     protected Animator anim;
     public float tiempoEntreAtaques = 1f;
     private bool yaHizoDaño;
+    public bool ataqueBloqueado;
 
     private void Awake()
     {
@@ -54,9 +55,20 @@ public class EnemyCombat : MonoBehaviour
     //    anim.SetInteger("Attack", atkN);
     //    anim.SetTrigger("Atk");
     //}
+    //public virtual void Attack()
+    //{
+    //    if (isAttacking)
+    //        return;
+
+    //    isAttacking = true;
+    //    yaHizoDaño = false;
+
+    //    anim.SetInteger("Attack", 0);
+    //    anim.SetTrigger("Atk");
+    //}
     public virtual void Attack()
     {
-        if (isAttacking)
+        if (isAttacking || ataqueBloqueado)
             return;
 
         isAttacking = true;
@@ -80,7 +92,6 @@ public class EnemyCombat : MonoBehaviour
     //}
     public virtual void Hit()
     {
-        Debug.Log("EVENTO HIT EJECUTADO");
         AtaqueSimple();
     }
     //public void AtaqueSimple()
@@ -274,5 +285,19 @@ public class EnemyCombat : MonoBehaviour
         atkC = 0;
         isAttacking = false;
         enemyMotion.StopEnd();
+    }
+    public void BloquearAtaquePorGolpe(float tiempo)
+    {
+        StartCoroutine(BloquearAtaqueCoroutine(tiempo));
+    }
+
+    IEnumerator BloquearAtaqueCoroutine(float tiempo)
+    {
+        ataqueBloqueado = true;
+        isAttacking = false;
+
+        yield return new WaitForSeconds(tiempo);
+
+        ataqueBloqueado = false;
     }
 }

@@ -15,7 +15,6 @@ public class TutorialGate : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Player"))
             return;
-
         if (tutorial != null && !tutorial.TutorialTerminado())
         {
             if (panelAviso != null)

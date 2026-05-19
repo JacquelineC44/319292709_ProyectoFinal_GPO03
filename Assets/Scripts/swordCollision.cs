@@ -14,30 +14,56 @@ public class swordCollision : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("ENTER espada tocó: " + other.name +
+                  " tag: " + other.tag +
+                  " tiempo: " + Time.time);
+
         TryDamage(other);
     }
 
     private void OnTriggerStay(Collider other)
     {
+        Debug.Log("STAY espada sigue tocando: " + other.name +
+                  " tag: " + other.tag +
+                  " tiempo: " + Time.time);
+
         TryDamage(other);
     }
-
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("EXIT espada dejó de tocar: " + other.name +
+                  " tag: " + other.tag +
+                  " tiempo: " + Time.time);
+    }
     void TryDamage(Collider other)
     {
-        if (!other.CompareTag("Target"))
+        
+        if (!enabled)
             return;
+        Debug.Log("TRY DAMAGE con: " + other.name +
+              " tag: " + other.tag +
+              " tiempo: " + Time.time);
+
+        if (!other.CompareTag("Target"))
+        {
+            Debug.Log("NO DAÑA: no tiene tag Target");
+            return;
+        }
 
         Life life = other.GetComponent<Life>();
 
         if (life == null)
+        {
+            Debug.Log("TOCÓ TARGET pero no encontró Life");
             return;
+        }
+
+        Debug.Log("SÍ HACE DAÑO A: " + other.name);
 
         cinemachineImpulse.GenerateImpulse(Camera.main.transform.forward);
-
         if (life.player == null)
             life.player = playerCombat.gameObject;
-
-        life.GetHit(attack);
+        life.GetHit(attack);        
     }
     //private void OnTriggerEnter(Collider other)
     //{

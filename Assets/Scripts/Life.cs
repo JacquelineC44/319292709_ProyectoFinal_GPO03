@@ -35,6 +35,7 @@ public class Life : MonoBehaviour
     }
     public virtual void GetHit(int damage)
     {
+        Debug.Log("ENEMIGO RECIBE DAÑO: " + damage + " tiempo: " + Time.time);
         currentLife -= damage;
     }
 }

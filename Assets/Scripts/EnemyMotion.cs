@@ -19,6 +19,7 @@ public class EnemyMotion : MonoBehaviour
     public Transform player;
     public Transform[] waypoints;
     public LayerMask playerMask, visibleMask;
+    private bool reportoQueVioJugador;
 
     public float viewDistance, speedNormal, speedCombat, angularNormal, angularCombat, stoppingDistance, timeToSearching, radius;
 
@@ -218,11 +219,13 @@ public class EnemyMotion : MonoBehaviour
                     if (hit.collider.tag != "Player")
                         return false;
                     player = hit.collider.transform;
+                    AvisarQueVioJugador();
                     return true;
                 }
             }
         }
         player = null;
+        AvisarQuePerdioJugador();
         return false;
     }
 
@@ -344,6 +347,28 @@ public class EnemyMotion : MonoBehaviour
         }
         agent.SetDestination(waypoints[waypointN].position);
         StopEnd();
+    }
+
+    void AvisarQueVioJugador()
+    {
+        if (reportoQueVioJugador)
+            return;
+
+        reportoQueVioJugador = true;
+
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.EnemySawPlayer();
+    }
+
+    void AvisarQuePerdioJugador()
+    {
+        if (!reportoQueVioJugador)
+            return;
+
+        reportoQueVioJugador = false;
+
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.EnemyLostPlayer();
     }
 
 }
