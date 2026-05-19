@@ -41,7 +41,9 @@ public class PlayerMotion : MonoBehaviour
     public bool interacting;
     public LayerMask groundLayer;
     public ItemsCollision chest;
+    public PapelInteractivo papel;
     float slopeAngle;
+    public NPCDialogue npcDialogue;
     //comabte 
     PlayerCombat playerCombat;
     Rigidbody rb;
@@ -421,9 +423,20 @@ public class PlayerMotion : MonoBehaviour
         }
         if (!Attack())
             return;
+        if (papel)
+        {
+            papel.Interactuar();
+            return;
+        }
+
         if (chest)
         {
             chest.Open();
+            return;
+        }
+        if (npcDialogue != null)
+        {
+            npcDialogue.Interactuar();
             return;
         }
     }
