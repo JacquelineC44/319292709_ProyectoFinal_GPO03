@@ -33,8 +33,13 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
+        UpdateLifeText();
         maxBarWidth = lifeBar.sizeDelta.x;
-        UpdateLifeText();        
+
+        icons.SetActive(true);
+        potionIcon.gameObject.SetActive(true);
+        potionText.text = "0";
+        arrowText.text = "0";
     }
     public void showInteractuar()
     {

@@ -16,6 +16,8 @@ public class ItemsCollision : MonoBehaviour
     GameObject player;
     Animator anim;
 
+    public GameObject textoInteractuarCofre;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -31,7 +33,8 @@ public class ItemsCollision : MonoBehaviour
         {
             player = other.gameObject;
             player.GetComponent<PlayerMotion>().chest = this;
-            UIManager.Instance.showInteractuar();
+            if (textoInteractuarCofre != null)
+                textoInteractuarCofre.SetActive(true);
         }
         if (other.CompareTag("Item"))
         {
@@ -54,7 +57,8 @@ public class ItemsCollision : MonoBehaviour
         open = true;
         player.GetComponent<PlayerMotion>().interacting = true;
         //player.GetComponent<PlayerMotion>().Stopping();
-        UIManager.Instance.hideInteractuar();
+        if (textoInteractuarCofre != null)
+            textoInteractuarCofre.SetActive(false);
         anim.enabled = true;
         StartCoroutine("Finish");
     }
@@ -95,7 +99,6 @@ public class ItemsCollision : MonoBehaviour
                 player.GetComponent<Inventario>().weapons.Add(drop);
                 break;
             case WeaponType.heal:
-                UIManager.Instance.showPotion(player.GetComponent<Inventario>().potions);
                 if (player.GetComponent<Inventario>().items.Where(i => i == drop).Count() == 0)
                 {
                     player.GetComponent<Inventario>().items.Add(drop);
@@ -106,7 +109,6 @@ public class ItemsCollision : MonoBehaviour
                 }
                 player.GetComponent<Inventario>().potions += potions;
                 Object.FindFirstObjectByType<InventoryCOntroller>().AddItemToInventory(drop, player.GetComponent<Inventario>().potions);
-                UIManager.Instance.showIcon();
                 UIManager.Instance.UpdatePotions(player.GetComponent<Inventario>().potions);
                 break;
             default:
