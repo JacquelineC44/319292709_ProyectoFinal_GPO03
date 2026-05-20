@@ -5,10 +5,11 @@ using UnityEngine.UI;
 using JetBrains.Annotations;
 using DG.Tweening;
 using Unity.VisualScripting;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject lifeBar;
+    //public GameObject lifeBar;
     public GameObject notification;
     public GameObject interactuar;
     public GameObject icons;
@@ -20,17 +21,20 @@ public class UIManager : MonoBehaviour
     public bool foundPotion = false;
     //    //fuego
     public Image fireIcon;
-    public Text fireText;
+    //public Text fireText;
+    public TMPro.TextMeshProUGUI fireText;
 
     public static UIManager Instance;
-    public float maxBarWidth = 1010f;
+    public RectTransform lifeBar;
+    private float maxBarWidth;
     private void Awake()
     {
         Instance = this;
     }
     private void Start()
     {
-        UpdateLifeText();
+        maxBarWidth = lifeBar.sizeDelta.x;
+        UpdateLifeText();        
     }
     public void showInteractuar()
     {
@@ -90,11 +94,15 @@ public class UIManager : MonoBehaviour
     {
         arrowText.text = n.ToString();
     }
+
     //public void UpdateLife(int currentLife)
     //{
-    //    //lifeBar.fillAmount = (float)currentLife / playerLife.maxlife;
-    //    Vector2 v = new Vector2(currentLife * 4, lifeBar.GetComponent<RectTransform>().sizeDelta.y);
+    //    float porcentaje = (float)currentLife / playerLife.maxlife;
+    //    float nuevoAncho = maxBarWidth * porcentaje;
+
+    //    Vector2 v = new Vector2(nuevoAncho, lifeBar.GetComponent<RectTransform>().sizeDelta.y);
     //    lifeBar.GetComponent<RectTransform>().DOSizeDelta(v, .2f);
+
     //    UpdateLifeText();
     //}
     public void UpdateLife(int currentLife)
@@ -102,8 +110,7 @@ public class UIManager : MonoBehaviour
         float porcentaje = (float)currentLife / playerLife.maxlife;
         float nuevoAncho = maxBarWidth * porcentaje;
 
-        Vector2 v = new Vector2(nuevoAncho, lifeBar.GetComponent<RectTransform>().sizeDelta.y);
-        lifeBar.GetComponent<RectTransform>().DOSizeDelta(v, .2f);
+        lifeBar.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, nuevoAncho);
 
         UpdateLifeText();
     }
@@ -133,7 +140,7 @@ public class UIManager : MonoBehaviour
     {
         DG.Tweening.Sequence s = DOTween.Sequence();
         fireIcon.DOFade(1f, cooldown);
-        s.Append(DOVirtual.Float(cooldown, 0f, cooldown, v => fireText.text = Mathf.RoundToInt(v).ToString())).OnComplete(() => fireText.text = "");
+        s.Append(DOVirtual.Float(cooldown, 0f, cooldown, v => fireText.text = Mathf.CeilToInt(v).ToString())).OnComplete(() => fireText.text = "");
     }
 
 }
