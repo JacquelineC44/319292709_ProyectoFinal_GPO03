@@ -18,7 +18,7 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.SetInt("PartidaGuardada", 1);
         PlayerPrefs.Save();
 
-        StartCoroutine(CargarEscena("319292709_ProyectoFinal_GP03ver5"));
+        StartCoroutine(CargarEscena("IntroVideo"));
     }
 
     public void ContinuarPartida()

@@ -729,9 +729,27 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""2d471a16-b107-41e2-bcbd-bc4486d519e0"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
+                    ""name"": ""Navigation"",
+                    ""type"": ""Value"",
                     ""id"": ""a9c4c280-5353-4620-b608-82a1a2a730bc"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""0e27cbd9-97de-4404-8cc0-3b88ee8b3157"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""11291c3c-d934-4502-bab8-4bafbd2d570e"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -742,11 +760,55 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c7a64a90-04da-4a55-9480-f3f6d6930cd7"",
-                    ""path"": """",
+                    ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc3b96f4-1b76-4e9d-995f-1b16d47d431c"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b4c4c21-0bd9-41b9-b50b-4b1c9c67df4e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4244b30-d0af-422c-bf6e-d19daa7dfbee"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f8aec347-bd48-45dc-b3c5-8968dcf5f494"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -781,7 +843,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_UIInventory_CloseInventory = m_UIInventory.FindAction("CloseInventory", throwIfNotFound: true);
         // UIPause
         m_UIPause = asset.FindActionMap("UIPause", throwIfNotFound: true);
-        m_UIPause_Newaction = m_UIPause.FindAction("New action", throwIfNotFound: true);
+        m_UIPause_Navigation = m_UIPause.FindAction("Navigation", throwIfNotFound: true);
+        m_UIPause_Submit = m_UIPause.FindAction("Submit", throwIfNotFound: true);
+        m_UIPause_Cancel = m_UIPause.FindAction("Cancel", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -1254,7 +1318,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // UIPause
     private readonly InputActionMap m_UIPause;
     private List<IUIPauseActions> m_UIPauseActionsCallbackInterfaces = new List<IUIPauseActions>();
-    private readonly InputAction m_UIPause_Newaction;
+    private readonly InputAction m_UIPause_Navigation;
+    private readonly InputAction m_UIPause_Submit;
+    private readonly InputAction m_UIPause_Cancel;
     /// <summary>
     /// Provides access to input actions defined in input action map "UIPause".
     /// </summary>
@@ -1267,9 +1333,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// </summary>
         public UIPauseActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "UIPause/Newaction".
+        /// Provides access to the underlying input action "UIPause/Navigation".
         /// </summary>
-        public InputAction @Newaction => m_Wrapper.m_UIPause_Newaction;
+        public InputAction @Navigation => m_Wrapper.m_UIPause_Navigation;
+        /// <summary>
+        /// Provides access to the underlying input action "UIPause/Submit".
+        /// </summary>
+        public InputAction @Submit => m_Wrapper.m_UIPause_Submit;
+        /// <summary>
+        /// Provides access to the underlying input action "UIPause/Cancel".
+        /// </summary>
+        public InputAction @Cancel => m_Wrapper.m_UIPause_Cancel;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1296,9 +1370,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIPauseActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIPauseActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Navigation.started += instance.OnNavigation;
+            @Navigation.performed += instance.OnNavigation;
+            @Navigation.canceled += instance.OnNavigation;
+            @Submit.started += instance.OnSubmit;
+            @Submit.performed += instance.OnSubmit;
+            @Submit.canceled += instance.OnSubmit;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         /// <summary>
@@ -1310,9 +1390,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UIPauseActions" />
         private void UnregisterCallbacks(IUIPauseActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Navigation.started -= instance.OnNavigation;
+            @Navigation.performed -= instance.OnNavigation;
+            @Navigation.canceled -= instance.OnNavigation;
+            @Submit.started -= instance.OnSubmit;
+            @Submit.performed -= instance.OnSubmit;
+            @Submit.canceled -= instance.OnSubmit;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         /// <summary>
@@ -1510,11 +1596,25 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface IUIPauseActions
     {
         /// <summary>
-        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Navigation" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnNavigation(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Submit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSubmit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

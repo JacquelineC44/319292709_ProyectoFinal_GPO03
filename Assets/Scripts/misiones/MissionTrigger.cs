@@ -1,13 +1,20 @@
+
 using UnityEngine;
 
 public class MissionTrigger : MonoBehaviour
 {
-    public void OnTriggerEnter(Collider other)
+    public bool esMisionSecundaria;
+
+    private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player"))
             return;
 
-        MissionManager.Instance.SiguientePaso();
+        if (esMisionSecundaria)
+            MissionManager.Instance.SiguientePasoSecundario();
+        else
+            MissionManager.Instance.SiguientePaso();
+
         gameObject.SetActive(false);
     }
 }

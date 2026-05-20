@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MenuPrincipal.unity
     guid: efcfe5057672ae545b31a4201b305206
+  - enabled: 1
+    path: Assets/IntroVideo.unity
+    guid: 0d98c8058c36a904699be8b6509cb32e
   - enabled: 0
     path: Assets/319292709_ProyectoFinal_GP03ver4.unity
     guid: f9d4c3c3af228754e80e57190146ebfc
